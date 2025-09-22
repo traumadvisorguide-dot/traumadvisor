@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Traumadvisor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <?= HtmlService.createHtmlOutputFromFile('style').getContent() ?>
+</head>
+
+<body class="bg-blue-900 text-gray-800 p-4 min-h-screen flex flex-col items-center">
+    <!-- Navigation Menu -->
+    <div id="nav-menu" class="fixed top-0 left-0 right-0 bg-blue-800 text-white p-4 flex justify-center space-x-8 shadow-lg z-50"></div>
+
+    <!-- Images d'en-tête sur le fond bleu -->
+    <div class="relative w-full max-w-lg mx-auto mt-16 flex justify-between px-4">
+        <img id="header-image-left" class="w-16 h-16 object-contain absolute -top-8 left-4" alt="Image de gauche" src="https://drive.google.com/uc?export=download&id=1av-6UZenH9_jE5ZuCtVOLHPW9hNYZkFd">
+        <img id="header-image-right" class="w-16 h-16 object-contain absolute -top-8 right-4" alt="Image de droite" src="https://drive.google.com/uc?export=download&id=1Ylg6LKqSiQAQF8ZcxnBSZRkyfsIlgLJ8">
+    </div>
+    
+    
+    <div class="container mx-auto max-w-lg p-6 bg-white rounded-lg shadow-xl space-y-8 mt-8">
+        <!-- Main Content -->
+        <div class="text-center space-y-6">
+            <img src="https://placehold.co/150x150/E0E0E0/white?text=Logo" alt="Traumadvisor Logo" class="mx-auto rounded-full shadow-lg">
+            <h1 class="text-4xl font-bold text-blue-800">Traumadvisor</h1>
+            <p class="text-lg text-gray-700">Partagez votre expérience des salles d'attente et aidez-nous à les rendre meilleures.</p>
+        </div>
+
+        <!-- Form for place selection -->
+        <form id="evaluationForm" class="space-y-4">
+            <div>
+                <label for="lieu" class="block text-sm font-medium text-gray-700">Choisissez un lieu existant ou ajoutez un nouveau :</label>
+                <select id="lieu" name="lieuId" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md">
+                    <!-- Options for places will be added here dynamically -->
+                    <option value="creation_lieu">... ou créez un nouveau lieu</option>
+                </select>
+            </div>
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300">
+                Suivant
+            </button>
+        </form>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Pages for the navigation menu
+        const pages = [
+            { label: 'Accueil', file: 'index' },
+            { label: 'Créer un lieu', file: 'creation_lieu' },
+            { label: 'Évaluations', file: 'evaluations' },
+            { label: 'Remerciements', file: 'remerciements' }
+        ];
+
+        // Fonction pour créer le menu de navigation dynamiquement
+        function createNavMenu(pages) {
+            const menuContainer = document.getElementById('nav-menu');
+            if (!menuContainer) return;
+            menuContainer.innerHTML = '';
+            pages.forEach(page => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'hover:text-blue-200 transition-colors';
+                link.onclick = () => google.script.run.withSuccessHandler(html => {
+                    document.body.innerHTML = html;
+                    initPage();
+                }).showPage(page.file);
+                link.textContent = page.label;
+                menuContainer.appendChild(link);
+            });
+        }
+
+        // Fonction principale pour initialiser la page
+        function initPage() {
+            if (typeof google !== 'undefined' && google.script && google.script.run) {
+                createNavMenu(pages);
+                google.script.run.withSuccessHandler(urls => {
+                    if (urls.left) {
+                         document.getElementById('header-image-left').src = urls.left;
+                    }
+                    if (urls.right) {
+                        document.getElementById('header-image-right').src = urls.right;
+                    }
+                }).getHeaderImageUrls();
+            } else {
+                setTimeout(initPage, 100);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
