@@ -219,7 +219,7 @@ width:                    100%;
 }
 
 /*<!-- TYPOS            (Page Evaluation)                                 --> */
-.rating-bar.trmdvsr-texte {                                                     /* Texte dans le bloc avec balise <em> et <b> */
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar.trmdvsr-texte {                                                     /* Texte dans le bloc avec balise <em> et <b> */
 margin:                     0;
 padding-bottom:             var(--espacement-court);
 padding-top:                var(--espacement-button);
@@ -229,7 +229,7 @@ display:                    block;
 text-align:                 center;
 }
 
-.rating-bar.trmdvsr-sstexte label {                                             /* texte sous les boutons customs */
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar.trmdvsr-sstexte label {                                             /* texte sous les boutons customs */
 margin-right:               calc(var(--espacement-button) / 2);
 margin-left:                calc(var(--espacement-button) / 2);
 margin-top:                 0px;
@@ -255,11 +255,11 @@ color:                      var(--blanc-trmdvsr);
 /*------------------------------------------------------------------------------/*
 /* RADIO => Labels : Gestion Notes  */
 
-.rating-bar input[type="radio"] {
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar input[type="radio"] {
 display:                    none;                                             /* Cache l'élément radio natif */
 }
 
-.rating-bar label.trmdvsr-radio-label {                                         /* Spécificité de style */
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-radio-label {                                         /* Spécificité de style */
 height:                     auto;        
 width:                      calc(var(--largeur-logo-bouton) + var(--espacement-button));
 background-image:           var(--url-logo-inactif);
@@ -269,17 +269,17 @@ animation:                  none;
 
 transition:                 all 0.2s ease-in-out;  
 }
-.rating-bar label.trmdvsr-radio-label:first-of-type {
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-radio-label:first-of-type {
 width:                      var(--largeur-logo-bouton); 
 }
 
-.rating-bar input:checked + label.trmdvsr-radio-label,
-.rating-bar input:checked ~ label.trmdvsr-radio-label {                         /* Activation des notes cliquées et inférieures */
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar input:checked + label.trmdvsr-radio-label,
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar input:checked ~ label.trmdvsr-radio-label {                         /* Activation des notes cliquées et inférieures */
 background-image:           var(--url-logo-actif);
 }
 
-.rating-bar label.trmdvsr-radio-label:hover,
-.rating-bar label.trmdvsr-radio-label:hover ~ label {                           /* Allume la note survolée et tous les labels qui la SUIVENT */
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-radio-label:hover,
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-radio-label:hover ~ label {                           /* Allume la note survolée et tous les labels qui la SUIVENT */
 background-image:           var(--url-logo-actif);
 text-decoration:            underline;
 /*box-shadow:               0 0 5px 0 rgba(var(--bleu-trmdvsr-clair-RGB), 0.4);   */
