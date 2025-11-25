@@ -3,6 +3,7 @@ nav .conteneur-lame { padding-bottom: var(--espacement-court); }
 .module-breadcrumb {
     list-style:               none;                                   /* Supprime les puces */
     display:                  flex;
+    flex-direction:           row;
     justify-content:          space-between;                          /* Distribue l'espace entre les éléments */
     margin:                   0;
     padding:                  0.5rem 0 1.5rem;
