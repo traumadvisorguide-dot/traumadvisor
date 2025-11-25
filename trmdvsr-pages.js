@@ -983,7 +983,7 @@ document.getElementById('evaluationForm').addEventListener( 'submit', function(e
             console.error("L'environnement Google Apps Script n'est pas disponible.");
       }
 });*/ 
-/* ==================================================================
+/** =================================================================
  * @description 'Fin du fichier. with care.'
  * @author 'trmdvsr'
  * @version 25.10.09 (23:16)
