@@ -33,8 +33,8 @@ function populateDropdown(selectElement, data, textKey = '', valueKey = '') {
         selectElement.appendChild(option);
     });
 }
-/*=================================================================== */
-    @description 'Fin du fichier. with care.'
-    @author 'trmdvsr'
-    @version 25.10.09 (23:16)
-/*=================================================================== */
+/* ==================================================================
+ * @description 'Fin du fichier. with care.'
+ * @author 'trmdvsr'
+ * @version 25.10.09 (23:16)
+ * ================================================================== */
