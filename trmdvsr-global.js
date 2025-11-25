@@ -1,392 +1,389 @@
-    <script type="text/javascript"> //<!-- DÉCLARATION DES VARIABLES                  --> OK
-      let appData         = {                                                         // 📘 Objet global qui récupère toutes les données du formulaire
-        submissionID      : null,                                                     // au lancement par handlePageData()
-        submissionDate    : null,	                                                    // submit eval-2-Form si pas null
-        guideORexpert     : 'guided',                                                 // submit indexForm 
-        lieuID            : null,                                                     // submit indexForm
-        listeSalle        : null,                                                     // pas nécessaire (lieuID prévaut)
-        adresseSalle      : null,                                                     // submit creationForm
-        nomSalle          : null,                                                     // submit creationForm
-        typeEtablissement : null,                                                     // submit creationForm
-        noteAccessibilite : null,                                                     // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
-        noteApparence     : null,                                                     // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
-        noteAssise        : null,                                                     // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
-        noteAttention     : null,                                                     // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
-        noteAttente       : null,                                                     // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
-        bonus             : null,                                                     // submit eval-1-Form
-        notePure          : null,                                                     // submit eval-1-Form
-        dateRenvoyee      : null,                                                     //
-        comments          : {},                                                       // NOUVEAU pour stocker les commentaires de chaque notes
-        phraseAccroche    : null,                                                     // submit eval-2-Form
-        photoPrincipale   : null,                                                     // submit eval-2-Form
-        autresPhotos      : null,                                                     // submit eval-2-Form
-        userInstagram     : null,                                                     // submit eval-2-Form
-        userEmail         : null,                                                     // submit eval-2-Form
-        nouveauFormulaire : 'oui',                                                    // passer constante à 'oui'
-        submissionIP      : null,                                                     // impossible via Apps Script (sandbox et droits)
-        submissionURL     : null,                                                     // non pertinent
-        submissionEditURL : null,                                                     // non pertinent
-        lastUpdateDate    : null,                                                     // submit eval-2-Form à chaque fois
-      };
+/* DÉCLARATION DES VARIABLES                                          */
+let appData         = {                                               // 📘 Objet global qui récupère toutes les données du formulaire
+    submissionID      : null,                                         // au lancement par handlePageData()
+    submissionDate    : null,	                                      // submit eval-2-Form si pas null
+    guideORexpert     : 'guided',                                     // submit indexForm 
+    lieuID            : null,                                         // submit indexForm
+    listeSalle        : null,                                         // pas nécessaire (lieuID prévaut)
+    adresseSalle      : null,                                         // submit creationForm
+    nomSalle          : null,                                         // submit creationForm
+    typeEtablissement : null,                                         // submit creationForm
+    noteAccessibilite : null,                                         // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
+    noteApparence     : null,                                         // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
+    noteAssise        : null,                                         // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
+    noteAttention     : null,                                         // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
+    noteAttente       : null,                                         // trmdvsr-3-eval-js/handleRatingChange | submit eval-1-Form
+    bonus             : null,                                         // submit eval-1-Form
+    notePure          : null,                                         // submit eval-1-Form
+    dateRenvoyee      : null,
+    comments          : {},                                           // NOUVEAU pour stocker les commentaires de chaque notes
+    phraseAccroche    : null,                                         // submit eval-2-Form
+    photoPrincipale   : null,                                         // submit eval-2-Form
+    autresPhotos      : null,                                         // submit eval-2-Form
+    userInstagram     : null,                                         // submit eval-2-Form
+    userEmail         : null,                                         // submit eval-2-Form
+    nouveauFormulaire : 'oui',                                        // passer constante à 'oui'
+    submissionIP      : null,                                         // impossible via Apps Script (sandbox et droits)
+    submissionURL     : null,                                         // non pertinent
+    submissionEditURL : null,                                         // non pertinent
+    lastUpdateDate    : null,                                         // submit eval-2-Form à chaque fois
+};
 
-      /** @description     ARCHITECTURE D'INFO POUR LES PAGES 
-       * ---------- ------------- ----------------------- - --------------------------//
-       * @var       {element}     element                 - Élement du DOM                                /page <= initializeDOMElements()
-       * @var       {number}      height                  - Hauteur                                       /page <= initializeDOMElements()
-       * @var       {integer}     currentSectionIndex     - Index section active                          /page <= initializeDOMElements()
-       * @var       {integer}     sectionCount            - Nombre de sections                            /page <= initializeDOMElements()
-       * @var       {array}       sub.element             - Élement du DOM                        /section/page <= initializeDOMElements()
-       * @var       {array}       sub.index               - Index section                         /section/page <= initializeDOMElements()
-       * @var       {number}      sub.height              - Hauteur section                       /section/page <= calculatePageHeights()
-       * @var       {number}      totalHeight             - Hauteur maximale de page  (qq soit la section)/page <= calculatePageHeights()
-       * ---------------------------------------------------------------------------- */
-      let pages = {                                                                   // 'key':   {value}
-        'accueil':  { index: 0,   id: 'accueil_page',       label: 'Accueil',       hasSub: false, sub: null }, 
-        'creation': { index: 1,   id: 'creation-lieu_page', label: 'Création Lieu', hasSub: false, sub: null },
-        'eval':     { index: 2,   id: 'evaluations_page',   label: 'Évaluations',   hasSub: true,  sub: [ 
-                                { id: 'section_q1',         label: 'Accessibilité', needsAsyncValidation: false },
-                                { id: 'section_q2',         label: 'Apparence',     needsAsyncValidation: false }, 
-                                { id: 'section_q3',         label: 'Assise',        needsAsyncValidation: false },
-                                { id: 'section_q4',         label: 'Attention',     needsAsyncValidation: false },
-                                { id: 'section_q5',         label: 'Attente',       needsAsyncValidation: false },
-                                { id: 'section_photo',      label: 'Photo',         needsAsyncValidation: true  }
-                              ]}
-      };
-      /** GLOBAL - Variables de navigation                                            */
-      let curPgID           = null;                                                   // ID Page affichée                       <= showPage()
-      let conteneurSPA      = null;                                                   // DOMElement                             <= initializeDOMElements()
-      let guideModeBTN      = null;
-      let menuElements = {                                                            //                                        <= initializeDOMElements()
-        burgerElement       : null,
-        burgerIconElements  : null, 
-        navElement          : null 
-      };
+/** @description     ARCHITECTURE D'INFO POUR LES PAGES 
+* ---------- ------------- ----------------------- - -----------------//
+* @var       {element}     element                 - Élement du DOM                                /page <= initializeDOMElements()
+* @var       {number}      height                  - Hauteur                                       /page <= initializeDOMElements()
+* @var       {integer}     currentSectionIndex     - Index section active                          /page <= initializeDOMElements()
+* @var       {integer}     sectionCount            - Nombre de sections                            /page <= initializeDOMElements()
+* @var       {array}       sub.element             - Élement du DOM                        /section/page <= initializeDOMElements()
+* @var       {array}       sub.index               - Index section                         /section/page <= initializeDOMElements()
+* @var       {number}      sub.height              - Hauteur section                       /section/page <= calculatePageHeights()
+* @var       {number}      totalHeight             - Hauteur maximale de page  (qq soit la section)/page <= calculatePageHeights()
+* ------------------------------------------------------------------- */
+let pages = {                                                         // 'key':   {value}
+    'accueil':  { index: 0,   id: 'accueil_page',       label: 'Accueil',       hasSub: false, sub: null }, 
+    'creation': { index: 1,   id: 'creation-lieu_page', label: 'Création Lieu', hasSub: false, sub: null },
+    'eval':     { index: 2,   id: 'evaluations_page',   label: 'Évaluations',   hasSub: true,  sub: [ 
+                            { id: 'section_q1',         label: 'Accessibilité', needsAsyncValidation: false },
+                            { id: 'section_q2',         label: 'Apparence',     needsAsyncValidation: false }, 
+                            { id: 'section_q3',         label: 'Assise',        needsAsyncValidation: false },
+                            { id: 'section_q4',         label: 'Attention',     needsAsyncValidation: false },
+                            { id: 'section_q5',         label: 'Attente',       needsAsyncValidation: false },
+                            { id: 'section_photo',      label: 'Photo',         needsAsyncValidation: true  }
+                          ]}
+};
+/** GLOBAL - Variables de navigation                                  */
+let curPgID           = null;                                         // ID Page affichée                       <= showPage()
+let conteneurSPA      = null;                                         // DOMElement                             <= initializeDOMElements()
+let guideModeBTN      = null;
+let menuElements = {                                                  //                                        <= initializeDOMElements()
+    burgerElement       : null,
+    burgerIconElements  : null, 
+    navElement          : null 
+};
 
-      let isInit = {                                                                  // FLAGS
-        updateStatus        : false,                                                  //                                        <= loadPage()
-        eval                : false,                                                  //                                        <= initPageEval() voir si suppime
-        modeGuide           : false,                                                  //                                        <= initModeGuide()voir si supp
-        navGlobale          : false,                                                  // Listeners sur <body>                   <= initNavigationListeners()  
-        allDOMLoaded        : false,                                                  //                                        <= initializeDOMElements()
-        mapsScriptLoaded    : false 
-      };
-      let isTrnstng         = false;                                                  // Flag de transition en cours
+let isInit = {                                                        // FLAGS
+    updateStatus        : false,                                      //                                        <= loadPage()
+    eval                : false,                                      //                                        <= initPageEval() voir si suppime
+    modeGuide           : false,                                      //                                        <= initModeGuide()voir si supp
+    navGlobale          : false,                                      // Listeners sur <body>                   <= initNavigationListeners()  
+    allDOMLoaded        : false,                                      //                                        <= initializeDOMElements()
+    mapsScriptLoaded    : false 
+};
+let isTrnstng         = false;                                        // Flag de transition en cours
 
-      /** GLOBAL - Variables du loader unique => évite les querySelector répétés      */
-      let snglLgElmnt       = null;                                                   // LOADER                                 <= init_updateStatus()
-      let curLgElmnt        = null;                                                   //                                        <= updateStatus()
-      let lggrElmnt         = null;                                                   //                                        <= init_updateStatus()
-      let imgLgElmnt        = null;                                                   //                                        <= init_updateStatus()
-      let spnrLgElmnt       = null;                                                   //                                        <= init_updateStatus()
-      let prgrssGrpLgElmnt  = null;                                                   //                                        <= init_updateStatus()
-      let prgrssBrLgElmnt   = null;                                                   //                                        <= init_updateStatus()
-      let prgrssTxtLgElmnt  = null;                                                   //                                        <= init_updateStatus()
-      
-      let tstmnlCrslElmnt   = null;                                                   // Témoignage Carousel                    <= initializeDOMElements()
-      let tstmnlCrtElmnt    = null;                                                   // Témoignage Carte                       <= initializeDOMElements()
-      let tstmnlScrllAmnt   = null;                                                   // Valeur du scroll                       <= initializeDOMElements()
+/** GLOBAL - Variables du loader unique => évite les querySelector répétés      */
+let snglLgElmnt       = null;                                         // LOADER                                 <= init_updateStatus()
+let curLgElmnt        = null;                                         //                                        <= updateStatus()
+let lggrElmnt         = null;                                         //                                        <= init_updateStatus()
+let imgLgElmnt        = null;                                         //                                        <= init_updateStatus()
+let spnrLgElmnt       = null;                                         //                                        <= init_updateStatus()
+let prgrssGrpLgElmnt  = null;                                         //                                        <= init_updateStatus()
+let prgrssBrLgElmnt   = null;                                         //                                        <= init_updateStatus()
+let prgrssTxtLgElmnt  = null;                                         //                                        <= init_updateStatus()
 
-      /**-----------------------------------------------------------------------------//
-       * @description   PAGE CREATION LIEU 
-       * @var           {Element}    creaPgElmnts.adressElmnt   - Element du DOM pour l'adresse du nouveau lieu
-       * ---------------------------------------------------------------------------- */
-      let creaPgElmnts      = {};                                                     // Objet d'objets                         <= 
-      /**-----------------------------------------------------------------------------//
-       * @description   PAGE EVALUATION 
-       * @var           {Element}    xxx                        - xxxx
-       * ---------------------------------------------------------------------------- */
-      let humourLevel       = 4;    // (min:0; max:6)                                 // Générateur Avis                        <= ?()
-      let draggedItem       = null;                                                   // Photos Flag Drag&Drop                  <= ?()
-      let uploadedFiles     = [];                                                     // Tableau => stocke objets File rognés   <= ?()
-      let previewContainer;
-      let fileInput;
-      let limitMessage;
-      let exportBtn;
-      let cropModule;                                                                 // Module Crop                            <= ?()
-      let imageToCrop;
-      let cropperInstance   = null;
-      let currentFile       = null; 
+let tstmnlCrslElmnt   = null;                                         // Témoignage Carousel                    <= initializeDOMElements()
+let tstmnlCrtElmnt    = null;                                         // Témoignage Carte                       <= initializeDOMElements()
+let tstmnlScrllAmnt   = null;                                         // Valeur du scroll                       <= initializeDOMElements()
 
-      const MAX_FILES       = 10;                                                     // Nb max de fichiers à uploader
-      const EXPORT_SIZE     = 1080;                                                   // => 1080x1080px
-      let   LOGO_URLS       = null;                                                   //                                        <= getLogoUrlsFromCSS_()
-      const DATE            = new Date();                                             //                                        <= Logger
-    </script>
+/**------------------------------------------------------------------ //
+* @description   PAGE CREATION LIEU 
+* @var           {Element}    creaPgElmnts.adressElmnt   - Element du DOM pour l'adresse du nouveau lieu
+* ------------------------------------------------------------------- */
+let creaPgElmnts      = {};                                           // Objet d'objets                         <= 
+/**------------------------------------------------------------------ //
+* @description   PAGE EVALUATION 
+* @var           {Element}    xxx                        - xxxx
+* ------------------------------------------------------------------- */
+let humourLevel       = 4;    // (min:0; max:6)                       // Générateur Avis                        <= ?()
+let draggedItem       = null;                                         // Photos Flag Drag&Drop                  <= ?()
+let uploadedFiles     = [];                                           // Tableau => stocke objets File rognés   <= ?()
+let previewContainer;
+let fileInput;
+let limitMessage;
+let exportBtn;
+let cropModule;                                                       // Module Crop                            <= ?()
+let imageToCrop;
+let cropperInstance   = null;
+let currentFile       = null; 
 
-    <script type="text/javascript"> //<!-- FONCTION ENREGISTREMENT DATABASE 📘        -->
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {actionDispatcher}
-       * @instanceCount   1 - unique
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        updateData
-       * @description     TRAITE LES DONNÉES SAISIES (simule une mise à jour de données).
-       *                  C'est ici que vous traiteriez les événements 'change' ou 'input' pour les formulaires.
-       * ---------------- --------------- --------------- - --------------------------//
-       * @param           {string}        key             - La clé de donnée à mettre à jour
-       * @param           {string}        value           - La nouvelle valeur.
-       * @param           {HTMLElement}   element         - L'élément déclencheur 
-       * ---------------------------------------------------------------------------- */
-      
-      function updateData(key, value, element) {
-        console.log(`Donnée mise à jour: ${key} = ${value} `);                        // Logique métier : MàJ état global ou appeler une API (ex: Firestore)
-        
-        const feedback = document.getElementById('feedback-message');                 // Exemple de feedback pour le 'change'
-        if (feedback) {
-          feedback.textContent = `Nom saisi: ${value || 'Non défini' } `;
+const MAX_FILES       = 10;                                           // Nb max de fichiers à uploader
+const EXPORT_SIZE     = 1080;                                         // => 1080x1080px
+let   LOGO_URLS       = null;                                         //                                        <= getLogoUrlsFromCSS_()
+const DATE            = new Date();                                   //                                        <= Logger
+
+/* FONCTIONS ENREGISTREMENT DATABASE 📘                               */
+/**-----------------------------------------------------------------------------//
+* @instanceIn      {actionDispatcher}
+* @instanceCount   1 - unique
+* ---------------- --------------- --------------- - --------------------------//
+* @function        updateData
+* @description     TRAITE LES DONNÉES SAISIES (simule une mise à jour de données).
+*                  C'est ici que vous traiteriez les événements 'change' ou 'input' pour les formulaires.
+* ---------------- --------------- --------------- - --------------------------//
+* @param           {string}        key             - La clé de donnée à mettre à jour
+* @param           {string}        value           - La nouvelle valeur.
+* @param           {HTMLElement}   element         - L'élément déclencheur 
+* ---------------------------------------------------------------------------- */
+
+function updateData(key, value, element) {
+console.log(`Donnée mise à jour: ${key} = ${value} `);                        // Logique métier : MàJ état global ou appeler une API (ex: Firestore)
+
+const feedback = document.getElementById('feedback-message');                 // Exemple de feedback pour le 'change'
+if (feedback) {
+  feedback.textContent = `Nom saisi: ${value || 'Non défini' } `;
+}
+}
+
+/**-----------------------------------------------------------------------------//
+* @instanceIn      {actionDispatcher}
+* @instanceCount   1 - unique
+* ---------------- --------------- --------------- - --------------------------//
+* @function        saveAllSettings
+* @description     ENREGISTRE (simule une mise à jour de données).
+* ---------------------------------------------------------------------------- */
+function saveAllSettings() {
+    // Logique de validation et sauvegarde ici...
+}
+
+<script type="text/javascript"> //<!-- FONCTION NAVIGATION SPA - PRIVATE FN       -->
+
+  /**-----------------------------------------------------------------------------//
+   * @version         25.10.09 (23:16)
+   * @instanceIn      {actionDispatcher} & {handlePageData}   ../
+   * @instanceCount   4 (3 + 1)
+   * ---------------- --------------- --------------------- - --------------------//
+   * @function        showPage
+   * @description     GESTION DE L'AFFICHAGE PAR PAGE
+   *                  Anime la transition de l'ancienne page vers la nouvelle
+   *                  Gère la transition latérale entre les pages principales.
+   *                  Affiche une page spécifique en utilisant la déstructuration. 
+   * ---------------- --------------- --------------------- - --------------------//
+   * @param           {string}        nwPgID                - L'ID de la page à afficher.
+   * @param           {string|null}   nwSecIndx             - L'ID de la section à afficher dans la nouvelle page (si applicable).
+   * ---------------- --------------- --------------------- - --------------------//
+   * @src             {object}        rubriques         
+   *                    {string}      id,                   - String identifiant html
+   *                    {string}      nom,                  - String nom d'affichage
+   *                    {boolean}     hasSub,                - Boolean true/false sur la présence d'un objet de sub-rubriques
+   *                    {object}      sub                   - Facultatif, objet contenant les sous rubriques
+   *                      {string}    id,                   - String identifiant html
+   *                      {string}    nom,                  - String nom d'affichage
+   *                      {boolean}   needsAsyncValidation  - Boolean true/false sur le besoin de validation asynchrone
+   * ---------------------------------------------------------------------------- */
+  function showPage(nwPgID = '', nwSecIndx = null) {
+    if (!nwPgID) return;                                                          // CAS DÉFENSIF: pas de pgID => kill
+    if (isTrnstng) return;                                                        // CAS ANTI-REBOND : transition en cours => kill
+    isTrnstng = true;                                                             // 🚩 Active le flag ANTI-REBOND
+    updateStatus({ log: `📄.Init showPage... [param]nwPgID: ${nwPgID} ${nwSecIndx != null ? ` / nwSecIndx:${nwSecIndx}` : '' }` });
+    
+    try {
+      const nwPg = Object.values(pages).find(p => p.id === nwPgID);               // Charge l'objet page à afficher <= nwPgID existe (if initial)
+      if (!nwPg || !nwPg.element) {                                               // CAS DÉFENSIF: Erreur si pas Element
+        isTrnstng = false;                                                        // 🚩
+        updateStatus({ log: `📄❌.if-ed |showPage : nwPg '${nwPgID}' introuvable.`, type: 'error' });
+        return;
+      }
+
+      updateStatus({ log:`./📄⚙️.Run-ng |showPage: nwPg.id:${nwPg.id} & nwPg.hasSub:${nwPg.hasSub}` });
+      const targetSecIndx = nwSecIndx ?? nwPg.curSecIndx ?? 0;                    // =nwSecIndx sinon =curSecIndx sinon =0 
+      nwPg.curSecIndx = targetSecIndx;                                            // 🛟 Attribue le curSecIndx
+
+      const activateSectionIfNeeded = () => {
+        let secIndx2Dspl = nwPg.curSecIndx;                                       // Utilise l'index que nous venons d'initialiser/mettre à jour
+        if (nwPg.hasSub && nwPg.sub[secIndx2Dspl]) {                              // S'il y a des sous-sections et que l'index est valide
+          const nwSecID = nwPg.sub[secIndx2Dspl].id;
+          updateStatus({ log: `./📄⚙️.Run-ng |showPage => nwSecIndx: ${secIndx2Dspl} / nwSecID: ${nwSecID}` });
+          showSection(nwSecID, nwPgID);                                           // Affiche la section (isAfterTransition => désactive le flag en interne ou non)
         }
+        updateSPA_Height_(nwPg.id, nwSecIndx);                                    // Met à jour la hauteur du SPA après le changement de page/section
+      };
+    
+      const completeTransition = (event) => {                                     // <= appelé à la fin de l'apparition de la Nouvelle Page
+        if (event.target !== nwPg.element) return;
+        nwPg.element.removeEventListener('transitionend', completeTransition);
+        nwPg.element.classList.remove('transition-in', 'active-page-initial');  // Supprime la classe d'entrée
+        curPgID = nwPgID;                                                         // 🛟 Enregistre la nouvelle page active
+        activateSectionIfNeeded();                                                // Active la section si besoin
+        isTrnstng = false;                                                        // 🚩 Désactive le flag (centralisé)
+        updateStatus({ log: `.../📄✅.--End |showPage => Transition complete: ${curPgID}` });
+      };
+
+      const curPg = Object.values(pages).find(p => p.id === curPgID);  
+
+      if (!curPg) {                                                               // A. => Cas Initialisation
+        updateStatus({log: `./📄⚙️.Run-ng |showPage : Pas de page en cours => Init page: nwPg.id=${nwPg.id}` });
+        nwPg.element.addEventListener('transitionend', completeTransition, { once: true });
+        nwPg.element.classList.add('active');                                     // => classe contient nouvelle position > lance anim
+        updateSPA_Height_(nwPg.id);                                               // Lance MaJ hauteur en meme temps
+        return;
+      }
+      updateStatus({ log:`./📄⚙️.Run-ng |showPage: curPg.id:${curPg.id} ` });
+      if (!curPg.element) {                                                       // Gère les ERREURS sur la page COURANTE (flux d'arrêt)
+        isTrnstng = false;                                                        // 🚩
+        updateStatus({ log: `📄❌.if-ed |showPage : Current Page '${curPgID}' introuvable.`, type: 'error' });
+        return;
       }
 
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {actionDispatcher}
-       * @instanceCount   1 - unique
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        saveAllSettings
-       * @description     ENREGISTRE (simule une mise à jour de données).
-       * ---------------------------------------------------------------------------- */
+      const handleTransOutEnd = (event) => {                                      // <= appelé à la fin de la sortie de la page actuelle
+      console.log(`./📄⚙️.Run-ng |showPage : handleTransOutEnd => ${event.target} : ${event.tagName} : ${event.propertyName}`)
+        if (event.target !== curPg.element) return;
+        curPg.element.removeEventListener('transitionend', handleTransOutEnd);
+        curPg.element.className = 'page';                                         // remove tout en réécrivant 'page'
+        curPg.element.style.transform = '';
+        curPg.element.scrollTop = 0;
+        curPg.element.display = 'none';
+        curPg.element.style.opacity = '1';    // Réinitialisation de l'opacité pour le retour
+        console.log (`.../📄✅.--End ||showPage => handleTransOutEnd (OUT complete)`);
+        //updateStatus({ log: `.../📄✅.--End ||showPage => handleTransOutEnd (OUT complete)` });
+      };
 
-      function saveAllSettings() {
-        // Logique de validation et sauvegarde ici...
-      }
-    </script>
-
-    <script type="text/javascript"> //<!-- FONCTION NAVIGATION SPA - PRIVATE FN       -->
-
-      /**-----------------------------------------------------------------------------//
-       * @version         25.10.09 (23:16)
-       * @instanceIn      {actionDispatcher} & {handlePageData}   ../
-       * @instanceCount   4 (3 + 1)
-       * ---------------- --------------- --------------------- - --------------------//
-       * @function        showPage
-       * @description     GESTION DE L'AFFICHAGE PAR PAGE
-       *                  Anime la transition de l'ancienne page vers la nouvelle
-       *                  Gère la transition latérale entre les pages principales.
-       *                  Affiche une page spécifique en utilisant la déstructuration. 
-       * ---------------- --------------- --------------------- - --------------------//
-       * @param           {string}        nwPgID                - L'ID de la page à afficher.
-       * @param           {string|null}   nwSecIndx             - L'ID de la section à afficher dans la nouvelle page (si applicable).
-       * ---------------- --------------- --------------------- - --------------------//
-       * @src             {object}        rubriques         
-       *                    {string}      id,                   - String identifiant html
-       *                    {string}      nom,                  - String nom d'affichage
-       *                    {boolean}     hasSub,                - Boolean true/false sur la présence d'un objet de sub-rubriques
-       *                    {object}      sub                   - Facultatif, objet contenant les sous rubriques
-       *                      {string}    id,                   - String identifiant html
-       *                      {string}    nom,                  - String nom d'affichage
-       *                      {boolean}   needsAsyncValidation  - Boolean true/false sur le besoin de validation asynchrone
-       * ---------------------------------------------------------------------------- */
-      function showPage(nwPgID = '', nwSecIndx = null) {
-        if (!nwPgID) return;                                                          // CAS DÉFENSIF: pas de pgID => kill
-        if (isTrnstng) return;                                                        // CAS ANTI-REBOND : transition en cours => kill
-        isTrnstng = true;                                                             // 🚩 Active le flag ANTI-REBOND
-        updateStatus({ log: `📄.Init showPage... [param]nwPgID: ${nwPgID} ${nwSecIndx != null ? ` / nwSecIndx:${nwSecIndx}` : '' }` });
-        
-        try {
-          const nwPg = Object.values(pages).find(p => p.id === nwPgID);               // Charge l'objet page à afficher <= nwPgID existe (if initial)
-          if (!nwPg || !nwPg.element) {                                               // CAS DÉFENSIF: Erreur si pas Element
-            isTrnstng = false;                                                        // 🚩
-            updateStatus({ log: `📄❌.if-ed |showPage : nwPg '${nwPgID}' introuvable.`, type: 'error' });
-            return;
-          }
-
-          updateStatus({ log:`./📄⚙️.Run-ng |showPage: nwPg.id:${nwPg.id} & nwPg.hasSub:${nwPg.hasSub}` });
-          const targetSecIndx = nwSecIndx ?? nwPg.curSecIndx ?? 0;                    // =nwSecIndx sinon =curSecIndx sinon =0 
-          nwPg.curSecIndx = targetSecIndx;                                            // 🛟 Attribue le curSecIndx
-
-          const activateSectionIfNeeded = () => {
-            let secIndx2Dspl = nwPg.curSecIndx;                                       // Utilise l'index que nous venons d'initialiser/mettre à jour
-            if (nwPg.hasSub && nwPg.sub[secIndx2Dspl]) {                              // S'il y a des sous-sections et que l'index est valide
-              const nwSecID = nwPg.sub[secIndx2Dspl].id;
-              updateStatus({ log: `./📄⚙️.Run-ng |showPage => nwSecIndx: ${secIndx2Dspl} / nwSecID: ${nwSecID}` });
-              showSection(nwSecID, nwPgID);                                           // Affiche la section (isAfterTransition => désactive le flag en interne ou non)
-            }
-            updateSPA_Height_(nwPg.id, nwSecIndx);                                    // Met à jour la hauteur du SPA après le changement de page/section
-          };
-        
-          const completeTransition = (event) => {                                     // <= appelé à la fin de l'apparition de la Nouvelle Page
-            if (event.target !== nwPg.element) return;
-            nwPg.element.removeEventListener('transitionend', completeTransition);
-            nwPg.element.classList.remove('transition-in', 'active-page-initial');  // Supprime la classe d'entrée
-            curPgID = nwPgID;                                                         // 🛟 Enregistre la nouvelle page active
-            activateSectionIfNeeded();                                                // Active la section si besoin
-            isTrnstng = false;                                                        // 🚩 Désactive le flag (centralisé)
-            updateStatus({ log: `.../📄✅.--End |showPage => Transition complete: ${curPgID}` });
-          };
-
-          const curPg = Object.values(pages).find(p => p.id === curPgID);  
-
-          if (!curPg) {                                                               // A. => Cas Initialisation
-            updateStatus({log: `./📄⚙️.Run-ng |showPage : Pas de page en cours => Init page: nwPg.id=${nwPg.id}` });
-            nwPg.element.addEventListener('transitionend', completeTransition, { once: true });
-            nwPg.element.classList.add('active');                                     // => classe contient nouvelle position > lance anim
-            updateSPA_Height_(nwPg.id);                                               // Lance MaJ hauteur en meme temps
-            return;
-          }
-          updateStatus({ log:`./📄⚙️.Run-ng |showPage: curPg.id:${curPg.id} ` });
-          if (!curPg.element) {                                                       // Gère les ERREURS sur la page COURANTE (flux d'arrêt)
-            isTrnstng = false;                                                        // 🚩
-            updateStatus({ log: `📄❌.if-ed |showPage : Current Page '${curPgID}' introuvable.`, type: 'error' });
-            return;
-          }
-
-          const handleTransOutEnd = (event) => {                                      // <= appelé à la fin de la sortie de la page actuelle
-          console.log(`./📄⚙️.Run-ng |showPage : handleTransOutEnd => ${event.target} : ${event.tagName} : ${event.propertyName}`)
-            if (event.target !== curPg.element) return;
-            curPg.element.removeEventListener('transitionend', handleTransOutEnd);
-            curPg.element.className = 'page';                                         // remove tout en réécrivant 'page'
-            curPg.element.style.transform = '';
-            curPg.element.scrollTop = 0;
-            curPg.element.display = 'none';
-            curPg.element.style.opacity = '1';    // Réinitialisation de l'opacité pour le retour
-            console.log (`.../📄✅.--End ||showPage => handleTransOutEnd (OUT complete)`);
-            //updateStatus({ log: `.../📄✅.--End ||showPage => handleTransOutEnd (OUT complete)` });
-          };
-
-          if (nwPgID === curPgID) {                                                   // B. => Cas Même page
-            activateSectionIfNeeded();                                                // Fait le travail sans attendre de transition
-            isTrnstng = false;                                                        // 🚩 Désactive le flag immédiatement
-            updateStatus({ log: `.../📄✅.--End |showPage : Même page: [${curPgID}] / section=${nwSecIndx}. ` });
-            return;
-          }
-
-          const isFrwrd = (nwPg.index > curPg.index);                                 // C. => Cas Transition Normale
-          updateStatus({ log: `./📄⚙️.Run-ng |showPage : ${nwPg.index} > ${curPg.index} => ${isFrwrd} ` });
-          const [startPos, endPos] = isFrwrd ? ['100%', '-20%'] : ['-100%', '20%'];   // Définition des positions : [Pos départ newPage, Pos fin oldPage]
-          
-          curPg.element.addEventListener('transitionend', handleTransOutEnd, { once: true });
-          nwPg.element.addEventListener('transitionend', completeTransition, { once: true });
-          
-          nwPg.element.style.transition = 'none';                                     // Désactive temporairement pour éviter flickering
-          nwPg.element.style.transform = `translateX(${startPos})`;                   // Position de DÉPART (hors écran)
-          nwPg.element.style.display = 'block';                                       // Rend la nouvelle page visible
-          nwPg.element.classList.add('active');                                       // Applique la classe .active (z-index, opacité, etc.)
-
-          requestAnimationFrame(() => {                                               // 2. Lancement des transitions après repaint
-            requestAnimationFrame(() => {
-              console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 1 - Lancement transitions`);
-              nwPg.element.style.transition = 'transform 0.5s ease-out';
-              nwPg.element.style.transform = 'translateX(0)';
-              
-              curPg.element.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out';
-              curPg.element.classList.add('transition-out');                          // 2. Préparation et Lancement de l'OUT (Page Courante)
-              curPg.element.style.transform = `translateX(${endPos})`;
-              curPg.element.style.opacity = '0';                                      // Opacité à zéro pour la faire disparaître
-              console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 2 - Styles appliqués`);
-            });
-          });
-        
-          updateStatus({ log: `.../📄✅.--End |showPage : Transition de ${curPgID} vers ${nwPgID} effectuée.` });
-
-        } catch (error) {
-          isTrnstng = false;                                                          // Sécurité en cas d'erreur
-          updateStatus({ log: `📄🚫.Catched |showPage : ${error} `, type: 'error' });
-        }
+      if (nwPgID === curPgID) {                                                   // B. => Cas Même page
+        activateSectionIfNeeded();                                                // Fait le travail sans attendre de transition
+        isTrnstng = false;                                                        // 🚩 Désactive le flag immédiatement
+        updateStatus({ log: `.../📄✅.--End |showPage : Même page: [${curPgID}] / section=${nwSecIndx}. ` });
+        return;
       }
 
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {showPage} & {actionDispatcher}
-       * @instanceCount   2 (1 + 1)
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        showSection
-       * @description     GÈRE L'AFFICHAGE DES SECTIONS INTERNES AVEC TRANSITION LATÉRALE
-       * ---------------- --------------- --------------- - --------------------------//
-       * @param           {string}        nwSecID         - L'ID de la section à afficher.
-       * @param           {string}        pgID            - L'ID de la page parente.
-       * @param           {boolean}       isFrwrd         - Si Vrai, glissement de Droit à Gauche (Suivant). Si Faux, glissement de Gauche à Droite (Précédent).
-       * ---------------------------------------------------------------------------- */
+      const isFrwrd = (nwPg.index > curPg.index);                                 // C. => Cas Transition Normale
+      updateStatus({ log: `./📄⚙️.Run-ng |showPage : ${nwPg.index} > ${curPg.index} => ${isFrwrd} ` });
+      const [startPos, endPos] = isFrwrd ? ['100%', '-20%'] : ['-100%', '20%'];   // Définition des positions : [Pos départ newPage, Pos fin oldPage]
       
-      function showSection(nwSecID, pgID) {
-        updateStatus({ log: `📄.Init showSection... [param]nwSecID: ${nwSecID} / pgID: ${pgID} ` });
+      curPg.element.addEventListener('transitionend', handleTransOutEnd, { once: true });
+      nwPg.element.addEventListener('transitionend', completeTransition, { once: true });
+      
+      nwPg.element.style.transition = 'none';                                     // Désactive temporairement pour éviter flickering
+      nwPg.element.style.transform = `translateX(${startPos})`;                   // Position de DÉPART (hors écran)
+      nwPg.element.style.display = 'block';                                       // Rend la nouvelle page visible
+      nwPg.element.classList.add('active');                                       // Applique la classe .active (z-index, opacité, etc.)
 
-        try {
-          const parentPage = Object.values(pages).find(p => p.id === pgID);           // Récupère element DOM dans l'objet pages
-          if (!parentPage?.hasSub) return;                                            // Sécurité et chaînage optionnel
+      requestAnimationFrame(() => {                                               // 2. Lancement des transitions après repaint
+        requestAnimationFrame(() => {
+          console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 1 - Lancement transitions`);
+          nwPg.element.style.transition = 'transform 0.5s ease-out';
+          nwPg.element.style.transform = 'translateX(0)';
+          
+          curPg.element.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out';
+          curPg.element.classList.add('transition-out');                          // 2. Préparation et Lancement de l'OUT (Page Courante)
+          curPg.element.style.transform = `translateX(${endPos})`;
+          curPg.element.style.opacity = '0';                                      // Opacité à zéro pour la faire disparaître
+          console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 2 - Styles appliqués`);
+        });
+      });
+    
+      updateStatus({ log: `.../📄✅.--End |showPage : Transition de ${curPgID} vers ${nwPgID} effectuée.` });
 
-          const curSecData = parentPage.sub[parentPage.curSecIndx];                   // Cherche la section active dans ce main
-          const newSecData = parentPage.sub.find(s => s.id === nwSecID);
+    } catch (error) {
+      isTrnstng = false;                                                          // Sécurité en cas d'erreur
+      updateStatus({ log: `📄🚫.Catched |showPage : ${error} `, type: 'error' });
+    }
+  }
 
-          const newSecIndx = parentPage.sub.findIndex(s => s.id === nwSecID);         // Récup index cible
-          const curSecIndx = parentPage.curSecIndx;                                   // Récup index actuel
-          const dirFrwrd = newSecIndx > curSecIndx;                                   // Détermination de la direction (pour corriger si le breadcrumb est cliqué)
-          const [startPos, endPos] = dirFrwrd ? ['100%', '-100%'] : ['-100%', '100%'];// Définition des positions <= Déstructure pour concision
-          if (!newSecData?.element || newSecData.id === curSecData.id) {              // 1. CAS DÉFENSIF : Section introuvable ou déjà active
-            updateStatus({ log: `.../📄--End |showSection : Section déjà active ou introuvable. ` });
-            return;
-          }
-          const curElmnt = curSecData.element;
-          const newElmnt = newSecData.element;
+  /**-----------------------------------------------------------------------------//
+   * @instanceIn      {showPage} & {actionDispatcher}
+   * @instanceCount   2 (1 + 1)
+   * ---------------- --------------- --------------- - --------------------------//
+   * @function        showSection
+   * @description     GÈRE L'AFFICHAGE DES SECTIONS INTERNES AVEC TRANSITION LATÉRALE
+   * ---------------- --------------- --------------- - --------------------------//
+   * @param           {string}        nwSecID         - L'ID de la section à afficher.
+   * @param           {string}        pgID            - L'ID de la page parente.
+   * @param           {boolean}       isFrwrd         - Si Vrai, glissement de Droit à Gauche (Suivant). Si Faux, glissement de Gauche à Droite (Précédent).
+   * ---------------------------------------------------------------------------- */
+  
+  function showSection(nwSecID, pgID) {
+    updateStatus({ log: `📄.Init showSection... [param]nwSecID: ${nwSecID} / pgID: ${pgID} ` });
 
+    try {
+      const parentPage = Object.values(pages).find(p => p.id === pgID);           // Récupère element DOM dans l'objet pages
+      if (!parentPage?.hasSub) return;                                            // Sécurité et chaînage optionnel
+
+      const curSecData = parentPage.sub[parentPage.curSecIndx];                   // Cherche la section active dans ce main
+      const newSecData = parentPage.sub.find(s => s.id === nwSecID);
+
+      const newSecIndx = parentPage.sub.findIndex(s => s.id === nwSecID);         // Récup index cible
+      const curSecIndx = parentPage.curSecIndx;                                   // Récup index actuel
+      const dirFrwrd = newSecIndx > curSecIndx;                                   // Détermination de la direction (pour corriger si le breadcrumb est cliqué)
+      const [startPos, endPos] = dirFrwrd ? ['100%', '-100%'] : ['-100%', '100%'];// Définition des positions <= Déstructure pour concision
+      if (!newSecData?.element || newSecData.id === curSecData.id) {              // 1. CAS DÉFENSIF : Section introuvable ou déjà active
+        updateStatus({ log: `.../📄--End |showSection : Section déjà active ou introuvable. ` });
+        return;
+      }
+      const curElmnt = curSecData.element;
+      const newElmnt = newSecData.element;
+
+      newElmnt.style.cssText = `
+        transition: none; 
+        transform: translateX(${startPos});
+        display: block;
+      `;
+      newElmnt.classList.add('active');                                           // Rend la nouvelle section active et visible
+      updateSPA_Height_(parentPage.id, newSecIndx);                               // Calcul de la nouvelle hauteur avant la transition
+
+      const handleTransitionEnd = (event) => {                                    // --- 4. Nettoyage après la transition de sortie ---
+        if (event.target !== curElmnt) return;                                    // S'assure que l'événement vient de l'élément qui sort (curElmnt)
+        curElmnt.removeEventListener('transitionend', handleTransitionEnd);
+        curElmnt.style.cssText = `
+          display: none;
+          transform: none;
+          transition: none;
+        `;
+        curElmnt.classList.remove('active');                                      // Nettoyage du flag actif
+        parentPage.curSecIndx = newSecIndx;                                       // Mise à jour après le nettoyage
+        updateStatus({ log: `./📄⚙️.Run-ng |showSection => Transition END. New section: ${nwSecID}` });
+        
+        updateBreadcrumbs(parentPage, nwSecID);                                   // MISE À JOUR DU BREADCRUMB EN DERNIER
+      };
+      curElmnt.addEventListener('transitionend', handleTransitionEnd, { once: true });
+
+      requestAnimationFrame( () => {                                              // 3. Lancement des Transitions (rAF garantit l'application des styles)
+        requestAnimationFrame( () => {
           newElmnt.style.cssText = `
-            transition: none; 
-            transform: translateX(${startPos});
+            transition: transform 0.3s ease-out;
+            transform: translateX(0);
             display: block;
           `;
-          newElmnt.classList.add('active');                                           // Rend la nouvelle section active et visible
-          updateSPA_Height_(parentPage.id, newSecIndx);                               // Calcul de la nouvelle hauteur avant la transition
-
-          const handleTransitionEnd = (event) => {                                    // --- 4. Nettoyage après la transition de sortie ---
-            if (event.target !== curElmnt) return;                                    // S'assure que l'événement vient de l'élément qui sort (curElmnt)
-            curElmnt.removeEventListener('transitionend', handleTransitionEnd);
-            curElmnt.style.cssText = `
-              display: none;
-              transform: none;
-              transition: none;
-            `;
-            curElmnt.classList.remove('active');                                      // Nettoyage du flag actif
-            parentPage.curSecIndx = newSecIndx;                                       // Mise à jour après le nettoyage
-            updateStatus({ log: `./📄⚙️.Run-ng |showSection => Transition END. New section: ${nwSecID}` });
-            
-            updateBreadcrumbs(parentPage, nwSecID);                                   // MISE À JOUR DU BREADCRUMB EN DERNIER
-          };
-          curElmnt.addEventListener('transitionend', handleTransitionEnd, { once: true });
-
-          requestAnimationFrame( () => {                                              // 3. Lancement des Transitions (rAF garantit l'application des styles)
-            requestAnimationFrame( () => {
-              newElmnt.style.cssText = `
-                transition: transform 0.3s ease-out;
-                transform: translateX(0);
-                display: block;
-              `;
-              curElmnt.style.cssText = `
-                transition: transform 0.3s ease-out;
-                transform: translateX(${endPos});
-                display: block;
-              `;
-            });
-          });
-        } catch (error) {
-          updateStatus({ log: `🚫.Catched |showSection : [error] : ${error}`, type: 'error' });
-        } 
-      }
-
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {actionDispatcher}
-       * @instanceCount   1 - unique
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        scrollToSection
-       * @description     GÈRE LE SCROLL VERS UNE SECTION CIBLE
-       * ---------------- --------------- --------------- - --------------------------//
-       * @param           {string}        nwSecID         - L'ID de la section vers laquelle on scrolle.
-       * ---------------------------------------------------------------------------- */
-      
-      function scrollToSection(nwSecID) {                                             // Logique spécifique pour la navigation par ancre
-        if (!nwSecID || nwSecID === '#') {
-          updateStatus({log:"Erreur: L'attribut data-anchor est manquant ou invalide.", type:'error'});
-          return;
-        }
-
-        const trgtElmnt = document.getElementById(nwSecID);                           // 1. Trouver l'élément cible
-        if (!trgtElmnt) {
-          updateStatus({log:`Erreur: Aucune section trouvée avec l'ID: ${trgtElmnt}`, type:'error'});
-          return;
-        }
-
-        trgtElmnt.scrollIntoView({                                                    // 2. Défilement vers l'élément cible
-          behavior: 'smooth',                                                         // Active le défilement doux
-          block: 'start'                                                              // Aligne le haut de l'élément au haut de la fenêtre
+          curElmnt.style.cssText = `
+            transition: transform 0.3s ease-out;
+            transform: translateX(${endPos});
+            display: block;
+          `;
         });
-      }
+      });
+    } catch (error) {
+      updateStatus({ log: `🚫.Catched |showSection : [error] : ${error}`, type: 'error' });
+    } 
+  }
 
-    </script>
+  /**-----------------------------------------------------------------------------//
+   * @instanceIn      {actionDispatcher}
+   * @instanceCount   1 - unique
+   * ---------------- --------------- --------------- - --------------------------//
+   * @function        scrollToSection
+   * @description     GÈRE LE SCROLL VERS UNE SECTION CIBLE
+   * ---------------- --------------- --------------- - --------------------------//
+   * @param           {string}        nwSecID         - L'ID de la section vers laquelle on scrolle.
+   * ---------------------------------------------------------------------------- */
+  
+  function scrollToSection(nwSecID) {                                             // Logique spécifique pour la navigation par ancre
+    if (!nwSecID || nwSecID === '#') {
+      updateStatus({log:"Erreur: L'attribut data-anchor est manquant ou invalide.", type:'error'});
+      return;
+    }
+
+    const trgtElmnt = document.getElementById(nwSecID);                           // 1. Trouver l'élément cible
+    if (!trgtElmnt) {
+      updateStatus({log:`Erreur: Aucune section trouvée avec l'ID: ${trgtElmnt}`, type:'error'});
+      return;
+    }
+
+    trgtElmnt.scrollIntoView({                                                    // 2. Défilement vers l'élément cible
+      behavior: 'smooth',                                                         // Active le défilement doux
+      block: 'start'                                                              // Aligne le haut de l'élément au haut de la fenêtre
+    });
+  }
+
+</script>
 
     <script type="text/javascript"> //<!-- FONCTION NAVIGATION SPA - DISPATCHER       -->
       /**-----------------------------------------------------------------------------//
