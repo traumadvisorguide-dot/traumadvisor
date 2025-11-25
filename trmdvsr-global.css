@@ -1,10 +1,10 @@
-    <style> //<!-- Reset CSS                                                          -->
+//<!-- Reset CSS                                                          -->
       *, ::before, ::after                                            { box-sizing: border-box; border-width: 0; border-style: solid; }
       body                                                            { margin: 0; line-height: inherit; }
       blockquote, dd, dl, figure, h1, h2, h3, h4, h5, h6, hr, p, pre  { margin: 0; }
       menu, ol, ul                                                    { margin: 0; padding: 0; list-style: none; }
-    </style>
-    <style> //<!-- Variables globales                                  (MOBILE FIRST) -->
+
+//<!-- Variables globales                                  (MOBILE FIRST) -->
       :root {
         --bleu-trmdvsr-pur:       #203c85;
         --bleu-trmdvsr-moyen:     #3968de;
@@ -73,9 +73,7 @@
         --url-visuel-accueil:     url('https://i.imgur.com/LILnWVO.png');             // 1125px × 2436px | ratio:2,1653333333 
       }
       
-    </style>
-
-    <style> //<!-- Textes                                                    (GLOBAL) --> 
+//<!-- Textes                                                    (GLOBAL) --> 
       .trmdvsr-texte-h1 {
         margin-bottom:            var(--espacement-court);
         text-align:               left;
@@ -187,9 +185,8 @@
         padding-bottom:           var(--espacement-court);
       }
       .etapes-creation li { font-weight: bold; }                                      // Styles pour les éléments de la liste
-    </style>
 
-    <style> //<!-- Architecture                                              (GLOBAL) -->
+//<!-- Architecture                                              (GLOBAL) -->
       html { width: 100%; height: 100%; margin: 0px; padding: 0px; }                  // IDENTIQUE MOBILE & DESKTOP
       body.trmdvsr-app-structure {                                                    // IDENTIQUE MOBILE & DESKTOP : 1 OCCU. <body> 
         display:                  flex;                                               // Fuckin Footer
@@ -326,9 +323,8 @@
         gap:                      var(--espacement-button);
         padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large); // ↑ | ↔ | ↓
       }
-    </style>
 
-    <style> //<!-- Input & Forms                                             (MODULE) -->      
+//<!-- Input & Forms                                             (MODULE) -->      
 
       .trmdvsr-select { position: relative; width: 100%; height: 100%; }              // <div> englobante ref pour icon enfant en position absolute
       .composant-photo .form-input,
@@ -564,9 +560,8 @@
       .nav-fleche:hover {
         color:                    var(--bleu-trmdvsr-moyen);
       }
-    </style>
 
-    <style> //<!-- Lame Expliq                                               (MODULE) -->
+//<!-- Lame Expliq                                               (MODULE) -->
 
       .module-overlap {                                                               // Mobile First
         display:                  flex;
@@ -683,10 +678,8 @@
         z-index:                  3; 
         transition:               all 0.5s ease-in-out;
       }
-      
-    </style>
 
-    <style> //<!-- Lame Vision                                               (MODULE) -->
+//<!-- Lame Vision                                               (MODULE) -->
 
       .module-bigpic {                                                                // Module de Contenu Logistique
         padding:                  0;                                                  // Padding interne du module
@@ -741,9 +734,7 @@
         display:                  block;
       }
 
-    </style>
-
-    <style> //<!-- Elements : Logos, Dividers, TraumShape & Boutons          (GLOBAL) -->
+//<!-- Elements : Logos, Dividers, TraumShape & Boutons          (GLOBAL) -->
       
       .logo-trmdvsr {                                                                 // HEADER & FOOTER
         object-fit:               contain;
@@ -878,9 +869,8 @@
       .trmdvsr-button:hover .trmdvsr-button-picto {
         animation:              info 0.4s linear 1;                                   // @keyframes duration | easing-function | delay | name 
       }
-    </style>
 
-    <style> //<!-- Menu Classique & Burger                                   (GLOBAL) -->
+//<!-- Menu Classique & Burger                                   (GLOBAL) -->
 
       .menu-toggle {                                                                  // MENU BURGER
         display:                  flex;                                               // Mobile first => Affichage du bouton Burger
@@ -983,9 +973,7 @@
         border-radius:            2px;
       }
 
-    </style>    
-
-    <style> //<!-- GuidedMode                                             (COMPOSANT) -->
+//<!-- GuidedMode                                             (COMPOSANT) -->
       // .composant-aide => classe sémantique et fonctionnelle. Associée à synchroniserToutesLesInstances() & initialiserModeGuide() et l'eventListener sur tous les groupe-boutons-radio des blocs contenant .composant-aide. C'est un Crochet (Hook) Fonctionnel.
       .conteneur-lame.flex-col.col-last.composant-aide {                              // Définition du conteneur réutilisable
         -webkit-appearance:       none;                                               // Pour Chrome/Safari
@@ -1124,9 +1112,8 @@
       .progress-text {
         /* styles */
       }
-    </style>
-
-    <style> //<!-- ANIMATIONS CSS                                            (GLOBAL) -->
+                           
+//<!-- ANIMATIONS CSS                                            (GLOBAL) -->
       @keyframes spin {
         to { transform: rotate(360deg); }
       }
@@ -1152,7 +1139,6 @@
         75%   { transform: translateX(-5%)  rotate(-1deg);  }
         100%  { transform: translateX(0%);                  }
       }
-    </style>
     <!--//============================================================================//
         // Fin du fichier. with care.
         // @author trmdvsr
