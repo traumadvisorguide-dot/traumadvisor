@@ -174,8 +174,8 @@
       }
       .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
       .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 0; padding-left: 1rem;         }
-      .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: calc(var(--largeur-notede0) * 1.5); border:1px solid purple; }
-      .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: calc(var(--largeur-notea5) * 1.5); border:1px solid purple;  }
+      .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: var(--largeur-notede0); border:1px solid purple; }
+      .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5); border:1px solid purple;  }
       
       img.img-notede0 {
         width:                    100%;
