@@ -1,21 +1,21 @@
 /* MODULE NAV                              (MOBILE FIRST- Evaluation) */
 nav .conteneur-lame { padding-bottom: var(--espacement-court); }
 .module-breadcrumb {
-list-style:               none;                                               /* Supprime les puces */
-display:                  flex;
-justify-content:          space-between;                                      /* Distribue l'espace entre les éléments */
-margin:                   0;
-padding:                  0.5rem 0 1.5rem;
-overflow-x:               auto;                                               /* Pour le scroll */
-white-space:              nowrap;                                             /* Permet aux éléments de rester sur une seule ligne */
+    list-style:               none;                                   /* Supprime les puces */
+    display:                  flex;
+    justify-content:          space-between;                          /* Distribue l'espace entre les éléments */
+    margin:                   0;
+    padding:                  0.5rem 0 1.5rem;
+    overflow-x:               auto;                                   /* Pour le scroll */
+    white-space:              nowrap;                                 /* Permet aux éléments de rester sur une seule ligne */
 }
 .module-breadcrumb::before,
 .module-breadcrumb::after {                                                    /* Espaceur droit pour décoller la dernière carte */
-content:                  '';
-display:                  block;
-flex-shrink:              0;
-width:                    var(--espacement-large); 
-height:                   1px;
+    content:                  '';
+    display:                  block;
+    flex-shrink:              0;
+    width:                    var(--espacement-large); 
+    height:                   1px;
 }
 
 .breadcrumb-separator {                                                         /* L'indicateur de séparation */
