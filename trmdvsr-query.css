@@ -1,4 +1,4 @@
-<style> //<!-- RÈGLES - ADAPTATIVE @MEDIA                      (GLOBAL X DESKTOP) -->
+/* RÈGLES - ADAPTATIVE @MEDIA                      (GLOBAL X DESKTOP) */
       
       @media (min-width: 60rem) {                                                     // Comportement à partir d'au moins 768px (a.k.a. pour desktop)
         .insta-desktop            { display: block;       }                           // Affiche le bouton Desktop du Header
@@ -185,11 +185,8 @@
           //width:                    ;
         }
       }
-    </style>
-    <!--
-      //==============================================================================//
-      // Fin du fichier. with care.
-      // @author trmdvsr
-      // @version 25.11.22 (12:21)
-      //==============================================================================//
-      -->
+/*=================================================================== */
+    @description 'Fin du fichier. with care.'
+    @author 'trmdvsr'
+    @version 25.11.22 (12:21)
+/*=================================================================== */
