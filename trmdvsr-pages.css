@@ -1,838 +1,837 @@
-// <!-- MODULE NAV                                      (Page Evaluation) -->
-      
-      nav .conteneur-lame { padding-bottom: var(--espacement-court); }
-      .module-breadcrumb {
-        list-style:               none;                                               // Supprime les puces
-        display:                  flex;
-        justify-content:          space-between;                                      // Distribue l'espace entre les éléments
-        margin:                   0;
-        padding:                  0.5rem 0 1.5rem;
-        overflow-x:               auto;                                               // Pour le scroll
-        white-space:              nowrap;                                             // Permet aux éléments de rester sur une seule ligne
-      }
-      .module-breadcrumb::before,
-      .module-breadcrumb::after {                                                    // Espaceur droit pour décoller la dernière carte
-        content:                  '';
-        display:                  block;
-        flex-shrink:              0;
-        width:                    var(--espacement-large); 
-        height:                   1px;
-      }
-     
-      .breadcrumb-separator {                                                         // L'indicateur de séparation */
-        margin:                   0 1rem;
-        font-size:                1.5rem;
-        line-height:              2.5rem; 
-        color:                    rgba(var(--gris-trmdvsr-fonce-RGB), 0.6);           // Utilisation de la variable RGB pour plus de contrôle
-        align-self:               center;                                             // Pour l'aligner verticalement si les boutons sont hauts
-      }
-    
-      .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button {
-        display:                  inline-flex;                                        // Aligne texte et icône
-        justify-content:          space-between;                                      // Distribue l'espace entre les éléments
-        align-items:              center;
-        gap:                      0.5rem;                                             // Espace entre texte et icône
-        flex:                     1 0;                                                // Chaque étape prend une part égale de l'espace
-        position:                 relative;
-        padding:                  0.5rem 1rem 0.625rem;                               // 8px 16px 10px
-        padding-bottom:           0.625rem;                                           // Espace pour la barre de progression
-        font-weight:              var(--graisse-texte);                               // surcharge
-        color:                    var(--bleu-trmdvsr-clair);                          // surcharge
-        outline:                  none;
-        border:                   2px solid var(--gris-trmdvsr-clair);
-        border-radius:            9999px; 
-        background-color:         #FFF;
-        box-shadow: 
-          0 1px 3px 0 rgba(0, 122, 255, 0.1), 
-          0 1px 2px 0 rgba(0, 122, 255, 0.06);
-        cursor:                   pointer;
-        transition:               all 0.3s ease; 
-      }
-      
-      .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button:hover:not([disabled]) {       // hover/active => les boutons
-        color:                    var(--bleu-trmdvsr-moyen);
-        background-color:         #F0F8FF;                                            // Léger fond bleu au survol
-        border-color:             var(--bleu-trmdvsr-moyen);
-        box-shadow: 
-          0 4px 8px rgba(0, 122, 255, 0.3),
-          0 1px 4px rgba(0, 122, 255, 0.2);
-        transform:                translateY(-1px);
-      }
-      
-      .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button:active:not([disabled]) {
-        color:                    #FFF;
-        background-color:         var(--bleu-trmdvsr-pur);
-        box-shadow: 
-          0 0 1px rgba(0, 122, 255, 0.15),
-          0 1px 4px rgba(0, 122, 255, 0.2);
-        transform:                translateY(1px);
-      }
-      
-      .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed {                   // EFFET: Étape COMPLETED (Vert)
-        font-weight:              bold;
-        color:                    var(--vert-trmdvsr-clair);                          // Texte vert pour les étapes passées
-        border-color:             var(--vert-trmdvsr-clair);
-        background-color:         var(--gris-trmdvsr-tres-clair);
-        cursor:                   pointer;
-        pointer-events:           auto;
-      }
-
-      .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed:hover:not([disabled]) {
-        color:                    var(--vert-trmdvsr-moyen);
-        background-color:         #A7F3D0;
-        border-color:             var(--vert-trmdvsr-moyen);
-      }
-
-      .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed:after {             // Indicateur visuel "V" pour COMPLETED
-        content:                  '✓';                                                // Indicateur visuel pour les étapes complétées
-        position:                 absolute;
-        bottom:                   -0.625rem;
-        left:                     50%;
-        width:                    1rem;
-        height:                   1rem;
-        font-size:                var(--taille-sstexte);
-        font-weight:              var(--graisse-sstexte);
-        line-height:              1rem;
-        text-align:               center;
-        letter-spacing:           -0.0269rem;
-        text-rendering:           optimizeLegibility;
-        color:                    #FFF;
-        background-color:         var(--vert-trmdvsr-clair);
-        border-radius:            var(--bordure-radius);
-        transform:                translateX(-50%);
-        box-shadow:               0 1px 3px rgba(0,0,0,0.2);
-      }
-
-      .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.active {                      // ÉTAPE ACTUELLE (Bleu foncé)
-        color:                    #FFF;
-        border-color:             var(--bleu-trmdvsr-pur);                            // Couleur principale pour l'étape en cours
-        background-color:         var(--bleu-trmdvsr-pur);
-        box-shadow: 
-          0 4px 6px -1px rgba(37, 99, 235, 0.3), 
-          0 2px 4px -1px rgba(37, 99, 235, 0.1);
-        pointer-events:           none; 
-      }
-
-      .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.disabled {                    // EFFET: Étape FUTURE <= remplace  [disabled] sur un <li>
-        opacity:                  0.7;
-        color:                    var(--gris-trmdvsr-clair);
-        border-color:             var(--gris-trmdvsr-clair);
-        background-color:         var(--gris-trmdvsr-tres-clair);
-        box-shadow:               none;
-        cursor:                   not-allowed;
-        pointer-events:           none;
-      }
-
-//<!-- CAROUSEL EVALUATIONS                             (Page Evaluation) -->
-      .carousel-evaluation {
-        display:                  flex;
-        flex-direction:           row;
-        flex-wrap:                nowrap;                                             // Empêche les enfants de réduire et force à la taille demandée 
-        justify-content:          flex-start;
-        align-items:              flex-start;
-        gap:                      var(--espacement-court);
-        width:                    100%;
-        padding:                  var(--espacement-court) var(--espacement-large) var(--espacement-tres-large);
-        overflow-x:               scroll;                                             // Activation du défilement horizontal
-        overflow-y:               hidden;       
-        scroll-snap-type:         x mandatory;                                        // Force le conteneur à capturer les points d'accroche
-        -ms-overflow-style:       none;                                               // Pour IE/Edge/Firefox
-        scrollbar-width:          none;
-        background-color:         var(--gris-trmdvsr-tres-clair);
-        border: 2px dotted red;
-      }
-      .carousel-evaluation::-webkit-scrollbar { display: none; }                      // Cache la barre de défilement (WebKit/Chrome/Safari)
-
-      .carousel-evaluation .eval-item {
-        display:                  flex;
-        flex-direction:           column;
-        flex:                     0 0 var(--largeur-eval-item);                       // Coeur du layout : section = largeur max - les marges
-        width:                    var(--largeur-eval-item);
-        scroll-snap-align:        center;                                             // Définit le point d'accroche pour scroll-snap
-        background-color:         var(--blanc-trmdvsr); 
-        border-radius:            var(--bordure-radius);
-        box-sizing:               border-box;                                         // Assure que l'élément ne déborde pas
-        box-shadow: 
-          0 4px 6px -1px rgb(0 0 0 / 0.1), 
-          0 2px 4px -2px rgb(0 0 0 / 0.2);
-        transition:               transform 0.3s ease-out;                            // les anims sont gérées en JS
-      }
-    
-//<!-- COMPOSANT NOTE                                   (Page Evaluation) -->
-      
-      .composant-note.conteneur-lame.flex-into-row {                                  // classe fonctionnelle
-        background-color:         var(--blanc-trmdvsr);
-        border:                   1px solid orange;
-      }
-      .composant-note .conteneur-lame.flex-col.col-first,
-      .composant-note .conteneur-lame.flex-col.col-last {                             // Composant notation zones habillage visuel 'de 0... ...à 5'
-        flex-direction:           row;
-        justify-content:          center;
-        align-items:              flex-end;
-        flex:                     auto;                                               // grow shrink basis
-        padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
-      }
-      .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
-      .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 0; padding-left: 1rem;         }
-      .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: var(--largeur-notede0); border:1px solid purple; }
-      .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5); border:1px solid purple;  }
-      
-      img.img-notede0 {
-        width:                    100%;
-        max-width:                var(--largeur-notede0);
-        aspect-ratio:             199 / 81;
-        height:                   auto;
-        border:                   1px solid red;
-      }
-      img.img-notea5 {
-        width:                    100%;
-        max-width:                var(--largeur-notea5);
-        aspect-ratio:             155 / 80;
-        height:                   auto;
-        border:                   1px solid red;
-      }
-
-      .composant-note .conteneur-lame.flex-col.col-middle {                           // Composant notation
-
-        justify-content:          flex-end;                                           // Princi:↕
-        align-items:              center;                                             // Transv:↔
-        //flex:                     2;                                                  // flex:1
-        width:                    var(--largeur-composant-note);
-        background-image:         var(--url-logo-blanc);
-        background-position:      top;
-        background-size:          contain;
-        background-repeat:        no-repeat;
-        background-size:          90%;
-        border:                   1px solid black; // POUR DEBUG
-      }
-      .composant-note .conteneur-lame.flex-col.col-middle .rating-bar {               // Conteneur de bouton radio avec id='rating-bar-q[X]'
-        margin:                   0;
-        padding-top:              0;
-        padding-bottom:           calc(var(--espacement-court) * 0.33);
-        padding-left:             0;                                                  // Compenser l'écart sur le dernier bouton
-        padding-right:            calc(var(--espacement-button) / 2);
-        display:                  flex;
-        flex-direction:           row-reverse; 
-        justify-content:          center;                                             // Aligne le groupe à gauche
-        align-items:              center;
-        width:                    100%;
-        //border:                   1px solid;
-      }
-
-//<!-- TYPOS            (Page Evaluation)                                 -->
-      .rating-bar.trmdvsr-texte {                                                     // Texte dans le bloc avec balise <em> et <b>
-        margin:                     0;
-        padding-bottom:             var(--espacement-court);
-        padding-top:                var(--espacement-button);
-        padding-right:              calc(var(--espacement-button) / 2);
-        width:                      auto;
-        display:                    block;
-        text-align:                 center;
-      }
-
-      .rating-bar.trmdvsr-sstexte label {                                             // texte sous les boutons customs
-        margin-right:               calc(var(--espacement-button) / 2);
-        margin-left:                calc(var(--espacement-button) / 2);
-        margin-top:                 0px;
-        margin-bottom:              var(--espacement-tres-large);
-        color:                      var(--gris-trmdvsr-clair);
-        width:                      var(--largeur-logo-bouton);
-        display:                    block;
-        text-align:                 center;
-      }
-
-      .conteneur-humeur .trmdvsr-sstexte-button { // NOUVELL CLASSE TYPO
-        width:                      auto;
-        font-size:                  var(--taille-sstexte);
-        font-weight:                var(--graisse-sstexte);
-        line-height:                calc(var(--taille-sstexte) * 1.33);
-        text-wrap:                  nowrap;
-        text-rendering:             optimizeLegibility;                               // Espacement mots
-        color:                      var(--blanc-trmdvsr);
-      }
-
-//<!-- BOUTONS          (Page Evaluation)                                 -->
-
-      //------------------------------------------------------------------------------//
-      // RADIO => Labels : Gestion Notes 
-
-      .rating-bar input[type="radio"] {
-        display:                    none;                                             // Cache l'élément radio natif
-      }
-      
-      .rating-bar label.trmdvsr-radio-label {                                         // Spécificité de style
-        height:                     auto;        
-        width:                      calc(var(--largeur-logo-bouton) + var(--espacement-button));
-        background-image:           var(--url-logo-inactif);
-        background-position:        0 0;
-        cursor:                     pointer;
-        animation:                  none;
-
-        transition:                 all 0.2s ease-in-out;  
-      }
-      .rating-bar label.trmdvsr-radio-label:first-of-type {
-        width:                      var(--largeur-logo-bouton); 
-      }
-
-      .rating-bar input:checked + label.trmdvsr-radio-label,
-      .rating-bar input:checked ~ label.trmdvsr-radio-label {                         // Activation des notes cliquées et inférieures
-        background-image:           var(--url-logo-actif);
-      }
-
-      .rating-bar label.trmdvsr-radio-label:hover,
-      .rating-bar label.trmdvsr-radio-label:hover ~ label {                           // Allume la note survolée et tous les labels qui la SUIVENT
-        background-image:           var(--url-logo-actif);
-        text-decoration:            underline;
-        //box-shadow:               0 0 5px 0 rgba(var(--bleu-trmdvsr-clair-RGB), 0.4);  
-      }
-
-      //------------------------------------------------------------------------------//
-      // SUBMIT => Gestion Humeur
-
-      .composant-eval .traum-shape.submit-button {
-        padding:                    calc(var(--largeur-logo-bouton) / 2);
-        width:                      auto;
-        height:                     calc(var(--largeur-logo-bouton) * 1.1089);
-        
-        cursor:                     pointer;
-        display:                    flex;
-        align-items:                center;                                           // Trans: ↕
-        background-color:           var(--bleu-trmdvsr-moyen);
-        --logo-tronksize-larg:      10px;
-        
-        transition:                 background-color 0.2s;
-      }
-
-      .composant-eval .traum-shape.submit-button:hover {
-        background-color:           var(--bleu-trmdvsr-clair); 
-      }
-
-      .composant-eval .traum-shape.submit-button:disabled {
-        background-color:           var(--gris-trmdvsr-clair);
-      }
-
-//<!-- COMPOSANT AVIS                                   (Page Evaluation) -->
-      //------------------------------------------------------------------------------//
-      // .composant-avis classe fonctionnelle associée à 
-      // .conteneur-lame.flex-into-row { m:0; p:0; w:100%; h:100%; disp:flex; flex-dir:row; ali-item:flex-start; gap:0 } /.conteneur-lame >> Princi:↔|Transv:↕
-      
-      .composant-avis .avis-zone-edito {                                      // Composant Avis // asso avec .conteneur-lame.flex-col.col-first
-        margin-bottom:              var(--espacement-court);
-        width:                      calc(var(--largeur-conteneur-max) * 0.33);
-        flex:                       initial;                                  // display:flex; flex-direction:column; flex:1
-        //background-color:           var(--bleu-trmdvsr-clair); // POUR DEBUG
-
-        // .conteneur-lame.flex-col.col-first: m:0; pt:espMoy; pb:espMoy, pl:espLarg; pr:espMoy/2; h:100%; disp:flex; flex-dir:col; flex:1;
-      } 
-
-      .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last {           // Conteneur du textArea / status_layer / conteneur-humeur
-        width:                      calc(var(--largeur-conteneur-max) * 0.67);
-        height:                     auto;
-        flex:                       initial;
-        position:                   relative;                                 // CRUCIAL pour status-layer'absolute' se positionne par rapport à lui
-        display:                    initial;                                  // Forcer un comportement de block pour avoir le conteneur-humeur en dessous
-        
-        // .conteneur-flex.flex-col.col-last: m:0; pt:espMoy; pb:espMoy, pl:espMoy/2; pr:espLarg; h:100%; disp:flex; flex-dir:col; flex:1;
-      }
-
-      //------------------------------------------------------------------------------//
-      // Dans .avis-zone-creation.conteneur-flex.flex-col.col-last
-
-      .composant-avis .avis-zone-creation textarea.traum-shape {                    // Bloc de texte éditable trmdvsr-texte
-        resize:                     none;
-        spellcheck:                 true;
-        autocorrect:                on;
-        width:                      calc(var(--largeur-tier-max) * 2);                // Tiers de largeur conteneur - marge interieures sur les côtés
-        height:                     calc(var(--largeur-tier-max) * 1.5);
-        padding:                    10px;
-        //display:                    block;
-        font-style:                 italic;
-        color:                      var(--gris-trmdvsr-fonce);
-        background-color:           white;
-      }
-      
-      .composant-avis .avis-zone-creation .overlay-avis {                       // Règle de SURCHARGE pour une instance spécifique avec .status-layer
-        width:                      calc(var(--largeur-tier-max) * 2);          // Réf .composant-avis .avis-zone-creation textarea.trmdvsr-texte
-        height:                     calc(var(--largeur-tier-max) * 1.5);        // Réf .composant-avis .avis-zone-creation textarea.trmdvsr-texte
-        position:                   absolute;
-        top:                        var(--espacement-moyen);                    // Réf .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last
-        left:                       calc(var(--espacement-moyen) / 2);          // Réf .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last
-        background-color:           rgba(255, 255, 255, 0.5);
-        
-        // NOTE : Le parent de #status_layer_q[n] DOIT avoir position: relative;
-        //.status-layer: pos:fixed; top:0; left:0; m:0; p:0; w:100vw; h:100vh; disp:flex; flex-dir:col; just-cont:center; ali-item:center; bg-c:bleu-pur; zInd:1000;
-      }
-
-      //------------------------------------------------------------------------------//
-      // conteneur-humeur     3e lame dans .avis-zone-creation.conteneur-flex.flex-col.col-last
-
-      .composant-avis .avis-zone-creation .conteneur-humeur {                         // Composant humeur
-        margin:                     0;
-        padding:                    0;
-        witdh:                      100%;
-        height:                     calc(  ( var(--largeur-logo-bouton) * 1.1089 ) + var(--espacement-court) + var(--espacement-moyen)  );
-      }
-
-      .conteneur-humeur .conteneur-lame.flex-into-row.button-multi {
-        padding:                    var(--espacement-court) 0 var(--espacement-moyen);// 3valeurs : ↑ | →/← | ↓
-        justify-content:            flex-end;
-        align-items:                flex-end;
-        gap:                        10px;
-
-        // .conteneur-lame.flex-into-row.button-multi: m:0; pt:espLarg; plr:espLarg; pb:espTreLarg; w:100%; h:100%;  disp:flex; just-cont:space-betw; ali-item:center
-      }
-
-      .conteneur-humeur .conteneur-lame.flex-into-row.button-multi h4.trmdvsr-texte-h4 {
-        margin:                     0;                                                // surcharge mb:espCou*0.6
-        padding:                    0;
-        display:                    flex;
-        flex:                       100%;
-        font-weight:                calc(var(--graisse-chapo) * 0.66);                // surcharge fwei:graChap
-
-        // .trmdvsr-texte-h4 {mb:espCou*0.6; text-ali:left; fsiz:tailText; fwei:graChap; lh:tailText*1.33; t-render:optiLegi; color:grisFonce }
-      }
-
-      //------------------------------------------------------------------------------//
-      // composant-bonus classe fonctionnelle associée à
-      // .conteneur-lame.flex-into-row { m:0; p:0; w:100%; h:100%; disp:flex; flex-dir:row; ali-item:flex-start; gap:0 } /.conteneur-lame >> Princi:↔|Transv:↕
-      
-      /**
-      <div class="zone-bonus conteneur-lame flex-into-row">
-        <div class="bonus-zone-bouton conteneur-flex.flex-col.col-last">
-          <label class="toggle-switch" data-action-group="bonus-selection" aria-label="Accordez-vous un point bonus ?">
-            <input type="checkbox" id="q5-bonus"> 
-            <span class="slider"></span>
-          </label>                
-        </div>
-      </div>
-      */
-      .zone-bonus.conteneur-lame.flex-into-row {
-        align-items:                center;
-      }
-
-      .zone-bonus .bonus-zone-edito.conteneur-lame.flex-col.col-first {                        // Composant bonus  .trmdvsr-texte
-        flex:                       0 0 calc(var(--largeur-conteneur-max) * 0.67);    // grow(grandir) shrink(rétrécir) basis
-        //border:                     1px solid red; // POUR DEBUG
-
-        // .conteneur-lame.flex-col.col-first  { m:0; pt:espMoy; pb:espMoy, pl:espLarg; pr:espMoy/2; h:100%; disp:flex; flex-dir:col; flex:1; } 
-        // .trmdvsr-texte             { t-ali:left; f-siz:taiTex; l-h:taiTex*1.33; t-ren:optiLegi; color:grisFon; }
-      }
-
-      .zone-bonus .bonus-zone-bouton.conteneur-flex.flex-col.col-last {                        // Composant  bonus .conteneur-flex.flex-col.col-last
-        flex:                       0 0 calc(var(--largeur-conteneur-max) * 0.33);    // grow(grandir) shrink(rétrécir) basis
-        align-items:                center;
-        //border:                     1px solid var(--bleu-trmdvsr-clair); // POUR DEBUG
-
-        // .conteneur-flex.flex-col.col-last  { m:0; pt:espMoy; pb:espMoy, pl:espMoy/2; pr:espLarg; h:100%; disp:flex; flex-dir:col; flex:1; } 
-      }
-      
-      //------------------------------------------------------------------------------//
-      // TOGGLE => Labels : Gestion Bonus 
-
-      .bonus-toggle-switch {                                                          // sur le <label> conteneur
-        display:                    flex;                                             // 🚨 ESSENTIEL : Convertir le label en conteneur flex vertical
-        flex-direction:             column;
-        align-items:                center;                                           // Centre les éléments horizontalement dans le label
-        height:                     auto;                                             // Assure de prendre l'espace nécessaire, surtout si le parent est flex
-        width:                      auto; 
-      }
-
-      .bonus-toggle-switch input {                                                    // Masque l'input standard mais le garde fonctionnel
-        opacity:                    0; 
-        width:                      0px;
-        height:                     0px;
-      }
-
-      .bonus-toggle-switch .bonus-text {
-        margin-top:                 calc(var(--espacement-court) * 0.33);
-        text-align:                 center;
-      }
-
-      .bonus-toggle-switch .bonus-slider {                                                                 // Style de la base du commutateur
-        display:                    inline-block;                                     // 🚨 Correction essentielle 🚨 <span> est inline
-        position:                   relative; 
-        width:                      var(--largeur-logo-bouton);                       // Taille de la piste
-        height:                     var(--largeur-logo-bouton);                       // Hauteur de la piste
-        background-image:           var(--url-logo-inactif);
-        background-size:            cover;
-        background-repeat:          no-repeat;                                        // Ajout pour la propreté
-        background-position:        center;                                           // Ajout pour la propreté
-        cursor:                     pointer;
-        transition:                 .4s;
-        transition:                 transform .4s, background-image .4s;
-        //border:                     1px solid;                                        // Affiche la bordure du bouton OFF
-      }
-
-      .bonus-toggle-switch input:checked + .bonus-slider {
-        transform:                  translateX(25);                                   // Modifie la position du bouton
-        background-image:           var(--url-logo-actif);                            // Style quand l'état est ON
-        //border-color:               green; 
-      }
-
-      .bonus-toggle-switch .bonus-text-on {
-        transform:                  translateX(25);                                   // Modifie la position du bouton
-        display: none;
-      }
-
-      /* 🚨 Ciblage quand l'input est checked 🚨 */
-      .bonus-toggle-switch input:checked ~ .bonus-text-off {                          // Cache le texte "OFF"
-        display:                    none;
-      }
-
-      .bonus-toggle-switch input:checked ~ .bonus-text-on {                           // Affiche le texte "ON"
-        display:                    initial;                                          // ou block, ou inline-block, selon votre besoin
-      }
-
-//<!-- COMPOSANT PHOTO    (CONTENEUR)                                   -->
-      .composant-photo {                                                            // <section id="photo_post">
-        margin:                     0 auto;
-        padding:                    24px;
-        max-width:                  var(--largeur-conteneur-max);
-        border:                     1px solid #e5e7eb;
-        border-radius:              12px;
-        background-color:           white;
-        box-shadow:                 0 10px 15px -3px rgba(0,0,0,0.1);
-      }
-      .composant-photo .conteneur-lame.flex-stay-col.col-first {
-        flex:                       0 0 var(--largeur-tier-max);
-        border:                     1px solid blue;
-        // .conteneur-lame.flex-stay-col.col-first { m:0; ptb:espCou; pl:espLarg; pr:espMoy/2; h:100%; disp:flex; f-dir:col; flex:1; }
-      }
-      .composant-photo input {
-        border:                     1px solid blue;
-        // .conteneur-lame.flex-stay-col.col-first { m:0; ptb:espCou; pl:espLarg; pr:espMoy/2; h:100%; disp:flex; f-dir:col; flex:1; }
-      }
-      .composant-photo .conteneur-flex.flex-col.col-last {
-        flex:                       0 0 calc(var(--largeur-tier-max) * 2);
-        background-color:           yellow;
-        // .conteneur-flex.flex-col.col-middle { m:0; ptb:espCou; pl:espMoy/2; pr:espLarg; h:100%; disp:flex; f-dir:col; flex:1; }
-      }
-
-//<!-- COMPOSANT PHOTO    (CONTENEUR)                                   -->
-
-      // INPUT ET BOUTONS
-      
-      #input_photo_principale {                                                     // Masque l'input de fichier natif mais permet de déclencher via le label
-        opacity:                    0;
-        height:                     0;
-        width:                      0;
-        position:                   absolute;
-      }
-
-      label[for="input_photo_principale"] {                                         // label comportement de bouton
-        display:                    block;                                          // S'assure qu'il prend toute la largeur disponible pour le clic
-        cursor:                     pointer;
-        background-color:           #2563eb;
-        color:                      white;
-        font-weight:                500;
-        padding:                    10px 16px;
-        border-radius:              8px;
-        text-align:                 center;
-        box-shadow:                 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition:                 background-color 0.15s;
-        margin-bottom:              10px;                                           // Espace avec le sous-texte
-      }
-        
-      label[for="input_photo_principale"]:hover { background-color: #1d4ed8; }
-
-      // PREVIEW
-
-      .conteneur-image-preview {                                                    // <div id="preview-list-container">
-        padding:                    16px;
-        min-height:                 120px;
-        display:                    flex;
-        flex-wrap:                  wrap;
-        align-content:              flex-start;
-        gap:                        12px;
-        border:                     1px dashed #9ca3af;
-        border-radius:              8px;
-        background-color:           #f9fafb;
-      }
-
-      .delete-btn {
-        position:                   absolute;
-        top:                        4px;
-        right:                      4px;
-        background-color:           rgba(239, 68, 68, 0.9);
-        color:                      white;
-        border:                     none;
-        border-radius:              50%;
-        width:                      20px;
-        height:                     20px;
-        font-size:                  14px;
-        line-height:                10px;
-        cursor:                     pointer;
-        z-index:                    10;
-        display:                    flex;
-        align-items:                center;
-        justify-content:            center;
-        padding:                    0;
-        font-weight:                bold;
-        opacity:                    0.8;
-        transition:                 opacity 0.2s, background-color 0.2s;
-      }
-
-      .delete-btn:hover {
-        opacity:                    1;
-        background-color:           #DC2626;
-      }
-
-      .badge-principale {                                                           // Badge "Principale"
-        position:                   absolute;
-        top:                        0;
-        left:                       0;
-        background-color:           #10b981;
-        color:                      white;
-        padding:                    2px 6px;
-        font-size:                  0.6rem;
-        font-weight:                bold;
-        border-bottom-right-radius: 6px; 
-        z-index:                    5;
-      }
-
-      // EXPORT & PROGRESSION
-      #export-btn {                                                                 // Bouton d'exportation
-        margin-top:                 20px;
-        width:                      100%;
-        background-color:           #16a34a;
-        color:                      white;
-        font-weight:                700;
-        padding:                    12px 16px; 
-        border-radius:              8px;
-        box-shadow:                 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        transition:                 background-color 0.15s; 
-        border:                     none;
-        cursor:                     pointer;
-        display:                    flex;
-        align-items:                center;
-        justify-content:            center;
-        font-size:                  1rem;
-      }
-      #export-btn:hover:not(:disabled) { 
-        background-color:           #15803d;
-      }
-      #export-btn:disabled { 
-        background-color:           #9ca3af;
-        cursor:                     not-allowed;
-      }
-      .export-content { 
-        display:                    flex;
-        align-items:                center;
-        justify-content:            center;
-      }
-      #export-btn:hover {
-        background-color:           #1862CC;
-      }
-
-      .export-content .loading-spinner {
-        background-color:           #1862CC;
-        display:                    none;                                           // Contrôlé par JS
-        animation:                  spin-btn 1s linear infinite;
-        height:                     20px;
-        width:                      20px;
-        margin-right:               12px;
-        border:                     3px solid white;
-        border-top-color:           transparent;
-        border-radius:              50%;
-        border-top:                 4px solid #4F46E5;
-      }
-
-      .progress-track-container {                                                   // Barre de progression
-        margin-top:                 15px;
-        margin-bottom:              10px;
-      }
-      .progress-track {
-        width:                      100%;
-        background-color:           #e5e7eb;
-        border-radius:              9999px;
-        height:                     10px;
-        margin-bottom:              5px;
-      }
-      .progress-bar {
-        background-color:           #2563eb;
-        height:                     10px;
-        border-radius:              9999px;
-        transition:                 width 0.3s ease-out;
-      }
-      .progress-text { 
-        text-align:                 right;
-      }
-
-      // STATUS_LAYER_EXPORT (LOCALISÉS)
-
-      .overlay-photo {                                                              // Conteneur pour le statut local dans la zone d'export
-        margin-top:                 16px;                                           // surcharge m:0
-        padding:                    12px;                                           // surcharge p:0
-        border-radius:              6px;
-        display:                    flex;                                           // Toujours visible par défaut pour le layout
-        flex-direction:             row;                                            // surcharge f-dir:col
-        gap:                        12px;
-        background-color:           #f7f9fb;                                        // surcharge b-color:bleuPur
-        
-        // .status-layer { pos:fixed; top:0; left:0; m:0; p:0; w:100vw; h:100vh; dis:flex; f-dir:col; jus-cont:center; ali-item:center; b-color:bleuPur; z-ind:1000 }
-      }
-
-//<!-- MODULE DE RECADRAGE   (GLOBAL)                                   -->
-      /**
-      <div id="crop-module" class="crop-module-overlay">  <!-- CROPPIN' POP-IN -->
-        <div class="crop-module-content">
-          <h3 class="trmdvsr-texte-h3">Recadrer l'image (ratio 1:1)</h3>
-          <div class="crop-module-conteneur">
-            <img id="image-to-crop" alt="Image à recadrer pour le produit" style="max-width: 100%; display: block;">
-          </div>
-          <div class="crop-module-actions">
-            <button id="crop-btn-cancel" class="trmdvsr-sstexte traum-shape reset-button">Annuler</button>
-            <button id="crop-btn-add" class="trmdvsr-sstexte traum-shape submit-button">Rogner et Ajouter</button>
-          </div>
-        </div>
-      </div>
-      */
-
-      .crop-module-overlay {
-        position:                   fixed;
-        top:                        0;
-        left:                       0;
-        width:                      100%;
-        height:                     100%;
-        background-color:           rgba(0, 0, 0, 0.8);
-        display:                    none;
-        align-items:                center;
-        justify-content:            center; 
-        z-index:                    1000;
-      }
-      
-      .crop-module-content {
-        position:                   relative;
-        max-width:                  90vw;
-        max-height:                 90vh;
-        padding:                    24px;
-        background-color:           white;
-        border-radius:              12px;
-        overflow:                   hidden;                                         // Important pour Cropper
-      }
-      
-      .crop-module-conteneur {
-        min-height:                 300px;
-        min-width:                  300px;
-        max-height:                 70vh;
-        max-width:                  70vw;
-        margin-bottom:              20px;
-      }
-
-      .crop-module-actions {
-        margin-top:                 20px;
-        display:                    flex;
-        justify-content:            flex-end;
-        gap:                        12px;
-      }
-
-      .crop-module-target {
-        max-width:                  100%; 
-        display:                    block;
-      }
-
-//<!--  MODULE SÉLECTION PHOTOS >> AVEC LOGIQUE DRAG & DROP (GLOBAL)    -->
-      
-      .photo-list-container {                                                       // appelé dans updateImageDisplay()
-        display: contents;
-      }
-
-      #photo-list { // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>// 2025-10-17 (01:42) : N'EXISTE PAS A VERIFIER
-          display: flex;
-          flex-wrap: wrap;
-          gap: 16px;
-          padding: 10px;
-          border: 2px dashed #D1D5DB;
-          border-radius: 12px;
-          min-height: 128px;
-          background-color: #F9FAFB;
-          list-style: none;
-          margin: 0;
-      }
-
-      .photo-item {                                                                 // Styles d'un élément de prévisualisation appelé dans updateImageDisplay()
-        position:                   relative; 
-        width:                      100px; 
-        height:                     100px; 
-        border-radius:              6px; 
-        overflow:                   hidden; 
-        box-shadow:                 0 4px 6px rgba(0, 0, 0, 0.1); 
-        cursor:                     grab; 
-        transition:                 transform 0.2s, box-shadow 0.2s; 
-        list-style:                 none;                                           // Important pour les éléments de liste
-        border:                     2px solid transparent; 
-        background-color:           white;                                          //cursor: move;
-      }
-      
-      .photo-item:hover { 
-        border-color:               #4F46E5;
-        transform:                  scale(1.03);
-        box-shadow:                 0 6px 10px rgba(0, 0, 0, 0.15);
-      }
-      .photo-item.is-dragging {
-        opacity:                    0.5; 
-        border-color:               #3b82f6; 
-        box-shadow:                 0 0 0 2px #3b82f6;
-      }
-      .photo-item.is-drag-over {
-        border:                     3px dashed #3b82f6;
-        transform:                  scale(1.05);
-        background-color:           #eff6ff;
-      }
-
-      .photo-image {                                                                 // appelé dans updateImageDisplay()
-        width:                      100%;
-        height:                     100%;
-        object-fit:                 cover;
-      }
-
-      .photo-info {                                                                 // appelé dans updateImageDisplay()
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        padding: 4px;
-        font-size: 0.7rem;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-//<!-- Règles Responsives   (GLOBAL)                                    -->
-     /** 
-      @media (max-width: 640px) {                                                   // Media query pour le mobile
-        /*
-        .flex-into-row {
-          flex-direction:           column;
-          gap:                      10px;
-        }
-        
-        .composant-photo {
-          padding:                  15px;
-        }
-        .photo-item {
-          width:                    100px;
-          height:                   100px;
-        }
-        .conteneur-cropper {
-          max-height:               50vh;
-        }
-
-      }*/
-      /*
-      @media (min-width: 768px) {
-
-        .flex-into-row {
-          flex-direction:           row;
-          justify-content:          space-between;
-        }
-
-      } */
-/*=================================================================== */
-    @description 'Fin du fichier. with care.'
-    @author 'trmdvsr'
-    @version 25.10.09 (23:16)
-/*=================================================================== */
+/* MODULE NAV                              (MOBILE FIRST- Evaluation) */
+nav .conteneur-lame { padding-bottom: var(--espacement-court); }
+.module-breadcrumb {
+list-style:               none;                                               /* Supprime les puces */
+display:                  flex;
+justify-content:          space-between;                                      /* Distribue l'espace entre les éléments */
+margin:                   0;
+padding:                  0.5rem 0 1.5rem;
+overflow-x:               auto;                                               /* Pour le scroll */
+white-space:              nowrap;                                             /* Permet aux éléments de rester sur une seule ligne */
+}
+.module-breadcrumb::before,
+.module-breadcrumb::after {                                                    /* Espaceur droit pour décoller la dernière carte */
+content:                  '';
+display:                  block;
+flex-shrink:              0;
+width:                    var(--espacement-large); 
+height:                   1px;
+}
+
+.breadcrumb-separator {                                                         /* L'indicateur de séparation */
+margin:                   0 1rem;
+font-size:                1.5rem;
+line-height:              2.5rem; 
+color:                    rgba(var(--gris-trmdvsr-fonce-RGB), 0.6);           /* Utilisation de la variable RGB pour plus de contrôle */
+align-self:               center;                                             /* Pour l'aligner verticalement si les boutons sont hauts */
+}
+
+.breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button {
+display:                  inline-flex;                                        /* Aligne texte et icône */
+justify-content:          space-between;                                      /* Distribue l'espace entre les éléments */
+align-items:              center;
+gap:                      0.5rem;                                             /* Espace entre texte et icône */
+flex:                     1 0;                                                /* Chaque étape prend une part égale de l'espace */
+position:                 relative;
+padding:                  0.5rem 1rem 0.625rem;                               /* 8px 16px 10px */
+padding-bottom:           0.625rem;                                           /* Espace pour la barre de progression */
+font-weight:              var(--graisse-texte);                               /* surcharge */
+color:                    var(--bleu-trmdvsr-clair);                          /* surcharge */
+outline:                  none;
+border:                   2px solid var(--gris-trmdvsr-clair);
+border-radius:            9999px; 
+background-color:         #FFF;
+box-shadow: 
+0 1px 3px 0 rgba(0, 122, 255, 0.1), 
+0 1px 2px 0 rgba(0, 122, 255, 0.06);
+cursor:                   pointer;
+transition:               all 0.3s ease; 
+}
+
+.breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button:hover:not([disabled]) {       /* hover/active => les boutons */
+color:                    var(--bleu-trmdvsr-moyen);
+background-color:         #F0F8FF;                                            /* Léger fond bleu au survol */
+border-color:             var(--bleu-trmdvsr-moyen);
+box-shadow: 
+0 4px 8px rgba(0, 122, 255, 0.3),
+0 1px 4px rgba(0, 122, 255, 0.2);
+transform:                translateY(-1px);
+}
+
+.breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button:active:not([disabled]) {
+color:                    #FFF;
+background-color:         var(--bleu-trmdvsr-pur);
+box-shadow: 
+0 0 1px rgba(0, 122, 255, 0.15),
+0 1px 4px rgba(0, 122, 255, 0.2);
+transform:                translateY(1px);
+}
+
+.breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed {                   /* EFFET: Étape COMPLETED (Vert) */
+font-weight:              bold;
+color:                    var(--vert-trmdvsr-clair);                          /* Texte vert pour les étapes passées */
+border-color:             var(--vert-trmdvsr-clair);
+background-color:         var(--gris-trmdvsr-tres-clair);
+cursor:                   pointer;
+pointer-events:           auto;
+}
+
+.breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed:hover:not([disabled]) {
+color:                    var(--vert-trmdvsr-moyen);
+background-color:         #A7F3D0;
+border-color:             var(--vert-trmdvsr-moyen);
+}
+
+.breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed:after {             /* Indicateur visuel "V" pour COMPLETED */
+content:                  '✓';                                                /* Indicateur visuel pour les étapes complétées */
+position:                 absolute;
+bottom:                   -0.625rem;
+left:                     50%;
+width:                    1rem;
+height:                   1rem;
+font-size:                var(--taille-sstexte);
+font-weight:              var(--graisse-sstexte);
+line-height:              1rem;
+text-align:               center;
+letter-spacing:           -0.0269rem;
+text-rendering:           optimizeLegibility;
+color:                    #FFF;
+background-color:         var(--vert-trmdvsr-clair);
+border-radius:            var(--bordure-radius);
+transform:                translateX(-50%);
+box-shadow:               0 1px 3px rgba(0,0,0,0.2);
+}
+
+.breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.active {                      /* ÉTAPE ACTUELLE (Bleu foncé) */
+color:                    #FFF;
+border-color:             var(--bleu-trmdvsr-pur);                            /* Couleur principale pour l'étape en cours */
+background-color:         var(--bleu-trmdvsr-pur);
+box-shadow: 
+0 4px 6px -1px rgba(37, 99, 235, 0.3), 
+0 2px 4px -1px rgba(37, 99, 235, 0.1);
+pointer-events:           none; 
+}
+
+.breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.disabled {                    /* EFFET: Étape FUTURE <= remplace  [disabled] sur un <li> */
+opacity:                  0.7;
+color:                    var(--gris-trmdvsr-clair);
+border-color:             var(--gris-trmdvsr-clair);
+background-color:         var(--gris-trmdvsr-tres-clair);
+box-shadow:               none;
+cursor:                   not-allowed;
+pointer-events:           none;
+}
+
+/*<!-- CAROUSEL EVALUATIONS                             (Page Evaluation) -->*/
+.carousel-evaluation {
+display:                  flex;
+flex-direction:           row;
+flex-wrap:                nowrap;                                             /* Empêche les enfants de réduire et force à la taille demandée  */
+justify-content:          flex-start;
+align-items:              flex-start;
+gap:                      var(--espacement-court);
+width:                    100%;
+padding:                  var(--espacement-court) var(--espacement-large) var(--espacement-tres-large);
+overflow-x:               scroll;                                             /* Activation du défilement horizontal */
+overflow-y:               hidden;       
+scroll-snap-type:         x mandatory;                                        /* Force le conteneur à capturer les points d'accroche */
+-ms-overflow-style:       none;                                               /* Pour IE/Edge/Firefox */
+scrollbar-width:          none;
+background-color:         var(--gris-trmdvsr-tres-clair);
+border: 2px dotted red;
+}
+.carousel-evaluation::-webkit-scrollbar { display: none; }                      /* Cache la barre de défilement (WebKit/Chrome/Safari) */
+
+.carousel-evaluation .eval-item {
+display:                  flex;
+flex-direction:           column;
+flex:                     0 0 var(--largeur-eval-item);                       /* Coeur du layout : section = largeur max - les marges */
+width:                    var(--largeur-eval-item);
+scroll-snap-align:        center;                                             /* Définit le point d'accroche pour scroll-snap */
+background-color:         var(--blanc-trmdvsr); 
+border-radius:            var(--bordure-radius);
+box-sizing:               border-box;                                         /* Assure que l'élément ne déborde pas */
+box-shadow: 
+0 4px 6px -1px rgb(0 0 0 / 0.1), 
+0 2px 4px -2px rgb(0 0 0 / 0.2);
+transition:               transform 0.3s ease-out;                            /* les anims sont gérées en JS */
+}
+
+/*<!-- COMPOSANT NOTE                                   (Page Evaluation) -->*/
+
+.composant-note.conteneur-lame.flex-into-row {                                  /* classe fonctionnelle */
+background-color:         var(--blanc-trmdvsr);
+border:                   1px solid orange;
+}
+.composant-note .conteneur-lame.flex-col.col-first,
+.composant-note .conteneur-lame.flex-col.col-last {                             /* Composant notation zones habillage visuel 'de 0... ...à 5' */
+flex-direction:           row;
+justify-content:          center;
+align-items:              flex-end;
+flex:                     auto;                                               /* grow shrink basis */
+padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
+}
+.composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
+.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 0; padding-left: 1rem;         }
+.composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: var(--largeur-notede0); border:1px solid purple; }
+.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5); border:1px solid purple;  }
+
+img.img-notede0 {
+width:                    100%;
+max-width:                var(--largeur-notede0);
+aspect-ratio:             199 / 81;
+height:                   auto;
+border:                   1px solid red;
+}
+img.img-notea5 {
+width:                    100%;
+max-width:                var(--largeur-notea5);
+aspect-ratio:             155 / 80;
+height:                   auto;
+border:                   1px solid red;
+}
+
+.composant-note .conteneur-lame.flex-col.col-middle {                           /* Composant notation */
+
+justify-content:          flex-end;                                           /* Princi:↕ */
+align-items:              center;                                             /* Transv:↔ */
+/*flex:                     2;                                                  /* flex:1 */
+width:                    var(--largeur-composant-note);
+background-image:         var(--url-logo-blanc);
+background-position:      top;
+background-size:          contain;
+background-repeat:        no-repeat;
+background-size:          90%;
+border:                   1px solid black; /* POUR DEBUG */
+}
+.composant-note .conteneur-lame.flex-col.col-middle .rating-bar {               /* Conteneur de bouton radio avec id='rating-bar-q[X]' */
+margin:                   0;
+padding-top:              0;
+padding-bottom:           calc(var(--espacement-court) * 0.33);
+padding-left:             0;                                                  /* Compenser l'écart sur le dernier bouton */
+padding-right:            calc(var(--espacement-button) / 2);
+display:                  flex;
+flex-direction:           row-reverse; 
+justify-content:          center;                                             /* Aligne le groupe à gauche */
+align-items:              center;
+width:                    100%;
+/*border:                   1px solid; */
+}
+
+/*<!-- TYPOS            (Page Evaluation)                                 --> */
+.rating-bar.trmdvsr-texte {                                                     /* Texte dans le bloc avec balise <em> et <b> */
+margin:                     0;
+padding-bottom:             var(--espacement-court);
+padding-top:                var(--espacement-button);
+padding-right:              calc(var(--espacement-button) / 2);
+width:                      auto;
+display:                    block;
+text-align:                 center;
+}
+
+.rating-bar.trmdvsr-sstexte label {                                             /* texte sous les boutons customs */
+margin-right:               calc(var(--espacement-button) / 2);
+margin-left:                calc(var(--espacement-button) / 2);
+margin-top:                 0px;
+margin-bottom:              var(--espacement-tres-large);
+color:                      var(--gris-trmdvsr-clair);
+width:                      var(--largeur-logo-bouton);
+display:                    block;
+text-align:                 center;
+}
+
+.conteneur-humeur .trmdvsr-sstexte-button { /* NOUVELL CLASSE TYPO */
+width:                      auto;
+font-size:                  var(--taille-sstexte);
+font-weight:                var(--graisse-sstexte);
+line-height:                calc(var(--taille-sstexte) * 1.33);
+text-wrap:                  nowrap;
+text-rendering:             optimizeLegibility;                               /* Espacement mots */
+color:                      var(--blanc-trmdvsr);
+}
+
+/*<!-- BOUTONS          (Page Evaluation)                                 --> */
+
+/*------------------------------------------------------------------------------/*
+/* RADIO => Labels : Gestion Notes  */
+
+.rating-bar input[type="radio"] {
+display:                    none;                                             /* Cache l'élément radio natif */
+}
+
+.rating-bar label.trmdvsr-radio-label {                                         /* Spécificité de style */
+height:                     auto;        
+width:                      calc(var(--largeur-logo-bouton) + var(--espacement-button));
+background-image:           var(--url-logo-inactif);
+background-position:        0 0;
+cursor:                     pointer;
+animation:                  none;
+
+transition:                 all 0.2s ease-in-out;  
+}
+.rating-bar label.trmdvsr-radio-label:first-of-type {
+width:                      var(--largeur-logo-bouton); 
+}
+
+.rating-bar input:checked + label.trmdvsr-radio-label,
+.rating-bar input:checked ~ label.trmdvsr-radio-label {                         /* Activation des notes cliquées et inférieures */
+background-image:           var(--url-logo-actif);
+}
+
+.rating-bar label.trmdvsr-radio-label:hover,
+.rating-bar label.trmdvsr-radio-label:hover ~ label {                           /* Allume la note survolée et tous les labels qui la SUIVENT */
+background-image:           var(--url-logo-actif);
+text-decoration:            underline;
+/*box-shadow:               0 0 5px 0 rgba(var(--bleu-trmdvsr-clair-RGB), 0.4);   */
+}
+
+/*------------------------------------------------------------------------------ */
+/* SUBMIT => Gestion Humeur */
+
+.composant-eval .traum-shape.submit-button {
+padding:                    calc(var(--largeur-logo-bouton) / 2);
+width:                      auto;
+height:                     calc(var(--largeur-logo-bouton) * 1.1089);
+
+cursor:                     pointer;
+display:                    flex;
+align-items:                center;                                           /* Trans: ↕ */
+background-color:           var(--bleu-trmdvsr-moyen);
+--logo-tronksize-larg:      10px;
+
+transition:                 background-color 0.2s;
+}
+
+.composant-eval .traum-shape.submit-button:hover {
+background-color:           var(--bleu-trmdvsr-clair); 
+}
+
+.composant-eval .traum-shape.submit-button:disabled {
+background-color:           var(--gris-trmdvsr-clair);
+}
+
+/*<!-- COMPOSANT AVIS                                   (Page Evaluation) --> */
+/*------------------------------------------------------------------------------ */
+/* .composant-avis classe fonctionnelle associée à 
+/* .conteneur-lame.flex-into-row { m:0; p:0; w:100%; h:100%; disp:flex; flex-dir:row; ali-item:flex-start; gap:0 } /.conteneur-lame >> Princi:↔|Transv:↕ */
+
+.composant-avis .avis-zone-edito {                                      /* Composant Avis /* asso avec .conteneur-lame.flex-col.col-first */
+margin-bottom:              var(--espacement-court);
+width:                      calc(var(--largeur-conteneur-max) * 0.33);
+flex:                       initial;                                  /* display:flex; flex-direction:column; flex:1 */
+/*background-color:           var(--bleu-trmdvsr-clair); /* POUR DEBUG */
+
+/* .conteneur-lame.flex-col.col-first: m:0; pt:espMoy; pb:espMoy, pl:espLarg; pr:espMoy/2; h:100%; disp:flex; flex-dir:col; flex:1; */
+} 
+
+.composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last {           /* Conteneur du textArea / status_layer / conteneur-humeur */
+width:                      calc(var(--largeur-conteneur-max) * 0.67);
+height:                     auto;
+flex:                       initial;
+position:                   relative;                                 /* CRUCIAL pour status-layer'absolute' se positionne par rapport à lui */
+display:                    initial;                                  /* Forcer un comportement de block pour avoir le conteneur-humeur en dessous */
+
+/* .conteneur-flex.flex-col.col-last: m:0; pt:espMoy; pb:espMoy, pl:espMoy/2; pr:espLarg; h:100%; disp:flex; flex-dir:col; flex:1; */
+}
+
+/*------------------------------------------------------------------------------ */
+/* Dans .avis-zone-creation.conteneur-flex.flex-col.col-last */
+
+.composant-avis .avis-zone-creation textarea.traum-shape {                    /* Bloc de texte éditable trmdvsr-texte */
+resize:                     none;
+spellcheck:                 true;
+autocorrect:                on;
+width:                      calc(var(--largeur-tier-max) * 2);                /* Tiers de largeur conteneur - marge interieures sur les côtés */
+height:                     calc(var(--largeur-tier-max) * 1.5);
+padding:                    10px;
+/*display:                    block; */
+font-style:                 italic;
+color:                      var(--gris-trmdvsr-fonce);
+background-color:           white;
+}
+
+.composant-avis .avis-zone-creation .overlay-avis {                       /* Règle de SURCHARGE pour une instance spécifique avec .status-layer */
+width:                      calc(var(--largeur-tier-max) * 2);          /* Réf .composant-avis .avis-zone-creation textarea.trmdvsr-texte */
+height:                     calc(var(--largeur-tier-max) * 1.5);        /* Réf .composant-avis .avis-zone-creation textarea.trmdvsr-texte */
+position:                   absolute;
+top:                        var(--espacement-moyen);                    /* Réf .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last */
+left:                       calc(var(--espacement-moyen) / 2);          /* Réf .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last */
+background-color:           rgba(255, 255, 255, 0.5);
+
+/* NOTE : Le parent de #status_layer_q[n] DOIT avoir position: relative; */
+/*.status-layer: pos:fixed; top:0; left:0; m:0; p:0; w:100vw; h:100vh; disp:flex; flex-dir:col; just-cont:center; ali-item:center; bg-c:bleu-pur; zInd:1000; */
+}
+
+/*------------------------------------------------------------------------------/*
+/* conteneur-humeur     3e lame dans .avis-zone-creation.conteneur-flex.flex-col.col-last */
+
+.composant-avis .avis-zone-creation .conteneur-humeur {                         /* Composant humeur */
+margin:                     0;
+padding:                    0;
+witdh:                      100%;
+height:                     calc(  ( var(--largeur-logo-bouton) * 1.1089 ) + var(--espacement-court) + var(--espacement-moyen)  );
+}
+
+.conteneur-humeur .conteneur-lame.flex-into-row.button-multi {
+padding:                    var(--espacement-court) 0 var(--espacement-moyen);/* 3valeurs : ↑ | →/← | ↓ */
+justify-content:            flex-end;
+align-items:                flex-end;
+gap:                        10px;
+
+/* .conteneur-lame.flex-into-row.button-multi: m:0; pt:espLarg; plr:espLarg; pb:espTreLarg; w:100%; h:100%;  disp:flex; just-cont:space-betw; ali-item:center */
+}
+
+.conteneur-humeur .conteneur-lame.flex-into-row.button-multi h4.trmdvsr-texte-h4 {
+margin:                     0;                                                /* surcharge mb:espCou*0.6 */
+padding:                    0;
+display:                    flex;
+flex:                       100%;
+font-weight:                calc(var(--graisse-chapo) * 0.66);                /* surcharge fwei:graChap */
+
+/* .trmdvsr-texte-h4 {mb:espCou*0.6; text-ali:left; fsiz:tailText; fwei:graChap; lh:tailText*1.33; t-render:optiLegi; color:grisFonce } */
+}
+
+/*------------------------------------------------------------------------------/*
+/* composant-bonus classe fonctionnelle associée à */
+/* .conteneur-lame.flex-into-row { m:0; p:0; w:100%; h:100%; disp:flex; flex-dir:row; ali-item:flex-start; gap:0 } /.conteneur-lame >> Princi:↔|Transv:↕ */
+
+/**
+<div class="zone-bonus conteneur-lame flex-into-row">
+<div class="bonus-zone-bouton conteneur-flex.flex-col.col-last">
+<label class="toggle-switch" data-action-group="bonus-selection" aria-label="Accordez-vous un point bonus ?">
+<input type="checkbox" id="q5-bonus"> 
+<span class="slider"></span>
+</label>                
+</div>
+</div>
+*/
+.zone-bonus.conteneur-lame.flex-into-row {
+align-items:                center;
+}
+
+.zone-bonus .bonus-zone-edito.conteneur-lame.flex-col.col-first {                        /* Composant bonus  .trmdvsr-texte */
+flex:                       0 0 calc(var(--largeur-conteneur-max) * 0.67);    /* grow(grandir) shrink(rétrécir) basis */
+/*border:                     1px solid red; /* POUR DEBUG */
+
+/* .conteneur-lame.flex-col.col-first  { m:0; pt:espMoy; pb:espMoy, pl:espLarg; pr:espMoy/2; h:100%; disp:flex; flex-dir:col; flex:1; } 
+/* .trmdvsr-texte             { t-ali:left; f-siz:taiTex; l-h:taiTex*1.33; t-ren:optiLegi; color:grisFon; } */
+}
+
+.zone-bonus .bonus-zone-bouton.conteneur-flex.flex-col.col-last {                        /* Composant  bonus .conteneur-flex.flex-col.col-last */
+flex:                       0 0 calc(var(--largeur-conteneur-max) * 0.33);    /* grow(grandir) shrink(rétrécir) basis */
+align-items:                center;
+/*border:                     1px solid var(--bleu-trmdvsr-clair); /* POUR DEBUG */
+
+/* .conteneur-flex.flex-col.col-last  { m:0; pt:espMoy; pb:espMoy, pl:espMoy/2; pr:espLarg; h:100%; disp:flex; flex-dir:col; flex:1; }  */
+}
+
+/*------------------------------------------------------------------------------/* */
+/* TOGGLE => Labels : Gestion Bonus  */
+
+.bonus-toggle-switch {                                                          /* sur le <label> conteneur */
+display:                    flex;                                             /* 🚨 ESSENTIEL : Convertir le label en conteneur flex vertical */
+flex-direction:             column;
+align-items:                center;                                           /* Centre les éléments horizontalement dans le label */
+height:                     auto;                                             /* Assure de prendre l'espace nécessaire, surtout si le parent est flex */
+width:                      auto; 
+}
+
+.bonus-toggle-switch input {                                                    /* Masque l'input standard mais le garde fonctionnel */
+opacity:                    0; 
+width:                      0px;
+height:                     0px;
+}
+
+.bonus-toggle-switch .bonus-text {
+margin-top:                 calc(var(--espacement-court) * 0.33);
+text-align:                 center;
+}
+
+.bonus-toggle-switch .bonus-slider {                                                                 /* Style de la base du commutateur */
+display:                    inline-block;                                     /* 🚨 Correction essentielle 🚨 <span> est inline */
+position:                   relative; 
+width:                      var(--largeur-logo-bouton);                       /* Taille de la piste */
+height:                     var(--largeur-logo-bouton);                       /* Hauteur de la piste */
+background-image:           var(--url-logo-inactif);
+background-size:            cover;
+background-repeat:          no-repeat;                                        /* Ajout pour la propreté */
+background-position:        center;                                           /* Ajout pour la propreté */
+cursor:                     pointer;
+transition:                 .4s;
+transition:                 transform .4s, background-image .4s;
+/*border:                     1px solid;                                        /* Affiche la bordure du bouton OFF */
+}
+
+.bonus-toggle-switch input:checked + .bonus-slider {
+transform:                  translateX(25);                                   /* Modifie la position du bouton */
+background-image:           var(--url-logo-actif);                            /* Style quand l'état est ON */
+/*border-color:               green;  */
+}
+
+.bonus-toggle-switch .bonus-text-on {
+transform:                  translateX(25);                                   /* Modifie la position du bouton */
+display: none;
+}
+
+/* 🚨 Ciblage quand l'input est checked 🚨 */
+.bonus-toggle-switch input:checked ~ .bonus-text-off {                          /* Cache le texte "OFF" */
+display:                    none;
+}
+
+.bonus-toggle-switch input:checked ~ .bonus-text-on {                           /* Affiche le texte "ON" */
+display:                    initial;                                          /* ou block, ou inline-block, selon votre besoin */
+}
+
+/*<!-- COMPOSANT PHOTO    (CONTENEUR)                                   --> */
+.composant-photo {                                                            /* <section id="photo_post"> */
+margin:                     0 auto;
+padding:                    24px;
+max-width:                  var(--largeur-conteneur-max);
+border:                     1px solid #e5e7eb;
+border-radius:              12px;
+background-color:           white;
+box-shadow:                 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+.composant-photo .conteneur-lame.flex-stay-col.col-first {
+flex:                       0 0 var(--largeur-tier-max);
+border:                     1px solid blue;
+/* .conteneur-lame.flex-stay-col.col-first { m:0; ptb:espCou; pl:espLarg; pr:espMoy/2; h:100%; disp:flex; f-dir:col; flex:1; } */
+}
+.composant-photo input {
+border:                     1px solid blue;
+/* .conteneur-lame.flex-stay-col.col-first { m:0; ptb:espCou; pl:espLarg; pr:espMoy/2; h:100%; disp:flex; f-dir:col; flex:1; } */
+}
+.composant-photo .conteneur-flex.flex-col.col-last {
+flex:                       0 0 calc(var(--largeur-tier-max) * 2);
+background-color:           yellow;
+/* .conteneur-flex.flex-col.col-middle { m:0; ptb:espCou; pl:espMoy/2; pr:espLarg; h:100%; disp:flex; f-dir:col; flex:1; } */
+}
+
+/*<!-- COMPOSANT PHOTO    (CONTENEUR)                                   --> */
+
+/* INPUT ET BOUTONS */
+
+#input_photo_principale {                                                     /* Masque l'input de fichier natif mais permet de déclencher via le label */
+opacity:                    0;
+height:                     0;
+width:                      0;
+position:                   absolute;
+}
+
+label[for="input_photo_principale"] {                                         /* label comportement de bouton */
+display:                    block;                                          /* S'assure qu'il prend toute la largeur disponible pour le clic */
+cursor:                     pointer;
+background-color:           #2563eb;
+color:                      white;
+font-weight:                500;
+padding:                    10px 16px;
+border-radius:              8px;
+text-align:                 center;
+box-shadow:                 0 2px 4px rgba(0, 0, 0, 0.1);
+transition:                 background-color 0.15s;
+margin-bottom:              10px;                                           /* Espace avec le sous-texte */
+}
+
+label[for="input_photo_principale"]:hover { background-color: #1d4ed8; }
+
+/* PREVIEW */
+
+.conteneur-image-preview {                                                    /* <div id="preview-list-container"> */
+padding:                    16px;
+min-height:                 120px;
+display:                    flex;
+flex-wrap:                  wrap;
+align-content:              flex-start;
+gap:                        12px;
+border:                     1px dashed #9ca3af;
+border-radius:              8px;
+background-color:           #f9fafb;
+}
+
+.delete-btn {
+position:                   absolute;
+top:                        4px;
+right:                      4px;
+background-color:           rgba(239, 68, 68, 0.9);
+color:                      white;
+border:                     none;
+border-radius:              50%;
+width:                      20px;
+height:                     20px;
+font-size:                  14px;
+line-height:                10px;
+cursor:                     pointer;
+z-index:                    10;
+display:                    flex;
+align-items:                center;
+justify-content:            center;
+padding:                    0;
+font-weight:                bold;
+opacity:                    0.8;
+transition:                 opacity 0.2s, background-color 0.2s;
+}
+
+.delete-btn:hover {
+opacity:                    1;
+background-color:           #DC2626;
+}
+
+.badge-principale {                                                           /* Badge "Principale" */
+position:                   absolute;
+top:                        0;
+left:                       0;
+background-color:           #10b981;
+color:                      white;
+padding:                    2px 6px;
+font-size:                  0.6rem;
+font-weight:                bold;
+border-bottom-right-radius: 6px; 
+z-index:                    5;
+}
+
+/* EXPORT & PROGRESSION */
+#export-btn {                                                                 /* Bouton d'exportation */
+margin-top:                 20px;
+width:                      100%;
+background-color:           #16a34a;
+color:                      white;
+font-weight:                700;
+padding:                    12px 16px; 
+border-radius:              8px;
+box-shadow:                 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+transition:                 background-color 0.15s; 
+border:                     none;
+cursor:                     pointer;
+display:                    flex;
+align-items:                center;
+justify-content:            center;
+font-size:                  1rem;
+}
+#export-btn:hover:not(:disabled) { 
+background-color:           #15803d;
+}
+#export-btn:disabled { 
+background-color:           #9ca3af;
+cursor:                     not-allowed;
+}
+.export-content { 
+display:                    flex;
+align-items:                center;
+justify-content:            center;
+}
+#export-btn:hover {
+background-color:           #1862CC;
+}
+
+.export-content .loading-spinner {
+background-color:           #1862CC;
+display:                    none;                                           /* Contrôlé par JS */
+animation:                  spin-btn 1s linear infinite;
+height:                     20px;
+width:                      20px;
+margin-right:               12px;
+border:                     3px solid white;
+border-top-color:           transparent;
+border-radius:              50%;
+border-top:                 4px solid #4F46E5;
+}
+
+.progress-track-container {                                                   /* Barre de progression */
+margin-top:                 15px;
+margin-bottom:              10px;
+}
+.progress-track {
+width:                      100%;
+background-color:           #e5e7eb;
+border-radius:              9999px;
+height:                     10px;
+margin-bottom:              5px;
+}
+.progress-bar {
+background-color:           #2563eb;
+height:                     10px;
+border-radius:              9999px;
+transition:                 width 0.3s ease-out;
+}
+.progress-text { 
+text-align:                 right;
+}
+
+/* STATUS_LAYER_EXPORT (LOCALISÉS) */
+
+.overlay-photo {                                                              /* Conteneur pour le statut local dans la zone d'export */
+margin-top:                 16px;                                           /* surcharge m:0 */
+padding:                    12px;                                           /* surcharge p:0 */
+border-radius:              6px;
+display:                    flex;                                           /* Toujours visible par défaut pour le layout */
+flex-direction:             row;                                            /* surcharge f-dir:col */
+gap:                        12px;
+background-color:           #f7f9fb;                                        /* surcharge b-color:bleuPur */
+
+/* .status-layer { pos:fixed; top:0; left:0; m:0; p:0; w:100vw; h:100vh; dis:flex; f-dir:col; jus-cont:center; ali-item:center; b-color:bleuPur; z-ind:1000 } */
+}
+
+/*<!-- MODULE DE RECADRAGE   (GLOBAL)                                   --> */
+/**
+<div id="crop-module" class="crop-module-overlay">  <!-- CROPPIN' POP-IN -->
+<div class="crop-module-content">
+<h3 class="trmdvsr-texte-h3">Recadrer l'image (ratio 1:1)</h3>
+<div class="crop-module-conteneur">
+<img id="image-to-crop" alt="Image à recadrer pour le produit" style="max-width: 100%; display: block;">
+</div>
+<div class="crop-module-actions">
+<button id="crop-btn-cancel" class="trmdvsr-sstexte traum-shape reset-button">Annuler</button>
+<button id="crop-btn-add" class="trmdvsr-sstexte traum-shape submit-button">Rogner et Ajouter</button>
+</div>
+</div>
+</div>
+*/
+
+.crop-module-overlay {
+position:                   fixed;
+top:                        0;
+left:                       0;
+width:                      100%;
+height:                     100%;
+background-color:           rgba(0, 0, 0, 0.8);
+display:                    none;
+align-items:                center;
+justify-content:            center; 
+z-index:                    1000;
+}
+
+.crop-module-content {
+position:                   relative;
+max-width:                  90vw;
+max-height:                 90vh;
+padding:                    24px;
+background-color:           white;
+border-radius:              12px;
+overflow:                   hidden;                                         /* Important pour Cropper */
+}
+
+.crop-module-conteneur {
+min-height:                 300px;
+min-width:                  300px;
+max-height:                 70vh;
+max-width:                  70vw;
+margin-bottom:              20px;
+}
+
+.crop-module-actions {
+margin-top:                 20px;
+display:                    flex;
+justify-content:            flex-end;
+gap:                        12px;
+}
+
+.crop-module-target {
+max-width:                  100%; 
+display:                    block;
+}
+
+/*<!--  MODULE SÉLECTION PHOTOS >> AVEC LOGIQUE DRAG & DROP (GLOBAL)    --> */
+
+.photo-list-container {                                                       /* appelé dans updateImageDisplay() */
+display: contents;
+}
+
+#photo-list { /* >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>/* 2025-10-17 (01:42) : N'EXISTE PAS A VERIFIER */
+display: flex;
+flex-wrap: wrap;
+gap: 16px;
+padding: 10px;
+border: 2px dashed #D1D5DB;
+border-radius: 12px;
+min-height: 128px;
+background-color: #F9FAFB;
+list-style: none;
+margin: 0;
+}
+
+.photo-item {                                                                 /* Styles d'un élément de prévisualisation appelé dans updateImageDisplay() */
+position:                   relative; 
+width:                      100px; 
+height:                     100px; 
+border-radius:              6px; 
+overflow:                   hidden; 
+box-shadow:                 0 4px 6px rgba(0, 0, 0, 0.1); 
+cursor:                     grab; 
+transition:                 transform 0.2s, box-shadow 0.2s; 
+list-style:                 none;                                           /* Important pour les éléments de liste */
+border:                     2px solid transparent; 
+background-color:           white;                                          /*cursor: move; */
+}
+
+.photo-item:hover { 
+border-color:               #4F46E5;
+transform:                  scale(1.03);
+box-shadow:                 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+.photo-item.is-dragging {
+opacity:                    0.5; 
+border-color:               #3b82f6; 
+box-shadow:                 0 0 0 2px #3b82f6;
+}
+.photo-item.is-drag-over {
+border:                     3px dashed #3b82f6;
+transform:                  scale(1.05);
+background-color:           #eff6ff;
+}
+
+.photo-image {                                                                 /* appelé dans updateImageDisplay() */
+width:                      100%;
+height:                     100%;
+object-fit:                 cover;
+}
+
+.photo-info {                                                                 /* appelé dans updateImageDisplay() */
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background: rgba(0, 0, 0, 0.6);
+color: white;
+padding: 4px;
+font-size: 0.7rem;
+text-align: center;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+/*<!-- Règles Responsives   (GLOBAL)                                    --> */
+/** 
+@media (max-width: 640px) {                                                   /* Media query pour le mobile
+/*
+.flex-into-row {
+flex-direction:           column;
+gap:                      10px;
+}
+
+.composant-photo {
+padding:                  15px;
+}
+.photo-item {
+width:                    100px;
+height:                   100px;
+}
+.conteneur-cropper {
+max-height:               50vh;
+}
+
+}*/
+/*
+@media (min-width: 768px) {
+
+.flex-into-row {
+flex-direction:           row;
+justify-content:          space-between;
+}
+
+} */
+/** =================================================================
+ * @description 'Fin du fichier. with care.'
+ * @author 'trmdvsr'
+ * @version 25.10.09 (23:16)
+ * ================================================================== */
