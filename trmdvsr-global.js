@@ -1096,9 +1096,8 @@ function loadPage() {
         updateStatus({ refCSS: 'intro', type: 'error', log: `📡🚫.Catched |loadPage : Big error: ${error}` });
     }
 }
-
-/*=================================================================== */
-    @description 'Fin du fichier. with care.'
-    @author 'trmdvsr'
-    @version 25.10.09 (23:16)
-/*=================================================================== */
+/* ==================================================================
+ * @description 'Fin du fichier. with care.'
+ * @author 'trmdvsr'
+ * @version 25.10.09 (23:16)
+ * ================================================================== */
