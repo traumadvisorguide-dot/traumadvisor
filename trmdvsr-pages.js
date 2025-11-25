@@ -1,4 +1,4 @@
-    <script> //<!-- CSS Spécifiques      (Page Creation Lieu)                               -->
+//<!-- CSS Spécifiques      (Page Creation Lieu)                               -->
       /**-----------------------------------------------------------------------------//
        * @instanceIn      {loadPage}                        ../
        * @instanceCount   1 - unique
@@ -46,9 +46,7 @@
         showPage('evaluations_page');                                               // Passer à la page d'évaluation
       }
       
-    </script>
-
-    <script> //<!-- CSS Spécifiques      (Page Creation Lieu)                               -->
+//<!-- CSS Spécifiques      (Page Creation Lieu)                               -->
       // Fonction appelée par le script Google Maps après son chargement
       /**-----------------------------------------------------------------------------//
        * @instanceIn      <html> <head> callback
@@ -138,9 +136,7 @@
         // google.script.run.processAddress({ street: street, city: city, postalCode: postalCode }); <= envoie pas immédiat
       }
 
-    </script>
-
-    <script> //<!-- PAGE-EVALUATION - NAVIGATION                           (FONCTION) -->
+//<!-- PAGE-EVALUATION - NAVIGATION                           (FONCTION) -->
 
       /**-----------------------------------------------------------------------------//
        * @version         25.11.17 (17:52)                - 25.10.09 (23:16)
@@ -178,9 +174,8 @@
         }
       }
       
-    </script> 
 
-    <script> //<!-- PAGE-EVALUATION / AVIS > GENERATEUR - FN PRIVATE       (FONCTION) -->
+//<!-- PAGE-EVALUATION / AVIS > GENERATEUR - FN PRIVATE       (FONCTION) -->
       /**-----------------------------------------------------------------------------//
        * @instanceIn      {initRatings}     ../trmdvsr-03-launch-js
        * ---------------- --------------- --------------- - --------------------------//
@@ -388,9 +383,8 @@
           })
           .requestAvisAgent(questionID, noteRef, dataKey);                                                 // < Lance cette function côté serveur
       }
-    </script>
 
-    <script> //<!-- PAGE-EVALUATION / AVIS > GENERATEUR - INIT             (FONCTION) -->
+//<!-- PAGE-EVALUATION / AVIS > GENERATEUR - INIT             (FONCTION) -->
       
       /**-----------------------------------------------------------------------------//
        * @instanceIn      {initRatings}     ../trmdvsr-03-launch-js
@@ -481,13 +475,9 @@
         });
       }
 
-    </script>
 
-    <script> //<!-- PAGE-EVALUATION / PHOTOS > LOAD                        (FONCTION) -->
-      
-    </script>
-
-    <script> //<!-- PAGE-EVALUATION / PHOTOS > DRAG&DROP - FN PRIVATE      (FONCTION) -->
+//<!-- PAGE-EVALUATION / PHOTOS > LOAD                        (FONCTION) -->
+//<!-- PAGE-EVALUATION / PHOTOS > DRAG&DROP - FN PRIVATE      (FONCTION) -->
 
       /**-----------------------------------------------------------------------------//
        * @instanceIn    {initPhotoUploader} on <fileInput id="input_photo_principale"> ../.
@@ -698,9 +688,7 @@
           if (number >= 1048576) return `${(number / 1048576).toFixed(1)} Mo`;
       }
 
-    </script>
-
-    <script> //<!-- PAGE-EVALUATION / PHOTOS > DRAG&DROP - INIT            (FONCTION) -->    
+//<!-- PAGE-EVALUATION / PHOTOS > DRAG&DROP - INIT            (FONCTION) -->    
       /**-----------------------------------------------------------------------------//
        * @instanceIn    {initPageEvalPhotoUploader}        ../trmdvsr-03-launch-js
        * ---------------- --------------- --------------- - --------------------------//
@@ -762,9 +750,8 @@
           }
         });
       }
-    </script>
 
-    <script> //<!-- PAGE-EVALUATION / PHOTOS > SAVE                        (FONCTION) -->
+//<!-- PAGE-EVALUATION / PHOTOS > SAVE                        (FONCTION) -->
 
       /**-----------------------------------------------------------------------------//
        * @version         25.10.21 (14:14)
@@ -918,9 +905,7 @@
         });
       }
 
-    </script>
-
-    <script> //<!-- PAGE-EVALUATION - CONSTRUCTEUR                         (FONCTION) -->
+//<!-- PAGE-EVALUATION - CONSTRUCTEUR                         (FONCTION) -->
 
       /**-----------------------------------------------------------------------------//
        * @instanceIn      {handlePageData}      ../trmdvsr-03-launch-js
@@ -1048,9 +1033,8 @@
           message:      "Glissez, déposez et rognez vos images avant d'exporter.", 
         });
       }
-    </script>
 
-    <script> // PAGE EVALUATION LISTENER DU FORM GLOBAL - voir si utile car on peut enregistrer les   -->
+// PAGE EVALUATION LISTENER DU FORM GLOBAL - voir si utile car on peut enregistrer les   -->
       /**-----------------------------------------------------------------------------//
        * -- NOUVEAU CODE POUR LA SOUMISSION DU FORMULAIRE --
       
@@ -1100,7 +1084,6 @@
         }
       });*/ 
       
-    </script>
     <!--
       //==============================================================================//
       // Fin du fichier. with care.
