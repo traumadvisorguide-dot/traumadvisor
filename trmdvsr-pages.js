@@ -657,338 +657,332 @@ function initDragDropListeners() {
       } );
 }
 
-//<!-- PAGE-EVALUATION / PHOTOS > SAVE                        (FONCTION) -->
+/* == PHOTOS > SAVE  =============================== (EVALUATIONS) == */
+/**------------------------------------------------------------------ //
+* @version         25.10.21 (14:14)
+* ---------------- --------------- --------------- - ---------------- //
+* @function        saveThenNavigate
+* @description     GERE LA NAVIGATION CONDITIONNÉE À UN ENREGISTREMENT
+*                  Logique centralisée de sauvegarde et de navigation. C'est le cœur de la solution.
+*-------------------------------------------------------------------- */
+async function saveThenNavigate() {        
 
-      /**-----------------------------------------------------------------------------//
-       * @version         25.10.21 (14:14)
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        saveThenNavigate
-       * @description     GERE LA NAVIGATION CONDITIONNÉE À UN ENREGISTREMENT
-       *                  Logique centralisée de sauvegarde et de navigation. C'est le cœur de la solution.
-       *----------------------------------------------------------------------------*///
-      async function saveThenNavigate() {        
-            
-        const estValide = await handleSaveToDrive();                                  // 1. Attend le résultat de l'opération asynchrone
-
-        if (estValide) {                                                              // 2. Conditionne le passage à l'étape suivante
-          updateStatus({  conteneurID: "export", type: 'success', isLoading: false,
+      const estValide = await handleSaveToDrive();                    // 1. Attend le résultat de l'opération asynchrone
+      
+      if (estValide) {                                                // 2. Conditionne le passage à l'étape suivante
+            updateStatus({  conteneurID: "export", type: 'success', isLoading: false,
             message:      "Enregistrement réussi. Passage à l'étape suivante.", 
-          });
-          
-          navigateTo('accroche');                                                     // 3. Appelle la fonction de navigation
-        
-        } else {
-          updateStatus({  conteneurID: "export", type: 'success', isLoading: false,
+            });
+            
+            navigateTo('accroche');                                   // 3. Appelle la fonction de navigation
+            
+      } else {
+            updateStatus({  conteneurID: "export", type: 'success', isLoading: false,
             message:      "L'enregistrement a échoué.", 
-          });  
-        }
+            });  
       }
+}
 
-      /**-----------------------------------------------------------------------------//
-       * 
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        handleSaveToDrive
-       * @description     ENREGISTRE LES PHOTOS SUR LE DRIVE
-       *                  Fonction clé pour enregistrer les photos sur le drive
-       *----------------------------------------------------------------------------*///
-      async function handleSaveToDrive() {
+/**------------------------------------------------------------------ //
+* 
+* ---------------- --------------- --------------- - ---------------- //
+* @function        handleSaveToDrive
+* @description     ENREGISTRE LES PHOTOS SUR LE DRIVE
+*                  Fonction clé pour enregistrer les photos sur le drive
+*-------------------------------------------------------------------- */
+async function handleSaveToDrive() {
 
-        const totalFiles = uploadedFiles.length;                                      // uploadedFiles : variable globale stockée dans trmdvsr-global-js
-
-        if (totalFiles === 0) {                                                       
-          updateStatus({  conteneurID: "export", type: 'error', isLoading: false,
+      const totalFiles = uploadedFiles.length;                        // uploadedFiles : variable globale stockée dans trmdvsr-global-js
+      
+      if (totalFiles === 0) {                                                       
+            updateStatus({  conteneurID: "export", type: 'error', isLoading: false,
             message:      "Veuillez ajouter au moins une photo avant d'enregistrer.", 
-          });
-          return false;
-        }
-
-        document.body.classList.toggle('is-loading', true);                           // DÉBUT du processus : Désactiver les boutons
-        
-        updateStatus({  conteneurID: "export", type: 'info', isLoading: false,
-          message:      `Démarrage de l'enregistrement de ${totalFiles} photo(s)...`,
-          current:      0, 
-          total:        totalFiles,
-        });
-
-        const progressBar   =   document.getElementById("progressBar");               // Éléments de la barre de progression
-        const progressText  =   document.getElementById("progressText");
-        updateProgressDisplay_(progressBar, progressText, successCount, 0, totalFiles);// Initialisation à 0%
-
-        for (let i = 0; i < totalFiles; i++) {                                        // Boucle d'enregistrement
-          const file = uploadedFiles[i];
-          
-          updateStatus({  conteneurID: "export", type: 'info', isLoading: false,
+            });
+            return false;
+      }
+      
+      document.body.classList.toggle('is-loading', true);             // DÉBUT du processus : Désactiver les boutons
+      
+      updateStatus({  conteneurID: "export", type: 'info', isLoading: false,
+            message:      `Démarrage de l'enregistrement de ${totalFiles} photo(s)...`,
+            current:      0, 
+            total:        totalFiles,
+      });
+      
+      const progressBar   =   document.getElementById("progressBar"); // Éléments de la barre de progression
+      const progressText  =   document.getElementById("progressText");
+      updateProgressDisplay_(progressBar, progressText, successCount, 0, totalFiles);// Initialisation à 0%
+      
+      for (let i = 0; i < totalFiles; i++) {                          // Boucle d'enregistrement
+            const file = uploadedFiles[i];
+            
+            updateStatus({  conteneurID: "export", type: 'info', isLoading: false,
             message:      `Enregistrement en cours: ${file.name} (${i + 1}/${totalFiles})...`,
             current:      i,
             total:        totalFiles,
-          });
-          
-          try {
+            });
             
-            const base64Data = await blobToBase64_(file.blob);                    // 1. Convertir le Blob en Base64 (fonction personnalisée)
-
-            const result = await new Promise((resolve, reject) => {               // 2. Appel de la fonction Apps Script
-              google.script.run
-                .withSuccessHandler(resolve)
-                .withFailureHandler(reject)
-                .saveFileToDrive(base64Data, file.name);                          // Enregistre le fichier sur le drive avec saveFileToDrive() côté server
-            });
-
-            if (result === true) {
-              successCount++;
-              updateProgressDisplay_(successCount, i + 1, totalFiles);            // NOUVEAU : Mise à jour de la barre de progression après succès
-
-            } else {
-              errorCount++;
-
-              updateStatus({  conteneurID: "export", type: "error", isLoading: false,
-                message:      `Erreur d'enregistrement pour ${file.name}: ${result}`,
-                current:      i,
-                total:        totalFiles,
-              });
+            try {
+            
+                  const base64Data = await blobToBase64_(file.blob);  // 1. Convertir le Blob en Base64 (fonction personnalisée)
+                  
+                  const result = await new Promise( (resolve, reject) => { // 2. Appel de la fonction Apps Script
+                        google.script.run
+                              .withSuccessHandler(resolve)
+                              .withFailureHandler(reject)
+                              .saveFileToDrive(base64Data, file.name);// Enregistre le fichier sur le drive avec saveFileToDrive() côté server
+                        });
+                  
+                  if (result === true) {
+                        successCount++;
+                        updateProgressDisplay_(successCount, i + 1, totalFiles); // NOUVEAU : Mise à jour de la barre de progression après succès
+                  
+                  } else {
+                        errorCount++;
+                        
+                        updateStatus({  conteneurID: "export", type: "error", isLoading: false,
+                              message:      `Erreur d'enregistrement pour ${file.name}: ${result}`,
+                              current:      i,
+                              total:        totalFiles,
+                        });
+                  }
+            } catch (error) {            
+                  errorCount++;
+                  
+                  updateStatus({  conteneurID: "export", type: "error", isLoading: false,
+                        message:      `Erreur critique lors de l'envoi de ${file.name} : ${error}`,
+                        current:      i,
+                        total:        totalFiles,
+                  });
             }
-          } catch (error) {            
-            errorCount++;
-
-            updateStatus({  conteneurID: "export", type: "error", isLoading: false,
-              message:      `Erreur critique lors de l'envoi de ${file.name} : ${error}`,
-              current:      i,
-              total:        totalFiles,
-            });
-          }
-        }
-        // Fin de l'opération
-        const finalMessage = `${successCount} photo(s) rognée(s) enregistrée(s) dans Google Drive. ${errorCount > 0 ? `(${errorCount} échec(s))` : ''}`;
-        
-        updateStatus({  conteneurID: "export", isLoading: false, message: finalMessage,
-          type:         errorCount > 0 ? "error" : "success",                         // Définition conditionnelle du type de message pour log
-        });
-
-        document.body.classList.toggle('is-loading', false);                          // DÉBUT du processus : Désactiver les boutons
       }
-
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {initRatings}                     ../trmdvsr-03-launch-js
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        updateProgressDisplay_
-       * @description     MET À JOUR LA BARRE ET LE TEXTE DE PROGRESSION
-       * ---------------- --------------- --------------- - --------------------------//
-       * @param           {Element}       progressbar     - La barre de progression.
-       * @param           {Element}       progressText    - Le texte de progression.
-       * @param           {number}        successCount    - Le nombre de fichiers enregistrés avec succès.
-       * @param           {number}        currentTotal    - Le total des fichiers traités jusqu'à présent (succès + échecs).
-       * @param           {number}        totalFiles      - Le nombre total de fichiers à traiter.
-       *----------------------------------------------------------------------------*///
-      function updateProgressDisplay_(progressbar, progressText, successCount, currentTotal, totalFiles) {
-        
-        const textOverview  =   `(${successCount}/${totalFiles} images enregistrées)`
-        const percentage = totalFiles > 0 ? Math.round((successCount / totalFiles) * 100) : 100;
-
-        progressBar.style.width = `${percentage}%`;                                   // Mise à jour de la barre (utilise la largeur en CSS)
-        progressText.textContent = `${percentage}% ${textOverview}`;                  // Mise à jour du texte
-      }
-
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {handleSaveToDrive}               ../trmdvsr-03-launch-js
-       * @instanceCount   1 - unique
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        blobToBase64_
-       * @description     Converti l'image
-       *                  Fonction utilitaire pour convertir un Blob en Base64
-       * ---------------- --------------- --------------- - --------------------------//
-       * @param           {string}        blob            - Le blob a convertir.
-       *----------------------------------------------------------------------------*///
-      function blobToBase64_(blob) {
-        
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {  
-            const base64 = reader.result.split(',')[1];                               // La chaîne commence par "data:image/png;base64,"
-            resolve(base64);                                                          // on ne garde que le Base64 pur
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        });
-      }
-
-//<!-- PAGE-EVALUATION - CONSTRUCTEUR                         (FONCTION) -->
-
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {handlePageData}      ../trmdvsr-03-launch-js
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        initPageEval
-       * @description     INITIALISE LA PAGE EVALUATION
-       *----------------------------------------------------------------------------*///
-      function initPageEval () {
-
-        updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: true, log: `Init Page Evaluation...`,  
-          message:      `À vos évals... Prêt?`, 
-        });
-
-        initPageEvalNav();                                                            // Navigation
-        initPageEvalRatings();                                                        // Module de Notation
-        initPageEvalPhotoUploader();                                                  // Module d'Upload Photo
-
-        updateBreadcrumb('section_q1');                                                       // Affiche l'étape et met à jour l'URL
-
-        updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: false, log: `Page Evaluation chargée`,  
-          message:      `Feu! Partez!`, 
-        });
-
-      }
-
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {initPageEval}        ../
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        initPageEvalNav
-       * @description     INITIALISE LA NAVIGATION
-       *----------------------------------------------------------------------------*///
-      function initPageEvalNav () {
-
-        updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: true, log: `Init Page Evaluation Nav...`,  
-          message:      `Activation du système de navigation...`, 
-        });
-
-        const breadcrumbList = document.querySelector('.breadcrumb-nav');
-        if (breadcrumbList) {
-          breadcrumbList.addEventListener('click', navigateTo);                       // Délégation d'événements pour les clics dans le fil d'Ariane
-        } else {
-          updateStatus({  conteneurID: 'eval', type: 'warn', isLoading: true, log: "Conteneur '.breadcrumb-list' introuvable.",  
-            message:      "Fil d'Ariane introuvable.", 
-          });
-        }
-
-        const navButtons = document.querySelectorAll('.eval-btn');                    // Récupérer tous les boutons qui participent à la navigation
-        if (navButtons.length > 0) {
-          navButtons.forEach(button => {
-            button.addEventListener('click', navigateTo);                             // Chaque bouton appelle directement la fonction navigateTo
-          });
-        } else {
-          updateStatus({  conteneurID: 'eval', type: 'warn', isLoading: true, log: "Aucun bouton avec la classe '.eval-btn' trouvé.",  
-            message:      "Aucun bouton trouvé", 
-          });
-        }
-
-        updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: true, log: `Init Page Evaluation Nav[end]`,  
-          message:      `Système de navigation actif.`, 
-        });
-      }
-
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn      {initPageEval}        ../
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function        initPageEvalRatings
-       * @description     INITIALISE TOUS LES SYSTÈMES DE NOTATION D'EVALUATION FORM
-       *----------------------------------------------------------------------------*///
-      function initPageEvalRatings() {  
-
-        updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: true, log: `Init initRatings...`,  
-          message:      `Configuration du système de notation AAAAA en cours...`, 
-        });
-
-        initializeSectionListeners('q1', 'noteAccessibilite');                        // Q1: Accessibilité
-        initializeSectionListeners('q2', 'noteApparence');                            // Q2: Apparence
-        initializeSectionListeners('q3', 'noteAssise');                               // Q3: Assise
-        initializeSectionListeners('q4', 'noteAttention');                            // Q4: Attentions
-        initializeSectionListeners('q5', 'noteAttente');                              // Q5: Attente
-        
-        updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: false, log: `Init initRatings[end]`,  
-          message:      `Initialisation du système de notation AAAAA terminée.`, 
-        });
-      }
-
-      /**-----------------------------------------------------------------------------//
-       * @instanceIn    {initPageEval}        ../trmdvsr-03-launch-js
-       * ---------------- --------------- --------------- - --------------------------//
-       * @function      initPageEvalPhotoUploader
-       * @description   INITIALISE LES LISTENERS DE LA PARTIE PHOTO UPLOAD
-       * ---------------- --------------- --------------- - --------------------------//
-       * @returns       [ ||null]               null si erreur
-       *----------------------------------------------------------------------------*///
-      function initPageEvalPhotoUploader() {
-
-        updateStatus({  conteneurID: "export", type: 'loading', isLoading: true, log: 'Init Module Photo Uploader...',
-          message:      "Chargement du module d'export photo.", 
-        });
-        
-        fileInput =           document.getElementById("input_photo_principale");
-        previewContainer =    document.querySelector (".conteneur-image-preview");
-        limitMessage =        document.getElementById("limit-message");
-        //exportBtn =           document.getElementById("export-btn");
-        
-        cropModule =          document.getElementById("crop-module");                 // Initialisation des éléments du module
-        imageToCrop =         document.getElementById("image-to-crop");
-        const cropAndAddBtn = document.getElementById("crop-btn-add");
-        const cancelCropBtn = document.getElementById("crop-btn-cancel");
-
-        if (!fileInput || !previewContainer || !limitMessage || !exportBtn || !cropModule || !imageToCrop) {
-          updateStatus({  conteneurID: "export", type: 'error', isLoading: true, log: "Erreur d'initialisation : Éléments DOM critiques manquants.",
-            message:      "Erreur critique.", 
-          });
-          return;
-        }
-
-        fileInput.style.opacity = 0;
-        fileInput.addEventListener      ("change", handleFileSelection);              // Listener pour gérer la sélection d'image 
-        initDragDropListeners();                                                      // Initialisation Drag n Drop listeners
-        cropAndAddBtn.addEventListener  ('click', handleCropAndAdd);
-        cancelCropBtn.addEventListener  ('click', closecropModule);
-        //exportBtn.addEventListener      ('click', saveThenNavigate);                  // handleSaveToDrive > saveImageThenNavigateTo
-
-        updateStatus({  conteneurID: "export", type: 'loading', isLoading: false, log: 'Module Photo Uploader prêt.',
-          message:      "Glissez, déposez et rognez vos images avant d'exporter.", 
-        });
-      }
-
-// PAGE EVALUATION LISTENER DU FORM GLOBAL - voir si utile car on peut enregistrer les   -->
-      /**-----------------------------------------------------------------------------//
-       * -- NOUVEAU CODE POUR LA SOUMISSION DU FORMULAIRE --
+      // Fin de l'opération
+      const finalMessage = `${successCount} photo(s) rognée(s) enregistrée(s) dans Google Drive. ${errorCount > 0 ? `(${errorCount} échec(s))` : ''}`;
       
-      document.getElementById('evaluationForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Empêche la soumission par défaut
+      updateStatus({  conteneurID: "export", isLoading: false, message: finalMessage,
+            type:         errorCount > 0 ? "error" : "success",       // Définition conditionnelle du type de message pour log
+      });
+      
+      document.body.classList.toggle('is-loading', false);            // DÉBUT du processus : Désactiver les boutons
+}
 
-        // Vérifie si l'ID du lieu a bien été défini dans l'objet global
-        if (!appData.lieuID) {
-          console.error("L'identifiant du lieu n'a pas été défini. Impossible de soumettre l'évaluation.");
-          return;
-        }
+/**------------------------------------------------------------------ //
+* @instanceIn      {initRatings}                     ../trmdvsr-03-launch-js
+* ---------------- --------------- --------------- - ---------------- //
+* @function        updateProgressDisplay_
+* @description     MET À JOUR LA BARRE ET LE TEXTE DE PROGRESSION
+* ---------------- --------------- --------------- - ---------------- //
+* @param           {Element}       progressbar     - La barre de progression.
+* @param           {Element}       progressText    - Le texte de progression.
+* @param           {number}        successCount    - Le nombre de fichiers enregistrés avec succès.
+* @param           {number}        currentTotal    - Le total des fichiers traités jusqu'à présent (succès + échecs).
+* @param           {number}        totalFiles      - Le nombre total de fichiers à traiter.
+*-------------------------------------------------------------------- */
+function updateProgressDisplay_(progressbar, progressText, successCount, currentTotal, totalFiles) {
 
-        // Collecte et stockage des données dans l'objet global
-        appData.noteAccessibilite = parseInt(document.querySelector('.text-yellow-500').getAttribute('data-rating'), 10);
-        appData.phraseAccroche = document.getElementById('comment').value;
-        
-        // Optionnel: Gérer les fichiers si besoin, mais c'est une étape plus complexe
-        const coverPhotoFile = document.getElementById('coverPhoto').files[0];
-        const secondaryPhotoFiles = document.getElementById('secondaryPhotos').files;
+      const textOverview  =   `(${successCount}/${totalFiles} images enregistrées)`
+      const percentage = totalFiles > 0 ? Math.round((successCount / totalFiles) * 100) : 100;
+      
+      progressBar.style.width = `${percentage}%`;                     // Mise à jour de la barre (utilise la largeur en CSS)
+      progressText.textContent = `${percentage}% ${textOverview}`;    // Mise à jour du texte
+}
 
-        // Affichage de l'état de soumission
-        const submitBtn = event.target.querySelector('button[type="submit"]');
-        submitBtn.textContent = 'Envoi en cours...';
-        submitBtn.disabled = true;
+/**------------------------------------------------------------------ //
+* @instanceIn      {handleSaveToDrive}               ../trmdvsr-03-launch-js
+* @instanceCount   1 - unique
+* ---------------- --------------- --------------- - ---------------- //
+* @function        blobToBase64_
+* @description     Converti l'image
+*                  Fonction utilitaire pour convertir un Blob en Base64
+* ---------------- --------------- --------------- - ---------------- //
+* @param           {string}        blob            - Le blob a convertir.
+*-------------------------------------------------------------------- */
+function blobToBase64_(blob) {
 
-        // Appel de la fonction Apps Script
-        if (typeof google !== 'undefined' && google.script && google.script.run) {
-          // google.script.run.withSuccessHandler() est une bonne pratique pour gérer les réponses
-          google.script.run
-          .withSuccessHandler(function(response) {
-            // On charge la page de remerciements
-            google.script.run.withSuccessHandler(html => {
-              document.body.innerHTML = html;
-            }).showPage('remerciements');
-          })
-          .withFailureHandler(function(error) {
-            // Gérer l'échec (ex: afficher un message d'erreur)
-            console.error('Erreur lors de la soumission de l\'évaluation:', error.message);
-            // Dans une vraie app, on utiliserait une modale custom
-            submitBtn.textContent = 'Soumettre mon évaluation';
-            submitBtn.disabled = false;
-          })
-          .saveAppData(appData); // On envoie l'objet complet
-        } else {
-          // Fallback si Google Apps Script n'est pas disponible
-          console.error("L'environnement Google Apps Script n'est pas disponible.");
-        }
-      });*/ 
+      return new Promise( (resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {  
+                  const base64 = reader.result.split(',')[1];         // La chaîne commence par "data:image/png;base64,"
+                  resolve(base64);                                    // on ne garde que le Base64 pur
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+      } );
+}
+
+/* == INIT  ======================================== (EVALUATIONS) == */
+/**------------------------------------------------------------------ //
+* @instanceIn      {handlePageData}      ../trmdvsr-03-launch-js
+* ---------------- --------------- --------------- - ---------------- //
+* @function        initPageEval
+* @description     INITIALISE LA PAGE EVALUATION
+*-------------------------------------------------------------------- */
+function initPageEval () {
+
+      updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: true, log: `Init Page Evaluation...`,  
+            message:      `À vos évals... Prêt?`, 
+      });
+      
+      initPageEvalNav();                                              // Navigation
+      initPageEvalRatings();                                          // Module de Notation
+      initPageEvalPhotoUploader();                                    // Module d'Upload Photo
+      
+      updateBreadcrumb('section_q1');                                 // Affiche l'étape et met à jour l'URL
+      
+      updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: false, log: `Page Evaluation chargée`,  
+            message:      `Feu! Partez!`, 
+      });
+
+}
+
+/**------------------------------------------------------------------ //
+* @instanceIn      {initPageEval}        ../
+* ---------------- --------------- --------------- - ---------------- //
+* @function        initPageEvalNav
+* @description     INITIALISE LA NAVIGATION
+*-------------------------------------------------------------------- */
+function initPageEvalNav () {
+
+      updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: true, log: `Init Page Evaluation Nav...`,  
+            message:      `Activation du système de navigation...`, 
+      });
+      
+      const breadcrumbList = document.querySelector('.breadcrumb-nav');
+      if (breadcrumbList) {
+            breadcrumbList.addEventListener('click', navigateTo);     // Délégation d'événements pour les clics dans le fil d'Ariane
+      } else {
+            updateStatus({  conteneurID: 'eval', type: 'warn', isLoading: true, log: "Conteneur '.breadcrumb-list' introuvable.",  
+                  message:      "Fil d'Ariane introuvable.", 
+            });
+      }
+      
+      const navButtons = document.querySelectorAll('.eval-btn');      // Récupérer tous les boutons qui participent à la navigation
+      if (navButtons.length > 0) {
+            navButtons.forEach(button => {
+                  button.addEventListener('click', navigateTo);       // Chaque bouton appelle directement la fonction navigateTo
+            });
+      } else {
+            updateStatus({  conteneurID: 'eval', type: 'warn', isLoading: true, log: "Aucun bouton avec la classe '.eval-btn' trouvé.",  
+                  message:      "Aucun bouton trouvé", 
+            });
+      }
+      
+      updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: true, log: `Init Page Evaluation Nav[end]`,  
+            message:      `Système de navigation actif.`, 
+      });
+}
+
+/**------------------------------------------------------------------ //
+* @instanceIn      {initPageEval}        ../
+* ---------------- --------------- --------------- - ---------------- //
+* @function        initPageEvalRatings
+* @description     INITIALISE TOUS LES SYSTÈMES DE NOTATION D'EVALUATION FORM
+*-------------------------------------------------------------------- */
+function initPageEvalRatings() {  
+
+      updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: true, log: `Init initRatings...`,  
+            message:      `Configuration du système de notation AAAAA en cours...`, 
+      });
+      
+      initializeSectionListeners('q1', 'noteAccessibilite');          // Q1: Accessibilité
+      initializeSectionListeners('q2', 'noteApparence');              // Q2: Apparence
+      initializeSectionListeners('q3', 'noteAssise');                 // Q3: Assise
+      initializeSectionListeners('q4', 'noteAttention');              // Q4: Attentions
+      initializeSectionListeners('q5', 'noteAttente');                // Q5: Attente
+      
+      updateStatus({  conteneurID: 'eval', type: 'loading', isLoading: false, log: `Init initRatings[end]`,  
+            message:      `Initialisation du système de notation AAAAA terminée.`, 
+      });
+}
+
+/**------------------------------------------------------------------ //
+* @instanceIn    {initPageEval}        ../trmdvsr-03-launch-js
+* ---------------- --------------- --------------- - ---------------- //
+* @function      initPageEvalPhotoUploader
+* @description   INITIALISE LES LISTENERS DE LA PARTIE PHOTO UPLOAD
+* ---------------- --------------- --------------- - ---------------- //
+* @returns       [ ||null]               null si erreur
+*-------------------------------------------------------------------- */
+function initPageEvalPhotoUploader() {
+
+updateStatus({  conteneurID: "export", type: 'loading', isLoading: true, log: 'Init Module Photo Uploader...',
+message:      "Chargement du module d'export photo.", 
+});
+
+fileInput =           document.getElementById("input_photo_principale");
+previewContainer =    document.querySelector (".conteneur-image-preview");
+limitMessage =        document.getElementById("limit-message");
+//exportBtn =           document.getElementById("export-btn");
+
+cropModule =          document.getElementById("crop-module");         // Initialisation des éléments du module
+imageToCrop =         document.getElementById("image-to-crop");
+const cropAndAddBtn = document.getElementById("crop-btn-add");
+const cancelCropBtn = document.getElementById("crop-btn-cancel");
+
+if (!fileInput || !previewContainer || !limitMessage || !exportBtn || !cropModule || !imageToCrop) {
+updateStatus({  conteneurID: "export", type: 'error', isLoading: true, log: "Erreur d'initialisation : Éléments DOM critiques manquants.",
+message:      "Erreur critique.", 
+});
+return;
+}
+
+fileInput.style.opacity = 0;
+fileInput.addEventListener      ("change", handleFileSelection);      // Listener pour gérer la sélection d'image 
+initDragDropListeners();                                              // Initialisation Drag n Drop listeners
+cropAndAddBtn.addEventListener  ('click', handleCropAndAdd);
+cancelCropBtn.addEventListener  ('click', closecropModule);
+//exportBtn.addEventListener      ('click', saveThenNavigate);        // handleSaveToDrive > saveImageThenNavigateTo
+
+updateStatus({  conteneurID: "export", type: 'loading', isLoading: false, log: 'Module Photo Uploader prêt.',
+message:      "Glissez, déposez et rognez vos images avant d'exporter.", 
+});
+}
+
+/* == LISTENER  ==================================== (EVALUATIONS) == */ /*voir si utile car on peut enregistrer les */
+/**------------------------------------------------------------------ //
+* -- NOUVEAU CODE POUR LA SOUMISSION DU FORMULAIRE --
+
+document.getElementById('evaluationForm').addEventListener( 'submit', function(event) {
+      event.preventDefault(); // Empêche la soumission par défaut
+      
+      if (!appData.lieuID) {                                          // Vérifie si l'ID du lieu a bien été défini dans l'objet global
+            console.error("L'identifiant du lieu n'a pas été défini. Impossible de soumettre l'évaluation.");
+            return;
+      }
+
+      // Collecte et stockage des données dans l'objet global
+      appData.noteAccessibilite = parseInt(document.querySelector('.text-yellow-500').getAttribute('data-rating'), 10);
+      appData.phraseAccroche = document.getElementById('comment').value;
+      
+      // Optionnel: Gérer les fichiers si besoin, mais c'est une étape plus complexe
+      const coverPhotoFile = document.getElementById('coverPhoto').files[0];
+      const secondaryPhotoFiles = document.getElementById('secondaryPhotos').files;
+      
+      // Affichage de l'état de soumission
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      submitBtn.textContent = 'Envoi en cours...';
+      submitBtn.disabled = true;
+      
+      // Appel de la fonction Apps Script
+      if (typeof google !== 'undefined' && google.script && google.script.run) {
+            // google.script.run.withSuccessHandler() est une bonne pratique pour gérer les réponses
+            google.script.run
+                  .withSuccessHandler( function(response) {
+                        google.script.run.withSuccessHandler(html => {      // On charge la page de remerciements
+                              document.body.innerHTML = html;
+                        }).showPage('remerciements');
+                  } )
+                  .withFailureHandler( function(error) {
+                        console.error('Erreur lors de la soumission de l\'évaluation:', error.message); // Gérer l'échec (ex: afficher un message d'erreur)
+                        submitBtn.textContent = 'Soumettre mon évaluation'; // => modale custom ?
+                        submitBtn.disabled = false;
+                  } )
+                  .saveAppData(appData);                                    // On envoie l'objet complet
+      } else {
+            // Fallback si Google Apps Script n'est pas disponible
+            console.error("L'environnement Google Apps Script n'est pas disponible.");
+      }
+});*/ 
 /*=================================================================== */
     @description 'Fin du fichier. with care.'
     @author 'trmdvsr'
