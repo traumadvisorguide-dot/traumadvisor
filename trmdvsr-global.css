@@ -1,4 +1,4 @@
-/* Reset CSS																													*/
+/* Reset CSS														  */
 *, ::before, ::after                                            { box-sizing: border-box; border-width: 0; border-style: solid; }
 body                                                            { margin: 0; line-height: inherit; }
 blockquote, dd, dl, figure, h1, h2, h3, h4, h5, h6, hr, p, pre  { margin: 0; }
