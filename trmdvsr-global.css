@@ -2117,16 +2117,16 @@ justify-content:          space-between;
 		flex-direction:             column;
 		flex:                     	1 0 auto;                              /* grow shrink basis */
         align-items:                center;
-        height:						100%;
+        min-height:					100%;
     }       
     .composant-note .conteneur-lame.flex-col.col-first {
 		justify-content:            flex-start;
-		width:                  	var(--largeur-notede0);
+		max-width:                  var(--largeur-notede0);
 		padding-right:              var(--espacement-moyen-demi);
     }
     .composant-note .conteneur-lame.flex-col.col-last {
 		justify-content:            flex-end;
-		width:                  	var(--largeur-notea5);
+		max-width:                  var(--largeur-notea5);
 		padding-left:               var(--espacement-moyen-demi);
     }
     .composant-note .conteneur-lame.flex-col.col-middle {
