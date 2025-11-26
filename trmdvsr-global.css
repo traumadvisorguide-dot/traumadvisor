@@ -1287,12 +1287,13 @@ transition:               transform 0.3s ease-out;                            /*
 	border:                   1px solid orange;
 }
 .composant-note .conteneur-lame.flex-col.col-first,
-.composant-note .conteneur-lame.flex-col.col-last {                             /* Composant notation zones habillage visuel 'de 0... ...à 5' */
-	flex-direction:           row;
-	flex:                     1 0 auto;                                             /* grow shrink basis */
-	justify-content:          center;
-	align-items:              flex-start;
-	padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
+.composant-note .conteneur-lame.flex-col.col-last {								/* Composant notation zones habillage visuel 'de 0... ...à 5' */
+	flex-direction:			row;
+	flex:					1 0 auto;											/* grow shrink basis */
+	justify-content:		center;
+	align-items:			flex-start;
+	padding:				var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
+	border:					1px solid red;
 }
 .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
 .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 0; padding-left: 1rem;         }
