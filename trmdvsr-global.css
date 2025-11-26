@@ -1261,7 +1261,6 @@ transition:               transform 0.3s ease-out;                            /*
 }
 
 /*<!-- COMPOSANT NOTE                                   (Page Evaluation) -->*/
-
 .composant-note.conteneur-lame.flex-into-row {                                  /* classe fonctionnelle */
 background-color:         var(--blanc-trmdvsr);
 border:                   1px solid orange;
