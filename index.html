@@ -370,7 +370,7 @@
             <h3 class="trmdvsr-texte-h3">Où est cette salle d'attente?</h3>
             <input type="text"
                   id="adresseSalle"
-                  class="form-input trmdvsr-texte"  
+                  class="form-input trmdvsr-texte"  autocorrect="on"
                   placeholder="Saisissez l'adresse, rue, ville, ou code postal..." 
                   data-type="control_textbox"
                   required>  
@@ -383,7 +383,7 @@
             <h3 class="trmdvsr-texte-h3">Baptisez cette salle d'attente.</h3>
             <input type="text" 
                     id="nomSalle" 
-                    class="form-input trmdvsr-texte" 
+                    class="form-input trmdvsr-texte"  autocorrect="on"
                     aria-describedby="aide_nomSalle"
                     placeholder="Ex : Chez Doc Gynéco"
                     data-type="control_textbox"
@@ -628,7 +628,7 @@
                 <p data-maskable class="as-block">Par rapport avec le droit du trav.IA.l selon ses mots. <em>Par flemme selon nous</em>.</p>
               </hgroup>
               <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q1"></textarea>
+                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q1" spellcheck="true" autocorrect="on"></textarea>
                 <div class="conteneur-humeur" >
                   <div class="conteneur-lame flex-into-row button-multi trmdvsr-texte" id="boutons-humour-q1">
                     <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
@@ -737,7 +737,7 @@
                 <p data-maskable class="as-block">En vrai on le sait. <em>Mais on préfère ne pas vous le dire</em>.</p>
               </hgroup>
               <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q2"></textarea>
+                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q2" spellcheck="true" autocorrect="on"></textarea>
                 <div class="status-layer traum-shape overlay-avis" id="status_layer_q2">
                   <div class="status-box">
                     <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
@@ -856,7 +856,7 @@
                 <p data-maskable class="as-block"><em>Il y a aussi 50% de chance qu'elle ne le fasse pas</em>.</p>
               </hgroup>
               <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q3"></textarea>
+                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q3" spellcheck="true" autocorrect="on"></textarea>
                 <div class="status-layer traum-shape overlay-avis" id="status_layer_q3">
                   <div class="status-box">
                     <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
@@ -973,7 +973,7 @@
                 <p>Validez ou réécrivez sa proposition, <em>et ce nom</em>.</p> 
               </hgroup>
               <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q4"></textarea>
+                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q4" spellcheck="true" autocorrect="on"></textarea>
                 <div class="status-layer traum-shape overlay-avis" id="status_layer_q4">
                   <div class="status-box">
                     <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
@@ -1091,7 +1091,7 @@
                 <p data-maskable class="as-block"><em>Il y a aussi 50% de chance qu'elle ne le fasse pas</em>.</p>
               </hgroup>
               <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q5"></textarea>
+                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q5" spellcheck="true" autocorrect="on"></textarea>
                 <div class="status-layer traum-shape overlay-avis" id="status_layer_q5">
                   <div class="status-box">
                     <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
@@ -1131,7 +1131,7 @@
               </hgroup>
               <div class="bonus-zone-bouton conteneur-flex flex-col col-last">
                 <label class="bonus-toggle-switch" data-action-group="bonus-selection" aria-label="Accordez-vous un point bonus ?">
-                  <input type="checkbox" id="q5-bonus"> 
+                  <input type="checkbox" id="q5-bonus" autocorrect="on"> 
                   <span class="bonus-slider"></span>
                   <span class="bonus-text trmdvsr-sstexte bonus-text-off"><i>Non, vraiment... non.<br/>Pas pour cette fois.</i></span>
                   <span class="bonus-text trmdvsr-sstexte bonus-text-on"><i>Oui, un grand oui.<br/>Ce bonus est une consécration.</i></span>
@@ -1178,6 +1178,7 @@
                     id="input_photo_upload" 
                     name="photo_upload" 
                     accept="image/*" 
+                    
                     multiple 
                     required 
                     aria-describedby="aide_photo_upload" >
@@ -1241,7 +1242,7 @@
                 <p data-maskable class="as-block">Par rapport avec le droit du trav.IA.l selon ses mots. <em>Par flemme selon nous</em>.</p>
               </hgroup>
               <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="accroche-zone-creation"></textarea>
+                <textarea class="trmdvsr-texte-chapo traum-shape" id="accroche-zone-creation" spellcheck="true" autocorrect="on"></textarea>
                 <div class="conteneur-humeur" >
                   <div class="conteneur-lame flex-into-row button-multi trmdvsr-texte" id="boutons-humour-accroche">
                     <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>

@@ -87,7 +87,7 @@ menu, ol, ul                                                    { margin: 0; pad
 } 
 
 .trmdvsr-texte-h2 {
-	//margin-bottom:            var(--espacement-court);
+	/* margin-bottom:            var(--espacement-court); */
 	text-align:               left;
 	font-size:                var(--taille-h2);
 	font-weight:              var(--graisse-h2);
@@ -217,7 +217,7 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }          /* => INTE
 	margin:                   0;
 	padding:                  0;
 	background-color:         #FFF;
-	//overflow:                 hidden;                                 	/* ‼️POUR DEBUG => A REACTIVER‼ */
+	/*overflow:                 hidden; */                                	/* ‼️POUR DEBUG => A REACTIVER‼ */
 	box-shadow: 
 		0 20px 25px -5px rgba(0, 0, 0, 0.1),                              /* Ombre 1: Large et plus opaque */
 		0 10px 10px -5px rgba(0, 0, 0, 0.04);                             /* Ombre 2: Petite et moins opaque */
@@ -230,7 +230,7 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }          /* => INTE
 	top:                      0;
 	left:                     0;
 	z-index:                  100;
-	//box-sizing:               border-box;                             /* Garde les enfants à l'intérieur */
+	/*box-sizing:               border-box;*/                             /* Garde les enfants à l'intérieur */
 	width:                    var(--largeur-conteneur-max);
 	height:                   auto;
 	margin:                   0;
@@ -250,7 +250,7 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }          /* => INTE
 }
 .page.transition-out {                                                /* => ANIMATION */
 	z-index:                  5;                                        /* z-index ex-actif recule >> 5 pour ne pas se faire écraser */
-	//transform:                translateX(5%);                         /* Position cible : geré en JS */
+	/*transform:                translateX(5%); */                        /* Position cible : geré en JS */
 	opacity:                  0.9;                                      /* Opacité cible : 80% */
 	transition:               transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease-in-out;
 	will-change:              transform, opacity;                       /* Optimisation de performance */
@@ -261,7 +261,7 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }          /* => INTE
 	width:                    var(--largeur-conteneur-max);
 	height:                   100%;
 	margin:                   0px;
-	padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large); // ↑ | ↔ | ↓ (16|24|10)
+	padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large); /* ↑ | ↔ | ↓ (16|24|10) */
 	transition:               all 0.5s ease-in-out;
 	border:                   1px dotted purple;
 }
@@ -294,7 +294,7 @@ footer .trmdvsr-sstexte { text-align: right; color: var(--blanc-trmdvsr); } /* A
 	gap:                      0;
 	padding:                  0;                                        /* surcharge pt:espMoy; plr:espLarg; pb:espCou; */
 	background-color:         #FFF;
-	//border:                   1px dashed red;                         /* POUR DEBUG */
+	/*border:                   1px dashed red; */                        /* POUR DEBUG */
 }
 
 .conteneur-lame.flex-col {                                            /* => COMMUN COL-FIRST/COL-MIDDLE/COL-LAST */
@@ -632,8 +632,8 @@ img.hero-image-container {
 .module-overlap .bloc-media .bloc-badge {
 	display:                  flex;
 	align-items:              center;
-	width:                    auto; //8rem;
-	height:                   auto; //2rem;
+	width:                    auto; /* 8rem; */
+	height:                   auto; /* 2rem; */
 	padding:                  0.75rem 1rem;
 	background-color:         black;
 	border-radius:            var(--bordure-radius);
@@ -762,7 +762,7 @@ img.hero-image-container {
 .traum-divider {                                                      /* IDENTIQUE MOBILE & DESKTOP */
 	width:                    calc( 100% - var(--espacement-large) );
 	height:                   1px;
-	margin:                   var(--espacement-moyen) 0 var(--espacement-moyen) var(--espacement-large); // espace left (t:r:b:l)
+	margin:                   var(--espacement-moyen) 0 var(--espacement-moyen) var(--espacement-large); /* espace left (t:r:b:l) */
 	padding:                  0;
 	background-color:         var(--gris-trmdvsr-clair); 
 }
@@ -931,7 +931,7 @@ img.hero-image-container {
 	width:                    100%;
 	padding:                  8px;
 	border: 1px solid red;
-	//background-color:         var(--gris-trmdvsr-clair);
+	/* background-color:         var(--gris-trmdvsr-clair); */
 }
 
 .nav-globale a {
@@ -947,7 +947,7 @@ img.hero-image-container {
 .nav-globale .active a {
 	color:                    var(--bleu-trmdvsr-pur);
 	position:                 relative;
-	//disabled:                 true;
+	/* disabled:                 true; */
 }
 .nav-globale .active a::after {                                       /* Bande sous l'item menu actif */
 	content:                  '';
@@ -963,6 +963,7 @@ img.hero-image-container {
 /* GuidedMode                                             (COMPOSANT) */
 /* .composant-aide => classe sémantique et fonctionnelle. Associée à synchroniserToutesLesInstances() & initialiserModeGuide() et l'eventListener sur tous les groupe-boutons-radio des blocs contenant .composant-aide. C'est un Crochet (Hook) Fonctionnel. */
 .conteneur-lame.flex-col.col-last.composant-aide {                    /* Définition du conteneur réutilisable */
+	appearance:       		  none;
 	-webkit-appearance:       none;                                   /* Pour Chrome/Safari */
 	display:                  flex;
 	flex:                     min-content;
@@ -1019,7 +1020,7 @@ img.hero-image-container {
 	position:                 relative;                               /* !important */
 }
 .status-layer {                                                       /* LAYER surchargé pour W/H, background-color */
-	display:                  none;//flex;
+	display:                  none;									  /* flex; */
 	flex-direction:           column;
 	justify-content:          center;
 	align-items:              center;
@@ -1027,8 +1028,8 @@ img.hero-image-container {
 	top:                      0;
 	left:                     0;
 	z-index:                  1000;                                   /* Devant tout */
-	//width:                    100vw;
-	//height:                   100vh;
+	/* width:                    100vw; */
+	/* height:                   100vh; */
 	margin:                   0px;
 	padding:                  0px;
 	background-color:         var(--bleu-trmdvsr-pur);
@@ -1072,6 +1073,7 @@ img.hero-image-container {
 }
 /*------------------------------------------------- CLASSES DE TEXTES */
 .status-layer .status-message {
+	appearance:       		  none;
 	-webkit-appearance:       none;                                   /* Pour Chrome/Safari */
 	margin-top:               calc(var(--largeur-loader) * 0.2);
 	text-align:               center;                                 /* Assure que le texte est centré dans sa propre boîte */
@@ -1093,10 +1095,10 @@ img.hero-image-container {
 	/* styles */
 }
 .progress-bar {
-	/* styles */
+	display: 				  block;
 }
 .progress-text {
-	/* styles */
+	display: 				  block;
 }
 /* MODULE NAV                              (MOBILE FIRST- Evaluation) */
 nav .conteneur-lame { padding-bottom: var(--espacement-court); }
@@ -1440,8 +1442,6 @@ display:                    initial;                                  /* Forcer 
 
 .composant-avis .avis-zone-creation textarea.traum-shape {                    /* Bloc de texte éditable trmdvsr-texte */
 resize:                     none;
-spellcheck:                 true;
-autocorrect:                on;
 width:                      calc(var(--largeur-tier-max) * 2);                /* Tiers de largeur conteneur - marge interieures sur les côtés */
 height:                     calc(var(--largeur-tier-max) * 1.5);
 padding:                    10px;
@@ -1469,7 +1469,7 @@ background-color:           rgba(255, 255, 255, 0.5);
 .composant-avis .avis-zone-creation .conteneur-humeur {                         /* Composant humeur */
 margin:                     0;
 padding:                    0;
-witdh:                      100%;
+width:                      100%;
 height:                     calc(  ( var(--largeur-logo-bouton) * 1.1089 ) + var(--espacement-court) + var(--espacement-moyen)  );
 }
 
@@ -2114,7 +2114,8 @@ justify-content:          space-between;
       .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5); }
       
       .composant-note .conteneur-lame.flex-col.col-middle {
-            /* width:                    ; */
+			background-color: red;
+		/*width:                    ; */
       }
 }
 
@@ -2143,9 +2144,10 @@ justify-content:          space-between;
 	60%   { transform: translateX(10%)  rotate(2deg);   }
 	75%   { transform: translateX(-5%)  rotate(-1deg);  }
 	100%  { transform: translateX(0%);                  }
-      }
+}
 /*=================================================================== */
-	@description 'Fin du fichier. with care.'
-  @author 'trmdvsr'
-  @version 25.10.09 (23:16)
+	@document 'Fin du fichier. with care.'
+	@author 'trmdvsr'
+	@version 25.10.09 (23:16)
+	
 /*=================================================================== */
