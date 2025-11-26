@@ -1290,6 +1290,8 @@ transition:               transform 0.3s ease-out;                            /*
 .composant-note .conteneur-lame.flex-col.col-last {								/* Composant notation zones habillage visuel 'de 0... ...à 5' */
 	flex-direction:			row;
 	flex:					1 0 auto;											/* grow shrink basis */
+	width:					100%;
+	height:					auto;
 	justify-content:		center;
 	align-items:			flex-start;
 	padding:				var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
@@ -2119,12 +2121,12 @@ justify-content:          space-between;
     }       
     .composant-note .conteneur-lame.flex-col.col-first {
 		justify-content:            flex-start;
-		min-width:                  var(--largeur-notede0);
+		width:                  	var(--largeur-notede0);
 		padding-right:              var(--espacement-moyen-demi);
     }
     .composant-note .conteneur-lame.flex-col.col-last {
 		justify-content:            flex-end;
-		min-width:                  var(--largeur-notea5);
+		width:                  	var(--largeur-notea5);
 		padding-left:               var(--espacement-moyen-demi);
     }
     .composant-note .conteneur-lame.flex-col.col-middle {
