@@ -1261,6 +1261,27 @@ transition:               transform 0.3s ease-out;                            /*
 }
 
 /*<!-- COMPOSANT NOTE                                   (Page Evaluation) -->*/
+/*<div class="composant-note conteneur-lame flex-into-row">
+	  <div class="conteneur-lame flex-col col-first">
+		<img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
+		<div class="trmdvsr-sstexte"><p>...pour un dernier étage sans ascenseur.</p></div>
+	  </div>
+	  <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
+		<label class="rating-bar trmdvsr-texte" for="eval-q1"><em><b>♿ Sélectionnez une note</b></em></label>
+		<div data-action="rating-selection" data-action-group="rating-selection" class="rating-bar" >
+		  <input type="radio" name="eval-q1" id="q1-r5" value="5" required />
+		  <label class="trmdvsr-radio-label" for="q1-r5" title="Excellent (5/5)"></label>
+		</div>
+		<div class="rating-bar trmdvsr-sstexte">
+		  <label for="q1-r5">5</label>
+		</div>
+	  </div>
+	  <div class="conteneur-lame flex-col col-last">
+		<img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
+		<div class="trmdvsr-sstexte"><p>...si c'est <i>the place to</i> attendre sans problème d’accès.</p></div>
+	  </div>
+</div>
+*/
 .composant-note.conteneur-lame.flex-into-row {                                  /* classe fonctionnelle */
 	background-color:         var(--blanc-trmdvsr);
 	border:                   1px solid orange;
@@ -1268,7 +1289,7 @@ transition:               transform 0.3s ease-out;                            /*
 .composant-note .conteneur-lame.flex-col.col-first,
 .composant-note .conteneur-lame.flex-col.col-last {                             /* Composant notation zones habillage visuel 'de 0... ...à 5' */
 	flex-direction:           row;
-	flex:                     auto;                                             /* grow shrink basis */
+	flex:                     1 0 auto;                                             /* grow shrink basis */
 	justify-content:          center;
 	align-items:              flex-start;
 	padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
@@ -2088,26 +2109,27 @@ justify-content:          space-between;
       }
       
       /* ------------------------------------------------------------ Note */
-      .composant-note .conteneur-lame.flex-col.col-first,  
-      .composant-note .conteneur-lame.flex-col.col-last {
-            flex-direction:             column;
-            align-items:                center;
-            height:						100%;
-      }       
-      .composant-note .conteneur-lame.flex-col.col-first {
-            justify-content:            flex-start;
-            min-width:                  var(--largeur-notede0);
-            padding-right:              var(--espacement-moyen-demi);
-      }
-      .composant-note .conteneur-lame.flex-col.col-last {
-            justify-content:            flex-end;
-            min-width:                  var(--largeur-notea5);
-            padding-left:               var(--espacement-moyen-demi);
-      }
-      .composant-note .conteneur-lame.flex-col.col-middle {
-			background-color: red;
+	.composant-note .conteneur-lame.flex-col.col-first,  
+    .composant-note .conteneur-lame.flex-col.col-last {
+		flex-direction:             column;
+		flex:                     	1 0 auto;                              /* grow shrink basis */
+        align-items:                center;
+        height:						100%;
+    }       
+    .composant-note .conteneur-lame.flex-col.col-first {
+		justify-content:            flex-start;
+		min-width:                  var(--largeur-notede0);
+		padding-right:              var(--espacement-moyen-demi);
+    }
+    .composant-note .conteneur-lame.flex-col.col-last {
+		justify-content:            flex-end;
+		min-width:                  var(--largeur-notea5);
+		padding-left:               var(--espacement-moyen-demi);
+    }
+    .composant-note .conteneur-lame.flex-col.col-middle {
+		background-color: red;
 		/*width:                    ; */
-      }
+    }
 }
 
 /* ANIMATIONS CSS                                            (GLOBAL) */
