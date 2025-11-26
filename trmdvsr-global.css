@@ -1270,7 +1270,7 @@ border:                   1px solid orange;
 .composant-note .conteneur-lame.flex-col.col-last {                             /* Composant notation zones habillage visuel 'de 0... ...à 5' */
 flex-direction:           row;
 justify-content:          center;
-align-items:              flex-end;
+align-items:              flex-start;
 flex:                     auto;                                               /* grow shrink basis */
 padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
 }
@@ -1354,8 +1354,6 @@ color:                      var(--blanc-trmdvsr);
 }
 
 /*<!-- BOUTONS          (Page Evaluation)                                 --> */
-
-/*------------------------------------------------------------------------------/*
 /* RADIO => Labels : Gestion Notes  */
 
 .composant-note .conteneur-lame.flex-col.col-middle .rating-bar input[type="radio"] {
@@ -2095,8 +2093,7 @@ justify-content:          space-between;
       .composant-note .conteneur-lame.flex-col.col-last {
             flex-direction:             column;
             align-items:                center;
-            flex-grow:                  1;                            /* S'étire pour prendre l'espace restant */
-            padding:                    var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
+            height:						100%;
       }       
       .composant-note .conteneur-lame.flex-col.col-first {
             justify-content:            flex-start;
@@ -2108,11 +2105,6 @@ justify-content:          space-between;
             min-width:                  var(--largeur-notea5);
             padding-left:               var(--espacement-moyen-demi);
       }
-      .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
-      .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 1rem; padding-left: 0; }
-      .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: var(--largeur-notede0); }
-      .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5); }
-      
       .composant-note .conteneur-lame.flex-col.col-middle {
 			background-color: red;
 		/*width:                    ; */
