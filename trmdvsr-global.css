@@ -1931,6 +1931,192 @@ justify-content:          space-between;
 }
 
 } */
+/* RÈGLES - ADAPTATIVE @MEDIA                      (GLOBAL X DESKTOP) */
+@media (min-width: 60rem) {                                           /* Comportement à partir d'au moins 768px (a.k.a. pour desktop) */
+      .insta-desktop            { display: block;       }             /* Affiche le bouton Desktop du Header */
+      .insta-mobile             { display: none;        }             /* Cache le bouton Mobile du Footer */
+      .menu-toggle              { display: none;        }             /* Menu BURGER Masqué sur desktop */
+      
+      .nav-globale {
+            flex-direction:           row;
+            right:                    180px;                          /* clamp(116.5px, -5.9vw + 127.83px, 186px);         /* Logo + 20px */
+            top:                      unset;
+            bottom:                   10px;                           /* var(--taille-sstexte); */
+            gap:                      5px;
+            width:                    13rem;
+            height:                   auto;
+            max-height:               auto;                           /* Masquer par défaut  */
+            padding:                  0;
+            margin:                   0;
+            opacity:                  1;
+            overflow:                 visible;
+            background-color:         unset;
+            box-shadow:               none;
+      }
+      .nav-globale.trmdvsr-texte-h4 {
+            list-style:               none;
+            text-align:               center;
+            font-size:                calc(var(--taille-sstexte) * 0.75);                 /* var(--taille-h4); */
+            letter-spacing:           -0.0269rem;
+      }
+      
+      .nav-globale li {
+            width:                    100%;
+            text-align:               center;
+            padding:                  0;
+            background-color:         initial;
+            border:                   none;
+      }
+      
+      .nav-globale .active a {
+            color:                    var(--blanc-trmdvsr);
+            position:                 relative;
+      }
+      
+      .nav-globale .active a::after {                                 /* Bande sous l'item menu actif */
+            content:                  '';
+            position:                 absolute;
+            bottom:                   -5px;
+            left:                     0;
+            width:                    100%;
+            height:                   2px;
+            background-color:         var(--blanc-trmdvsr);
+            border-radius:            2px;
+      }
+      
+      /* ------------------------------------------------------------ */
+      header.conteneur-lame.flex-trmdvsr-id {
+            justify-content:          space-between;                  /* ↔ | mobile: flex-start */
+            align-items:              flex-end;                       /* ↕ | mobile: flex-start */
+            padding:                  var(--espacement-court) 0;      /* ↕ ↔ */
+      }
+      
+      footer.conteneur-lame.flex-trmdvsr-id {
+            justify-content:          flex-start;                     /* ↕ | mobile: flex-start */
+            align-items:              flex-end;                       /* ↔ | mobile: center */
+      }
+      /* ------------------------------------------------------------ */
+      .conteneur-lame.flex-into-row.button-multi,
+      .conteneur-lame.flex-into-row { 
+            flex-direction:         row; 
+            vertical-align:         center;
+            justify-content:        space-between;
+            justify-items:          stretch;
+            align-items:            stretch;
+      }
+      /* ------------------------------------------------------------ */
+      .trmdvsr-button {                                               /* BASE  */
+            display:                  inline-flex;
+            justify-content:          center;
+            align-items:              center;
+            gap:                      calc( var(--espacement-court) / 1.5 );              /* espace entre le texte et le picto */
+            width:                    auto;                           /* MOBILE : Prend toute la largeur disponible */
+            height:                   var(--largeur-logo-bouton);
+            padding:                  0 1.25rem;                      /* ↕: 14px | ↔: 18px >> Standard */
+            font-weight:              var(--graisse-h2);              /* 600; Semi-gras Note :  taille typo 1.1 */
+            color:                    var(--bleu-trmdvsr-clair);      /* iOS: #007aff */
+            --cut-size:               var(--logo-tronksize-court);    /* ‼️ voir si on remet bouton tronqué sans ombre ou boutons ombré */
+            cursor:                   pointer;
+            outline:                  none;                           /* Supprime le contour bleu au focus */
+            border-radius:            0.5rem 0.5rem 0.75rem;          /* (haut gauche) (haut droite & bas gauche) (bas droite) */
+            background-color:         #FFF;
+            box-shadow:                                               /* Ombres Style iOS */
+            0 1px 2px rgba(0, 0, 0, 0.05),                            /* Ombre très légère et proche (pour la netteté) */
+            0 4px 12px rgba(0, 0, 0, 0.08);                           /* Ombre plus diffuse et éloignée (pour la profondeur) */
+            transition:               all 0.2s ease-out;
+      }
+      /* ------------------------------------------------------------ */
+      .conteneur-lame.flex-col.col-first { 
+            padding-top:            var(--espacement-large);
+            padding-right:          var(--espacement-moyen-demi);     /* Partage l'espace avec la colonne à sa droite */
+            padding-left:           var(--espacement-large); 
+            padding-bottom:         var(--espacement-tres-large); 
+      }
+      .conteneur-lame.flex-col.col-middle {                           /* Partage l'espace avec les colonnes des 2 côtés /* ↕ ↔ */
+            padding: var(--espacement-large) var(--espacement-moyen-demi) var(--espacement-tres-large);
+      }
+      .conteneur-lame.flex-col.col-last {                             /* Partage l'espace avec la colonne à sa gauche */
+            padding-top:            var(--espacement-large);
+            padding-right:          var(--espacement-large);
+            padding-left:           var(--espacement-moyen-demi); 
+            padding-bottom:         var(--espacement-tres-large);
+      }
+      /* ------------------------------------------------------------ Hero */
+      .conteneur-lame.flex-into-row.trmdvsr-superselect {
+            flex-direction:         row;
+      }
+      /* ------------------------------------------------------------ Testimonial */
+      .carousel-temoignage.conteneur-lame {
+            justify-content:        center;                           /* Centrage des cartes sur grand écran */
+            scroll-snap-type:       none;
+      }
+      /* ------------------------------------------------------------ Vision */
+      .module-bigpic .conteneur-lame.flex-col.col-first { flex: 1; }
+      .module-bigpic .conteneur-lame.flex-col.col-last  { flex: 2; }
+      
+      /* ------------------------------------------------------------ Overlap */
+      .module-overlap { 
+            flex-direction:           row-reverse;                    /* => Place le premier bloc à droite */
+            align-items:              flex-end;                       /* => aligne vers le bas */
+            gap:                      25%;                            /* => Lié aux tailles des colonnes */
+      }
+      .module-overlap .flot-droite,
+      .module-overlap .flot-gauche { flex: 1 0 37.5%; }               /* grow shrink basis */
+      .module-overlap .flot-centre {
+            z-index:                  5; 
+            position:                 absolute;
+            top:                      50%;
+            left:                     50%;
+            width:                    16rem;                          /* Σh <= enfants */
+            height:                   27.653rem;                      /* Σh <= enfants */
+            transform:                translateX(-50%) translateY(-50%);                /* Pour centrage parfait */
+      }
+      .module-overlap .bloc-media .visuel-ambition {
+            top:                      6rem;
+            left:                     0;
+      }
+      .module-overlap .bloc-media .visuel-vision {
+            top:                      0;
+            left:                     6rem;
+      }
+      .module-overlap .bloc-media .bloc-badge.badge-ambition {
+            position:                 absolute;
+            bottom:                   1rem;
+            left:                     1rem;
+      }
+      .module-overlap .bloc-media .bloc-badge.badge-vision {
+            position:                 absolute;
+            top:                      1rem;
+            left:                     5rem;
+      }
+      
+      /* ------------------------------------------------------------ Note */
+      .composant-note .conteneur-lame.flex-col.col-first,  
+      .composant-note .conteneur-lame.flex-col.col-last {
+            flex-direction:             column;
+            align-items:                center;
+            flex-grow:                  1;                            /* S'étire pour prendre l'espace restant */
+            padding:                    var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
+      }       
+      .composant-note .conteneur-lame.flex-col.col-first {
+            justify-content:            flex-start;
+            min-width:                  var(--largeur-notede0);
+            padding-right:              var(--espacement-moyen-demi);
+      }
+      .composant-note .conteneur-lame.flex-col.col-last {
+            justify-content:            flex-end;
+            min-width:                  var(--largeur-notea5);
+            padding-left:               var(--espacement-moyen-demi);
+      }
+      .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
+      .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 1rem; padding-left: 0; }
+      .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: var(--largeur-notede0); }
+      .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5); }
+      
+      .composant-note .conteneur-lame.flex-col.col-middle {
+            /* width:                    ; */
+      }
+}
 
 /* ANIMATIONS CSS                                            (GLOBAL) */
 @keyframes spin {
