@@ -1262,16 +1262,16 @@ transition:               transform 0.3s ease-out;                            /*
 
 /*<!-- COMPOSANT NOTE                                   (Page Evaluation) -->*/
 .composant-note.conteneur-lame.flex-into-row {                                  /* classe fonctionnelle */
-background-color:         var(--blanc-trmdvsr);
-border:                   1px solid orange;
+	background-color:         var(--blanc-trmdvsr);
+	border:                   1px solid orange;
 }
 .composant-note .conteneur-lame.flex-col.col-first,
 .composant-note .conteneur-lame.flex-col.col-last {                             /* Composant notation zones habillage visuel 'de 0... ...à 5' */
-flex-direction:           row;
-justify-content:          center;
-align-items:              flex-start;
-flex:                     auto;                                               /* grow shrink basis */
-padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
+	flex-direction:           row;
+	flex:                     auto;                                             /* grow shrink basis */
+	justify-content:          center;
+	align-items:              flex-start;
+	padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
 }
 .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
 .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 0; padding-left: 1rem;         }
