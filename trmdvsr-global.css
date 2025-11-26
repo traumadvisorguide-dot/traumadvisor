@@ -1249,7 +1249,7 @@ border: 2px dotted red;
 display:                  flex;
 flex-direction:           column;
 flex:                     0 0 var(--largeur-eval-item);                       /* Coeur du layout : section = largeur max - les marges */
-width:                    var(--largeur-eval-item);
+/*width:                    var(--largeur-eval-item);*/
 scroll-snap-align:        center;                                             /* Définit le point d'accroche pour scroll-snap */
 background-color:         var(--blanc-trmdvsr); 
 border-radius:            var(--bordure-radius);
