@@ -219,8 +219,6 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 	will-change:					transform, opacity;											/* Optimise la perf */
 }
 .page.active {																					/* => ANIMATION */
-	display:						block;
-	z-index:						100;														/* z-inedx focus >> 20 */
 	transform:						translateX(0);												/* Position cible: centre */
 	opacity:						1;
 	background-color:				red;
