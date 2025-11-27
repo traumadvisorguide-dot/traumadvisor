@@ -97,8 +97,6 @@ function showPage(nwPgID = '', nwSecIndx = null) {
         if (!curPg) {                                                // A. => Cas Initialisation
             console.log( `./📄⚙️.Run-ng |showPage : Pas de page en cours => Init page: nwPg.id=${nwPg.id}` );
             nwPg.element.addEventListener('transitionend', completeTransition, { once: true });
-            nwPg.element.style.transition = 'none';                  // Désactive temporairement pour éviter flickering
-            nwPg.element.style.transform = `translateX(100%)`;       // Position de DÉPART (hors écran)
             updateSPA_Height_(nwPg.id);                              // Lance MaJ hauteur en meme temps
             
             requestAnimationFrame(() => {                                 // 2. Lancement des transitions après repaint                
