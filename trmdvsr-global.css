@@ -1,9 +1,9 @@
-/* Reset CSS														  							*/
+/* Reset CSS ================================================================================== */
 *, ::before, ::after                                            { box-sizing: border-box; border-width: 0; border-style: solid; }
 body                                                            { margin: 0; line-height: inherit; }
 blockquote, dd, dl, figure, h1, h2, h3, h4, h5, h6, hr, p, pre  { margin: 0; }
 menu, ol, ul                                                    { margin: 0; padding: 0; list-style: none; }
-/* Variables globales															(MOBILE FIRST)  */
+/* Variables globales ========================================================= (MOBILE FIRST)  */
 :root {
 	--bleu-trmdvsr-pur:				#203c85;
 	--bleu-trmdvsr-moyen:			#3968de;
@@ -72,8 +72,7 @@ menu, ol, ul                                                    { margin: 0; pad
 	--url-visuel-fauteuil:			url('https://i.imgur.com/2xmmReX.png');
 	--url-visuel-accueil:			url('https://i.imgur.com/LILnWVO.png');						/* 1125px × 2436px | ratio:2,1653333333 */
 }
-
-/* Textes																			  (GLOBAL)  */ 
+/* Textes =========================================================================== (GLOBAL)  */
 .trmdvsr-texte-h1 {
 	margin-bottom:					var(--espacement-court);
 	font-size:						var(--taille-h1);
@@ -164,8 +163,7 @@ ol { list-style-type: decimal; }																/* Rétablit l'affichage des chi
 	padding-bottom:					var(--espacement-court);
 }
 .etapes-creation li { font-weight: bold; }														/* Styles pour les éléments de la liste */
- 
-/* Architecture																		  (GLOBAL)  */
+/* Architecture ====================================================================== (GLOBAL) */
 html { width: 100%; height: 100%; margin: 0px; padding: 0px; }									/* IDENTIQUE MOBILE & DESKTOP */
 body.trmdvsr-app-structure {																	/* IDENTIQUE MOBILE & DESKTOP : 1 OCCU. <body> */
 	display:						flex;														/* F*ckin Footer */
@@ -188,40 +186,37 @@ body.is-loading {																				/* => INTERACTION : Désactive l'interactio
 [data-maskable] { display: none; }																/* => INTERACTION : Sélecteurs d'attribut : Masque 'guidedMode' est off */
 body.guidedMode [data-maskable].as-block  { display: block; }
 body.guidedMode [data-maskable].as-flex   { display: flex; }
-
-.conteneur-spa-global {                                               /* div globale S. P. A. : 1 occ. (mention x2 ../trmdvsr-js) */
-	position:                 relative;                                 /* reférentiel pour les 'pages' sur les <main> */
-	box-sizing:               border-box;
-	width:                    100%;
-	max-width:                var(--largeur-conteneur-max);             /* clamp => fluide */
-	height:                   var(--hauteur-content);
-	margin:                   0;
-	padding:                  0;
-	background-color:         #FFF;
-	/*overflow:                 hidden; */                                	/* ‼️POUR DEBUG => A REACTIVER‼ */
-	box-shadow: 
-		0 20px 25px -5px rgba(0, 0, 0, 0.1),                              /* Ombre 1: Large et plus opaque */
-		0 10px 10px -5px rgba(0, 0, 0, 0.04);                             /* Ombre 2: Petite et moins opaque */
-	transition:               height 1s ease-in-out, width 1s ease-out;
+.conteneur-spa-global {																			/* div globale S. P. A. : 1 occ. (mention x2 ../trmdvsr-js) */
+	position:						relative;													/* reférentiel pour les 'pages' sur les <main> */
+	box-sizing:						border-box;
+	width:							100%;
+	max-width:						var(--largeur-conteneur-max);								/* clamp => fluide */
+	height:							var(--hauteur-content);
+	margin:							0;
+	padding:						0;
+	background-color:				#FFF;
+	overflow:						hidden;														/* ‼️POUR DEBUG => A REACTIVER‼ */
+	box-shadow:						0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	transition:						height 1s ease-in-out, width 1s ease-out;
 }
-/*--------------------------------------------------------- 	[PAGES]	*/
-.page {                                                               /* Styles pour les Pages <main> (Transitions Latérales) */
-	display:                  block;
-	position:                 absolute;
-	top:                      0;
-	left:                     0;
-	z-index:                  100;
-	box-sizing:               border-box;
-	width:                    var(--largeur-conteneur-max);
-	height:                   auto;
-	margin:                   0;
-	padding:                  0 0 var(--espacement-large);
-	background-color:         #FFF;
-	box-shadow:               -10px 0px 20px -5px rgba(var(--gris-trmdvsr-fonce-RGB), 0.4);
-	transform:                translateX(100%);                         /* positionne la page à droite */
-	opacity:                  0;
-	transition:               transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
-	will-change:              transform, opacity;                       /* Optimise la perf */
+/*------------------------------------------------------------------------------------- [PAGES] */
+.page {
+	display:						none;
+	position:						absolute;
+	top:							0;
+	left:							0;
+	z-index:						100;
+	box-sizing:						border-box;
+	width:							var(--largeur-conteneur-max);
+	height:							auto;
+	margin:							0;
+	padding:						0 0 var(--espacement-large);
+	background-color:				#FFF;
+	box-shadow:						-10px 0px 20px -5px rgba(var(--gris-trmdvsr-fonce-RGB), 0.4);
+	transform:						translateX(100%);                         /* positionne la page à droite */
+	opacity:						0;
+	transition:						transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
+	will-change:					transform, opacity;                       /* Optimise la perf */
 }
 .page.active {                                                        /* => ANIMATION */
 	display:                  block;
@@ -231,7 +226,7 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 }
 .page.transition-out {                                                /* => ANIMATION */
 	z-index:                  5;                                        /* z-index ex-actif recule >> 5 pour ne pas se faire écraser */
-	/*transform:                translateX(5%); */                        /* Position cible : geré en JS */
+	transform:                translateX(5%);                       /* Position cible : geré en JS */
 	opacity:                  0.9;                                      /* Opacité cible : 80% */
 	transition:               transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease-in-out;
 	will-change:              transform, opacity;                       /* Optimisation de performance */
