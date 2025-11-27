@@ -69,8 +69,7 @@ function showPage(nwPgID = '', nwSecIndx = null) {
             console.error( `📄❌.if-ed |showPage : nwPg '${nwPgID}' introuvable.` );
             return;
         }
-        
-        console.log( `./📄⚙️.Run-ng |showPage: nwPg.id:${nwPg.id} & nwPg.hasSub:${nwPg.hasSub}` );
+        console.log( `./📄⚙️.Run-ng |showPage: nwPg.id: ${nwPg.id} & nwPg.hasSub: ${nwPg.hasSub}` );
         const targetSecIndx = nwSecIndx ?? nwPg.curSecIndx ?? 0;      // =nwSecIndx sinon =curSecIndx sinon =0 
         nwPg.curSecIndx = targetSecIndx;                              // 🛟 Attribue le curSecIndx
         
@@ -87,20 +86,30 @@ function showPage(nwPgID = '', nwSecIndx = null) {
         const completeTransition = (event) => {                       // <= appelé à la fin de l'apparition de la Nouvelle Page
             if (event.target !== nwPg.element) return;
             nwPg.element.removeEventListener('transitionend', completeTransition);
-            nwPg.element.classList.remove('transition-in', 'active-page-initial');  // Supprime la classe d'entrée
             curPgID = nwPgID;                                         // 🛟 Enregistre la nouvelle page active
             activateSectionIfNeeded();                                // Active la section si besoin
             isTrnstng = false;                                        // 🚩 Désactive le flag (centralisé)
             console.log( `.../📄✅.--End |showPage => Transition complete: ${curPgID}` );
         };
         
-        const curPg = Object.values(pages).find(p => p.id === curPgID);  
-        
-        if (!curPg) {                                                 // A. => Cas Initialisation
+        const curPg = Object.values(pages).find(p => p.id === curPgID);
+        if (!curPg) {                                                // A. => Cas Initialisation
             console.log( `./📄⚙️.Run-ng |showPage : Pas de page en cours => Init page: nwPg.id=${nwPg.id}` );
             nwPg.element.addEventListener('transitionend', completeTransition, { once: true });
-            nwPg.element.classList.add('active');                     // => classe contient nouvelle position > lance anim
-            updateSPA_Height_(nwPg.id);                               // Lance MaJ hauteur en meme temps
+            nwPg.element.style.transition = 'none';                  // Désactive temporairement pour éviter flickering
+            nwPg.element.style.transform = `translateX(100%)`;       // Position de DÉPART (hors écran)
+            nwPg.element.style.display = 'block';                    // Rend la nouvelle page visible
+            nwPg.element.classList.add('active');                    // => classe contient nouvelle position > lance anim
+            updateSPA_Height_(nwPg.id);                              // Lance MaJ hauteur en meme temps
+            
+            requestAnimationFrame(() => {                                 // 2. Lancement des transitions après repaint
+                requestAnimationFrame(() => {
+                    console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 1 - Lancement transitions`);
+                    nwPg.element.style.transition = 'transform 0.5s ease-out';
+                    nwPg.element.style.transform = 'translateX(0)';
+                    console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 2 - Styles appliqués`);
+                });
+            });
             return;
         }
         updateStatus({ log:`./📄⚙️.Run-ng |showPage: curPg.id:${curPg.id} ` });
