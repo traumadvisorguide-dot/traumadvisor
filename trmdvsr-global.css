@@ -1225,39 +1225,37 @@ cursor:                   not-allowed;
 pointer-events:           none;
 }
 
-/*<!-- CAROUSEL EVALUATIONS                             (Page Evaluation) -->*/
+/*<!-- CAROUSEL EVALUATIONS								(Page Evaluation)-->*/
+.carousel-evaluation::-webkit-scrollbar { display: none; }					/* Cache la barre de défilement (WebKit/Chrome/Safari) */
 .carousel-evaluation {
-display:                  flex;
-flex-direction:           row;
-flex-wrap:                nowrap;                                             /* Empêche les enfants de réduire et force à la taille demandée  */
-justify-content:          flex-start;
-align-items:              flex-start;
-gap:                      var(--espacement-court);
-width:                    100%;
-padding:                  var(--espacement-court) var(--espacement-large) var(--espacement-tres-large);
-overflow-x:               scroll;                                             /* Activation du défilement horizontal */
-overflow-y:               hidden;       
-scroll-snap-type:         x mandatory;                                        /* Force le conteneur à capturer les points d'accroche */
--ms-overflow-style:       none;                                               /* Pour IE/Edge/Firefox */
-scrollbar-width:          none;
-background-color:         var(--gris-trmdvsr-tres-clair);
-border: 2px dotted red;
+	display:				flex;
+	flex-direction:			row;
+	flex-wrap:				nowrap;											/* Empêche les enfants de réduire et force à la taille demandée  */
+	justify-content:		flex-start;
+	align-items:			flex-start;
+	gap:					var(--espacement-court);
+	width:					100%;
+	padding:				var(--espacement-court) var(--espacement-large) var(--espacement-tres-large);
+	overflow-x:				scroll;											/* Activation du défilement horizontal */
+	overflow-y:				hidden;       
+	scroll-snap-type:		x mandatory;									/* Force le conteneur à capturer les points d'accroche */
+	-ms-overflow-style:		none;											/* Pour IE/Edge/Firefox */
+	scrollbar-width:		none;
+	background-color:		var(--gris-trmdvsr-tres-clair);
+	border: 				2px dotted red;
 }
-.carousel-evaluation::-webkit-scrollbar { display: none; }                      /* Cache la barre de défilement (WebKit/Chrome/Safari) */
-
 .carousel-evaluation .eval-item {
-display:                  flex;
-flex-direction:           column;
-flex:                     0 0 var(--largeur-eval-item);                       /* Coeur du layout : section = largeur max - les marges */
-/*width:                    var(--largeur-eval-item);*/
-scroll-snap-align:        center;                                             /* Définit le point d'accroche pour scroll-snap */
-background-color:         var(--blanc-trmdvsr); 
-border-radius:            var(--bordure-radius);
-box-sizing:               border-box;                                         /* Assure que l'élément ne déborde pas */
-box-shadow: 
-0 4px 6px -1px rgb(0 0 0 / 0.1), 
-0 2px 4px -2px rgb(0 0 0 / 0.2);
-transition:               transform 0.3s ease-out;                            /* les anims sont gérées en JS */
+	display:				flex;
+	flex-direction:			column;
+	flex:					0 0 var(--largeur-eval-item);					/* Coeur du layout : section = largeur max - les marges */
+	width:					var(--largeur-eval-item);
+	height:					auto;
+	scroll-snap-align:		center;											/* Définit le point d'accroche pour scroll-snap */
+	background-color:		var(--blanc-trmdvsr); 
+	border-radius:			var(--bordure-radius);
+	box-sizing:				border-box;										/* Assure que l'élément ne déborde pas */
+	box-shadow: 			0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+	transition:				transform 0.3s ease-out;						/* les anims sont gérées en JS */
 }
 
 /*<!-- COMPOSANT NOTE                                   (Page Evaluation) -->*/
@@ -1303,18 +1301,18 @@ transition:               transform 0.3s ease-out;                            /*
 .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: auto; border:1px solid purple;  }
 
 img.img-notede0 {
-width:                    100%;
-max-width:                var(--largeur-notede0);
-aspect-ratio:             199 / 81;
-height:                   auto;
-border:                   1px solid red;
+	width:					100%;
+	max-width:				var(--largeur-notede0);
+	aspect-ratio:			199 / 81;
+	height:					auto;
+	border:					1px solid red;
 }
 img.img-notea5 {
-width:                    100%;
-max-width:                var(--largeur-notea5);
-aspect-ratio:             155 / 80;
-height:                   auto;
-border:                   1px solid red;
+	width:					100%;
+	max-width:				var(--largeur-notea5);
+	aspect-ratio:			155 / 80;
+	height:					auto;
+	border:					1px solid red;
 }
 
 .composant-note .conteneur-lame.flex-col.col-middle {                           /* Composant notation */
