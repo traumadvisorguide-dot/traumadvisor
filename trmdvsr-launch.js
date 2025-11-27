@@ -99,18 +99,12 @@ function showPage(nwPgID = '', nwSecIndx = null) {
             nwPg.element.addEventListener('transitionend', completeTransition, { once: true });
             nwPg.element.style.transition = 'none';                  // Désactive temporairement pour éviter flickering
             nwPg.element.style.transform = `translateX(100%)`;       // Position de DÉPART (hors écran)
-            nwPg.element.style.display = 'block';                    // Rend la nouvelle page visible
-            curPg.element.style.opacity = '1';
-            nwPg.element.classList.add('active');                    // => classe contient nouvelle position > lance anim
             updateSPA_Height_(nwPg.id);                              // Lance MaJ hauteur en meme temps
             
-            requestAnimationFrame(() => {                                 // 2. Lancement des transitions après repaint
-                requestAnimationFrame(() => {
-                    console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 1 - Lancement transitions`);
-                    nwPg.element.style.transition = 'transform 0.5s ease-out';
-                    nwPg.element.style.transform = 'translateX(0)';
-                    console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 2 - Styles appliqués`);
-                });
+            requestAnimationFrame(() => {                                 // 2. Lancement des transitions après repaint                
+                console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 1 - Lancement transitions`);
+                nwPg.element.classList.add('active');                    // => classe contient nouvelle position > lance anim
+                console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 2 - Styles appliqués`);
             });
             return;
         }
@@ -154,17 +148,15 @@ function showPage(nwPgID = '', nwSecIndx = null) {
         nwPg.element.classList.add('active');                         // Applique la classe .active (z-index, opacité, etc.)
         
         requestAnimationFrame(() => {                                 // 2. Lancement des transitions après repaint
-            requestAnimationFrame(() => {
-                console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 1 - Lancement transitions`);
-                nwPg.element.style.transition = 'transform 0.5s ease-out';
-                nwPg.element.style.transform = 'translateX(0)';
-                
-                curPg.element.style.transition = `transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out`;
-                curPg.element.classList.add('transition-out');        // 2. Préparation et Lancement de l'OUT (Page Courante)
-                curPg.element.style.transform = `translateX(${endPos})`;
-                curPg.element.style.opacity = '0';                    // Opacité à zéro pour la faire disparaître
-                console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 2 - Styles appliqués`);
-            });
+            console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 1 - Lancement transitions`);
+            nwPg.element.style.transition = 'transform 0.5s ease-out';
+            nwPg.element.style.transform = 'translateX(0)';
+            
+            curPg.element.style.transition = `transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out`;
+            curPg.element.classList.add('transition-out');        // 2. Préparation et Lancement de l'OUT (Page Courante)
+            curPg.element.style.transform = `translateX(${endPos})`;
+            curPg.element.style.opacity = '0';                    // Opacité à zéro pour la faire disparaître
+            console.log(`./📄⚙️.Run-ng |showPage : requestAnimationFrame 2 - Styles appliqués`);
         });
         
         console.log( `.../📄✅.--End |showPage : Transition de ${curPgID} vers ${nwPgID} effectuée.` );
