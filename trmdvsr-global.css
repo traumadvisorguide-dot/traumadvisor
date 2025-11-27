@@ -213,23 +213,24 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 	padding:						0 0 var(--espacement-large);
 	background-color:				#FFF;
 	box-shadow:						-10px 0px 20px -5px rgba(var(--gris-trmdvsr-fonce-RGB), 0.4);
-	transform:						translateX(100%);                         /* positionne la page à droite */
+	transform:						translateX(100%);											/* positionne la page à droite */
 	opacity:						0;
 	transition:						transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
-	will-change:					transform, opacity;                       /* Optimise la perf */
+	will-change:					transform, opacity;											/* Optimise la perf */
 }
-.page.active {                                                        /* => ANIMATION */
-	display:                  block;
-	z-index:                  100;                                      /* z-inedx focus >> 20 */
-	transform:                translateX(0);                            /* Position cible: centre */
-	opacity:                  1;
+.page.active {																					/* => ANIMATION */
+	display:						block;
+	z-index:						100;														/* z-inedx focus >> 20 */
+	transform:						translateX(0);												/* Position cible: centre */
+	opacity:						1;
+	background-color:				red;
 }
-.page.transition-out {                                                /* => ANIMATION */
-	z-index:                  5;                                        /* z-index ex-actif recule >> 5 pour ne pas se faire écraser */
-	transform:                translateX(5%);                       /* Position cible : geré en JS */
-	opacity:                  0.9;                                      /* Opacité cible : 80% */
-	transition:               transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease-in-out;
-	will-change:              transform, opacity;                       /* Optimisation de performance */
+.page.transition-out {																			/* => ANIMATION */
+	z-index:						5;															/* z-index ex-actif recule >> 5 pour ne pas se faire écraser */
+	transform:						translateX(5%);												/* Position cible : geré en JS */
+	opacity:						0.9;														/* Opacité cible : 80% */
+	transition:						transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s ease-in-out;
+	will-change:					transform, opacity;											/* Optimisation de performance */
 }
 
 /* Lames contenus                                      (MOBILE FIRST) */
