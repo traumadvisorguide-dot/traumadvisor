@@ -1241,6 +1241,7 @@ pointer-events:           none;
 	scroll-snap-type:		x mandatory;									/* Force le conteneur à capturer les points d'accroche */
 	-ms-overflow-style:		none;											/* Pour IE/Edge/Firefox */
 	scrollbar-width:		none;
+	box-sizing:				border-box;
 	background-color:		var(--gris-trmdvsr-tres-clair);
 	border: 				2px dotted red;
 }
