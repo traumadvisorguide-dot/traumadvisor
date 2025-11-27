@@ -32,7 +32,7 @@ function saveAllSettings() {
     // Logique de validation et sauvegarde ici...
 }
 
-/* == FONCTIONS NAVIGATION SPA - PRIVATE FN ========================= */
+/* == FONCTIONS NAVIGATION SPA - PRIVATE FN =================================================== */
 /**------------------------------------------------------------------ //
 * @version         25.10.09 (23:16)
 * @instanceIn      {actionDispatcher} & {handlePageData}   ../
@@ -60,17 +60,17 @@ function showPage(nwPgID = '', nwSecIndx = null) {
     if (!nwPgID) return;                                              // CAS DÉFENSIF: pas de pgID => kill
     if (isTrnstng) return;                                            // CAS ANTI-REBOND : transition en cours => kill
     isTrnstng = true;                                                 // 🚩 Active le flag ANTI-REBOND
-    updateStatus({ log: `📄.Init showPage... [param]nwPgID: ${nwPgID} ${nwSecIndx != null ? ` / nwSecIndx:${nwSecIndx}` : '' }` });
+    console.log( `📄.Init showPage... [param]nwPgID: ${nwPgID} ${nwSecIndx != null ? ` / nwSecIndx:${nwSecIndx}` : '' }` );
     
     try {
         const nwPg = Object.values(pages).find(p => p.id === nwPgID); // Charge l'objet page à afficher <= nwPgID existe (if initial)
         if (!nwPg || !nwPg.element) {                                 // CAS DÉFENSIF: Erreur si pas Element
             isTrnstng = false;                                        // 🚩
-            updateStatus({ log: `📄❌.if-ed |showPage : nwPg '${nwPgID}' introuvable.`, type: 'error' });
+            console.error( `📄❌.if-ed |showPage : nwPg '${nwPgID}' introuvable.` );
             return;
         }
         
-        updateStatus({ log:`./📄⚙️.Run-ng |showPage: nwPg.id:${nwPg.id} & nwPg.hasSub:${nwPg.hasSub}` });
+        console.log( `./📄⚙️.Run-ng |showPage: nwPg.id:${nwPg.id} & nwPg.hasSub:${nwPg.hasSub}` );
         const targetSecIndx = nwSecIndx ?? nwPg.curSecIndx ?? 0;      // =nwSecIndx sinon =curSecIndx sinon =0 
         nwPg.curSecIndx = targetSecIndx;                              // 🛟 Attribue le curSecIndx
         
@@ -78,7 +78,7 @@ function showPage(nwPgID = '', nwSecIndx = null) {
             let secIndx2Dspl = nwPg.curSecIndx;                       // Utilise l'index que nous venons d'initialiser/mettre à jour
             if (nwPg.hasSub && nwPg.sub[secIndx2Dspl]) {              // S'il y a des sous-sections et que l'index est valide
                 const nwSecID = nwPg.sub[secIndx2Dspl].id;
-                updateStatus({ log: `./📄⚙️.Run-ng |showPage => nwSecIndx: ${secIndx2Dspl} / nwSecID: ${nwSecID}` });
+                console.log( `./📄⚙️.Run-ng |showPage => nwSecIndx: ${secIndx2Dspl} / nwSecID: ${nwSecID}` );
                 showSection(nwSecID, nwPgID);                         // Affiche la section (isAfterTransition => désactive le flag en interne ou non)
             }
             updateSPA_Height_(nwPg.id, nwSecIndx);                    // Met à jour la hauteur du SPA après le changement de page/section
@@ -91,13 +91,13 @@ function showPage(nwPgID = '', nwSecIndx = null) {
             curPgID = nwPgID;                                         // 🛟 Enregistre la nouvelle page active
             activateSectionIfNeeded();                                // Active la section si besoin
             isTrnstng = false;                                        // 🚩 Désactive le flag (centralisé)
-            updateStatus({ log: `.../📄✅.--End |showPage => Transition complete: ${curPgID}` });
+            console.log( `.../📄✅.--End |showPage => Transition complete: ${curPgID}` );
         };
         
         const curPg = Object.values(pages).find(p => p.id === curPgID);  
         
         if (!curPg) {                                                 // A. => Cas Initialisation
-            updateStatus({log: `./📄⚙️.Run-ng |showPage : Pas de page en cours => Init page: nwPg.id=${nwPg.id}` });
+            console.log( `./📄⚙️.Run-ng |showPage : Pas de page en cours => Init page: nwPg.id=${nwPg.id}` );
             nwPg.element.addEventListener('transitionend', completeTransition, { once: true });
             nwPg.element.classList.add('active');                     // => classe contient nouvelle position > lance anim
             updateSPA_Height_(nwPg.id);                               // Lance MaJ hauteur en meme temps
@@ -106,7 +106,7 @@ function showPage(nwPgID = '', nwSecIndx = null) {
         updateStatus({ log:`./📄⚙️.Run-ng |showPage: curPg.id:${curPg.id} ` });
         if (!curPg.element) {                                         // Gère les ERREURS sur la page COURANTE (flux d'arrêt)
             isTrnstng = false;                                        // 🚩
-            updateStatus({ log: `📄❌.if-ed |showPage : Current Page '${curPgID}' introuvable.`, type: 'error' });
+            console.error( `📄❌.if-ed |showPage : Current Page '${curPgID}' introuvable.` );
             return;
         }
         
@@ -126,12 +126,12 @@ function showPage(nwPgID = '', nwSecIndx = null) {
         if (nwPgID === curPgID) {                                     // B. => Cas Même page
             activateSectionIfNeeded();                                // Fait le travail sans attendre de transition
             isTrnstng = false;                                        // 🚩 Désactive le flag immédiatement
-            updateStatus({ log: `.../📄✅.--End |showPage : Même page: [${curPgID}] / section=${nwSecIndx}. ` });
+            console.log( `.../📄✅.--End |showPage : Même page: [${curPgID}] / section=${nwSecIndx}. ` );
             return;
         }
         
         const isFrwrd = (nwPg.index > curPg.index);                   // C. => Cas Transition Normale
-        updateStatus({ log: `./📄⚙️.Run-ng |showPage : ${nwPg.index} > ${curPg.index} => ${isFrwrd} ` });
+        console.log( `./📄⚙️.Run-ng |showPage : ${nwPg.index} > ${curPg.index} => ${isFrwrd} ` );
         const [startPos, endPos] = isFrwrd ? ['100%', '-20%'] : ['-100%', '20%'];   // Définition des positions : [Pos départ newPage, Pos fin oldPage]
         
         curPg.element.addEventListener('transitionend', handleTransOutEnd, { once: true });
@@ -156,11 +156,11 @@ function showPage(nwPgID = '', nwSecIndx = null) {
             });
         });
         
-        updateStatus({ log: `.../📄✅.--End |showPage : Transition de ${curPgID} vers ${nwPgID} effectuée.` });
+        console.log( `.../📄✅.--End |showPage : Transition de ${curPgID} vers ${nwPgID} effectuée.` );
     
     } catch (error) {
         isTrnstng = false;                                            // Sécurité en cas d'erreur
-        updateStatus({ log: `📄🚫.Catched |showPage : ${error} `, type: 'error' });
+        console.error( `📄🚫.Catched |showPage : ${error} ` );
     }
 }
 
@@ -982,8 +982,8 @@ function loadPage() {
         updateStatus({ refCSS: 'intro', type: 'error', log: `📡🚫.Catched |loadPage : Big error: ${error}` });
     }
 }
-/** =================================================================
+/** =========================================================================================== //
  * @description 'Fin du fichier. with care.'
  * @author 'trmdvsr'
  * @version 25.10.09 (23:16)
- * ================================================================== */
+ * ============================================================================================ */
