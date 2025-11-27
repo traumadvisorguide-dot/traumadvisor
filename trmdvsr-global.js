@@ -28,7 +28,6 @@ let appData         = {                                               // 📘 Ob
     submissionEditURL : null,                                         // non pertinent
     lastUpdateDate    : null,                                         // submit eval-2-Form à chaque fois
 };
-
 /** @description     ARCHITECTURE D'INFO POUR LES PAGES 
 * ---------- ------------- ----------------------- - -----------------//
 * @var       {element}     element                 - Élement du DOM                                /page <= initializeDOMElements()
@@ -61,7 +60,6 @@ let menuElements = {                                                  //        
     burgerIconElements  : null, 
     navElement          : null 
 };
-
 let isInit = {                                                        // FLAGS
     updateStatus        : false,                                      //                                        <= loadPage()
     eval                : false,                                      //                                        <= initPageEval() voir si suppime
@@ -71,7 +69,6 @@ let isInit = {                                                        // FLAGS
     mapsScriptLoaded    : false 
 };
 let isTrnstng         = false;                                        // Flag de transition en cours
-
 /** GLOBAL - Variables du loader unique => évite les querySelector répétés      */
 let snglLgElmnt       = null;                                         // LOADER                                 <= init_updateStatus()
 let curLgElmnt        = null;                                         //                                        <= updateStatus()
@@ -106,13 +103,10 @@ let cropModule;                                                       // Module 
 let imageToCrop;
 let cropperInstance   = null;
 let currentFile       = null; 
-
 const MAX_FILES       = 10;                                           // Nb max de fichiers à uploader
 const EXPORT_SIZE     = 1080;                                         // => 1080x1080px
 let   LOGO_URLS       = null;                                         //                                        <= getLogoUrlsFromCSS_()
 const DATE            = new Date();                                   //                                        <= Logger
-
-
 /** =================================================================
  * @description 'Fin du fichier. with care.'
  * @author 'trmdvsr'
