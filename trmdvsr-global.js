@@ -1,4 +1,4 @@
-/* == DÉCLARATION DES VARIABLES ===================================== */
+/* == DÉCLARATION DES VARIABLES =============================================================== */
 let appData         = {                                               // 📘 Objet global qui récupère toutes les données du formulaire
     submissionID      : null,                                         // au lancement par handlePageData()
     submissionDate    : null,	                                      // submit eval-2-Form si pas null
@@ -29,16 +29,16 @@ let appData         = {                                               // 📘 Ob
     lastUpdateDate    : null,                                         // submit eval-2-Form à chaque fois
 };
 /** @description     ARCHITECTURE D'INFO POUR LES PAGES 
-* ---------- ------------- ----------------------- - -----------------//
-* @var       {element}     element                 - Élement du DOM                                /page <= initializeDOMElements()
-* @var       {number}      height                  - Hauteur                                       /page <= initializeDOMElements()
-* @var       {integer}     currentSectionIndex     - Index section active                          /page <= initializeDOMElements()
-* @var       {integer}     sectionCount            - Nombre de sections                            /page <= initializeDOMElements()
-* @var       {array}       sub.element             - Élement du DOM                        /section/page <= initializeDOMElements()
-* @var       {array}       sub.index               - Index section                         /section/page <= initializeDOMElements()
-* @var       {number}      sub.height              - Hauteur section                       /section/page <= calculatePageHeights()
-* @var       {number}      totalHeight             - Hauteur maximale de page  (qq soit la section)/page <= calculatePageHeights()
-* ------------------------------------------------------------------- */
+ * ---------- ------------- ----------------------- - ------------------------------------------ //
+ * @var       {element}     element                 - Élement du DOM                                /page <= initializeDOMElements()
+ * @var       {number}      height                  - Hauteur                                       /page <= initializeDOMElements()
+ * @var       {integer}     currentSectionIndex     - Index section active                          /page <= initializeDOMElements()
+ * @var       {integer}     sectionCount            - Nombre de sections                            /page <= initializeDOMElements()
+ * @var       {array}       sub.element             - Élement du DOM                        /section/page <= initializeDOMElements()
+ * @var       {array}       sub.index               - Index section                         /section/page <= initializeDOMElements()
+ * @var       {number}      sub.height              - Hauteur section                       /section/page <= calculatePageHeights()
+ * @var       {number}      totalHeight             - Hauteur maximale de page  (qq soit la section)/page <= calculatePageHeights()
+ * --------------------------------------------------------------------------------------------- */
 let pages = {                                                         // 'key':   {value}
     'accueil':  { index: 0,   id: 'accueil_page',       label: 'Accueil',       hasSub: false, sub: null }, 
     'creation': { index: 1,   id: 'creation-lieu_page', label: 'Création Lieu', hasSub: false, sub: null },
@@ -51,7 +51,7 @@ let pages = {                                                         // 'key': 
                             { id: 'section_photo',      label: 'Photo',         needsAsyncValidation: true  }
                           ]}
 };
-/** GLOBAL - Variables de navigation                                  */
+/** GLOBAL - Variables de navigation ----------------------------------------------------------- */
 let curPgID           = null;                                         // ID Page affichée                       <= showPage()
 let conteneurSPA      = null;                                         // DOMElement                             <= initializeDOMElements()
 let guideModeBTN      = null;
@@ -69,7 +69,7 @@ let isInit = {                                                        // FLAGS
     mapsScriptLoaded    : false 
 };
 let isTrnstng         = false;                                        // Flag de transition en cours
-/** GLOBAL - Variables du loader unique => évite les querySelector répétés      */
+/** GLOBAL - Variables du loader unique => évite les querySelector répétés --------------------- */
 let snglLgElmnt       = null;                                         // LOADER                                 <= init_updateStatus()
 let curLgElmnt        = null;                                         //                                        <= updateStatus()
 let lggrElmnt         = null;                                         //                                        <= init_updateStatus()
@@ -83,15 +83,15 @@ let tstmnlCrslElmnt   = null;                                         // Témoig
 let tstmnlCrtElmnt    = null;                                         // Témoignage Carte                       <= initializeDOMElements()
 let tstmnlScrllAmnt   = null;                                         // Valeur du scroll                       <= initializeDOMElements()
 
-/**------------------------------------------------------------------ //
-* @description   PAGE CREATION LIEU 
-* @var           {Element}    creaPgElmnts.adressElmnt   - Element du DOM pour l'adresse du nouveau lieu
-* ------------------------------------------------------------------- */
+/**--------------------------------------------------------------------------------------------- //
+ * @description   PAGE CREATION LIEU 
+ * @var           {Element}    creaPgElmnts.adressElmnt   - Element du DOM pour l'adresse du nouveau lieu
+ * --------------------------------------------------------------------------------------------- */
 let creaPgElmnts      = {};                                           // Objet d'objets                         <= 
-/**------------------------------------------------------------------ //
-* @description   PAGE EVALUATION 
-* @var           {Element}    xxx                        - xxxx
-* ------------------------------------------------------------------- */
+/**--------------------------------------------------------------------------------------------- //
+ * @description   PAGE EVALUATION 
+ * @var           {Element}    xxx                        - xxxx
+ * --------------------------------------------------------------------------------------------- */
 let humourLevel       = 4;    // (min:0; max:6)                       // Générateur Avis                        <= ?()
 let draggedItem       = null;                                         // Photos Flag Drag&Drop                  <= ?()
 let uploadedFiles     = [];                                           // Tableau => stocke objets File rognés   <= ?()
@@ -107,8 +107,8 @@ const MAX_FILES       = 10;                                           // Nb max 
 const EXPORT_SIZE     = 1080;                                         // => 1080x1080px
 let   LOGO_URLS       = null;                                         //                                        <= getLogoUrlsFromCSS_()
 const DATE            = new Date();                                   //                                        <= Logger
-/** =================================================================
+/** =========================================================================================== //
  * @description 'Fin du fichier. with care.'
  * @author 'trmdvsr'
  * @version 25.10.09 (23:16)
- * ================================================================== */
+ * ============================================================================================= */
