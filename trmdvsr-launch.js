@@ -84,6 +84,7 @@ function showPage(nwPgID = '', nwSecIndx = null) {
         };
         
         const completeTransition = (event) => {                       // <= appelé à la fin de l'apparition de la Nouvelle Page
+            console.log(`./📄⚙️.Run-ng |showPage : completeTransition`);
             if (event.target !== nwPg.element) return;
             nwPg.element.removeEventListener('transitionend', completeTransition);
             curPgID = nwPgID;                                         // 🛟 Enregistre la nouvelle page active
