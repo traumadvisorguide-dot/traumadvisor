@@ -1,204 +1,184 @@
-/* Reset CSS														  */
+/* Reset CSS														  							*/
 *, ::before, ::after                                            { box-sizing: border-box; border-width: 0; border-style: solid; }
 body                                                            { margin: 0; line-height: inherit; }
 blockquote, dd, dl, figure, h1, h2, h3, h4, h5, h6, hr, p, pre  { margin: 0; }
 menu, ol, ul                                                    { margin: 0; padding: 0; list-style: none; }
-
-/* Variables globales                                  (MOBILE FIRST) */
+/* Variables globales															(MOBILE FIRST)  */
 :root {
-	--bleu-trmdvsr-pur:       #203c85;
-	--bleu-trmdvsr-moyen:     #3968de;
-	--bleu-trmdvsr-clair:     #339af0;
-	--bleu-trmdvsr-clair-RGB: 82, 152, 233;
-	--gris-trmdvsr-fonce:     #111827;
-	--gris-trmdvsr-fonce-RGB: 17, 24, 39;
-	--gris-trmdvsr-clair:     #a0aec0;                                  /* RGB: 160, 174, 192; */
-	--gris-trmdvsr-tres-clair:#e9ecf3;
-	--blanc-trmdvsr:          #f4f5f9;                                  /* RGB :244, 245, 249; */
-	--vert-trmdvsr-clair:     #a0c0a0;
-	--vert-trmdvsr-moyen:     #4a684d;
-	--vert-trmdvsr-fonce:     #2a8520;
-	--rouge-trmdvsr-clair:    #c0a0a0;
-	--beige-trmdvsr:          #e4d8cc;
-	--couleur-fond-carte:     #2a2e3d;
-	--bordure-radius:         1rem;
-	--largeur-stroke:         2;
+	--bleu-trmdvsr-pur:				#203c85;
+	--bleu-trmdvsr-moyen:			#3968de;
+	--bleu-trmdvsr-clair:			#339af0;
+	--bleu-trmdvsr-clair-RGB:		82, 152, 233;
+	--gris-trmdvsr-fonce:			#111827;
+	--gris-trmdvsr-fonce-RGB:		17, 24, 39;
+	--gris-trmdvsr-clair:			#a0aec0;													/* RGB: 160, 174, 192; */
+	--gris-trmdvsr-tres-clair:		#e9ecf3;
+	--blanc-trmdvsr:				#f4f5f9;													/* RGB :244, 245, 249; */
+	--vert-trmdvsr-clair:			#a0c0a0;
+	--vert-trmdvsr-moyen:			#4a684d;
+	--vert-trmdvsr-fonce:			#2a8520;
+	--rouge-trmdvsr-clair:			#c0a0a0;
+	--beige-trmdvsr:				#e4d8cc;
+	--couleur-fond-carte:			#2a2e3d;
+	--bordure-radius:				1rem;
+	--largeur-stroke:				2;
 
-	--largeur-conteneur-max:  min(100%, 60rem);                         /* 100% de l'écran jusqu'à 60rem de largeur */
-	--largeur-logo-bouton:    clamp(2.5rem, 4rem - 2vw, 4rem);          /* => +'vw' augmente, + valeur finale diminue */
-	--largeur-loader:         clamp(2rem, 50%, 10vw);                   /* Largeur du bloc loading => fluide: min:2rem | ideal:50% | max:20vw */
-	--largeur-notede0:        clamp(131px, 7.08vw + 108.33px, 199px);
-	--largeur-notea5:         clamp(102px, 5.52vw + 84.33px, 155px);
-	--hauteur-content:        0px;                                      /* hauteur dynamique calculée car pb de height 25.10.28(09:52) */
-	--pp-dimensions:          clamp(4rem, 0.5rem + 2vw, 5rem);
-	--espacement-large:       clamp(1rem, 0.5rem + 2vw, 2.5rem);
-	--espacement-button:      clamp(0.25rem, 2.5833rem - 0.1823vw, 2rem);/* Espace entre les boutons UX Mobile */
-	--espacement-button-half: clamp(0.125rem, calc(2.5833rem / 2 - 0.1823vw / 2), 1rem);         /* Espace entre les boutons UX Mobile */
-	--logo-tronksize-larg:    clamp(1rem, 0.75rem + 0.25vw, 1.5rem);    /* Taille de la coupure du logo */
+	--largeur-conteneur-max:		min(100%, 60rem);											/* 100% de l'écran jusqu'à 60rem de largeur */
+	--largeur-logo-bouton:			clamp(2.5rem, 4rem - 2vw, 4rem);							/* => +'vw' augmente, + valeur finale diminue */
+	--largeur-loader:				clamp(2rem, 50%, 10vw);										/* Largeur du bloc loading => fluide: min:2rem | ideal:50% | max:20vw */
+	--largeur-notede0:				clamp(131px, 7.08vw + 108.33px, 199px);
+	--largeur-notea5:				clamp(102px, 5.52vw + 84.33px, 155px);
+	--hauteur-content:				0px;														/* hauteur dynamique calculée car pb de height 25.10.28(09:52) */
+	--pp-dimensions:				clamp(4rem, 0.5rem + 2vw, 5rem);
+	--espacement-large:				clamp(1rem, 0.5rem + 2vw, 2.5rem);
+	--espacement-button:			clamp(0.25rem, 2.5833rem - 0.1823vw, 2rem);					/* Espace entre les boutons UX Mobile */
+	--espacement-button-half: 		clamp(0.125rem, calc(2.5833rem / 2 - 0.1823vw / 2), 1rem);	/* Espace entre les boutons UX Mobile */
+	--logo-tronksize-larg:			clamp(1rem, 0.75rem + 0.25vw, 1.5rem);						/* Taille de la coupure du logo */
 	
-	--graisse-texte:          400;                                      /* graisse normale */
-	--taille-texte:           clamp(1rem, calc(1rem + 2vw), 1.25rem);   /* 1rem (16px) à 1.25rem (20px) OLD : 4vw */
-	--taille-texte-btn:       0.875rem;                                 /* 0.874rem (14px) */
+	--graisse-texte:				400;														/* graisse normale */
+	--taille-texte:					clamp(1rem, calc(1rem + 2vw), 1.25rem);						/* 1rem (16px) à 1.25rem (20px) OLD : 4vw */
+	--taille-texte-btn:				0.875rem;													/* 0.874rem (14px) */
 
-	--taille-h1:              calc(var(--taille-texte) * 2.5);          /* 40px à 3.125rem (50px) */
-	--taille-h2:              calc(var(--taille-texte) * 2);            /* 32px à 2.5rem (40px) */
-	--taille-h3:              calc(var(--taille-texte) * 1.5);          /* 24px à 1.875rem (30px) */
-	--taille-h4:              calc(var(--taille-texte) * 1.25);         /* 20px à 1.5625rem (25px) */
-	--taille-chapo:           calc(var(--taille-texte) * 1.125);        /* 16px à 1.4rem (px) */
-	--taille-sstexte:         calc(var(--taille-texte) * 0.75);         /* 12px */
-	--taille-label:           calc(var(--taille-texte) * 0.625);        /* 10px */
-	--graisse-h1:             calc(var(--graisse-texte) * 2.25);        /* 900 */
-	--graisse-h2:             calc(var(--graisse-texte) * 2);           /* 800 */
-	--graisse-h3:             calc(var(--graisse-texte) * 1.75);        /* 700 */
-	--graisse-h4:             calc(var(--graisse-texte) * 1.5);         /* 600 */
-	--graisse-chapo:          calc(var(--graisse-texte) * 1.25);        /* 500 */
-	--graisse-sstexte:        calc(var(--graisse-texte) * 1.5);         /* 600 */
+	--taille-h1:					calc(var(--taille-texte) * 2.5);							/* 40px à 3.125rem (50px) */
+	--taille-h2:					calc(var(--taille-texte) * 2);								/* 32px à 2.5rem (40px) */
+	--taille-h3:					calc(var(--taille-texte) * 1.5);							/* 24px à 1.875rem (30px) */
+	--taille-h4:					calc(var(--taille-texte) * 1.25);							/* 20px à 1.5625rem (25px) */
+	--taille-chapo:					calc(var(--taille-texte) * 1.125);							/* 16px à 1.4rem (px) */
+	--taille-sstexte:				calc(var(--taille-texte) * 0.75);							/* 12px */
+	--taille-label:					calc(var(--taille-texte) * 0.625);							/* 10px */
+	--graisse-h1:					calc(var(--graisse-texte) * 2.25);							/* 900 */
+	--graisse-h2:					calc(var(--graisse-texte) * 2);								/* 800 */
+	--graisse-h3:					calc(var(--graisse-texte) * 1.75);							/* 700 */
+	--graisse-h4:					calc(var(--graisse-texte) * 1.5);							/* 600 */
+	--graisse-chapo:				calc(var(--graisse-texte) * 1.25);							/* 500 */
+	--graisse-sstexte:				calc(var(--graisse-texte) * 1.5);							/* 600 */
 	
-	--espacement-tres-large:  calc(var(--espacement-large) * 1.33);     /* 31,92 */
-	--espacement-moyen:       calc(var(--espacement-large) * 0.66);     /* 15,84 */
-	--espacement-moyen-demi:  calc(var(--espacement-moyen) * 0.5);      /* 8 */
-	--espacement-court:       calc(var(--espacement-moyen) * 0.66);     /* 10,4544 */
-	--largeur-navigation-aide:calc((var(--espacement-large) * 3) + (var(--largeur-logo-bouton) * 2));  /* 108px => 240px */
-	--largeur-tier-max:       calc((var(--largeur-conteneur-max) - (var(--espacement-large) * 2)) / 3);/* 315px => 307px */
-	--largeur-composant-note: calc( (var(--largeur-logo-bouton) * 6) + ( var(--espacement-button) * 5) + ( 2 * var(--espacement-moyen) )); /* 260px => 480px */
-	--logo-tronksize-med:     calc(var(--logo-tronksize-larg) * 0.66 );
-	--logo-tronksize-court:   calc(var(--logo-tronksize-med) * 0.66 );
-	--largeur-eval-item:      calc(var(--largeur-conteneur-max) - (var(--espacement-large) * 2)); /* Conteneur - les marges */
+	--espacement-tres-large:		calc(var(--espacement-large) * 1.33);						/* 31,92 */
+	--espacement-moyen:				calc(var(--espacement-large) * 0.66);						/* 15,84 */
+	--espacement-moyen-demi:		calc(var(--espacement-moyen) * 0.5);						/* 8 */
+	--espacement-court:				calc(var(--espacement-moyen) * 0.66);						/* 10,4544 */
+	--largeur-navigation-aide:		calc((var(--espacement-large) * 3) + (var(--largeur-logo-bouton) * 2));  /* 108px => 240px */
+	--largeur-tier-max:				calc((var(--largeur-conteneur-max) - (var(--espacement-large) * 2)) / 3);/* 315px => 307px */
+	--largeur-composant-note:		calc( (var(--largeur-logo-bouton) * 6) + ( var(--espacement-button) * 5) + ( 2 * var(--espacement-moyen) )); /* 260px => 480px */
+	--logo-tronksize-med:			calc(var(--logo-tronksize-larg) * 0.66 );
+	--logo-tronksize-court:			calc(var(--logo-tronksize-med) * 0.66 );
+	--largeur-eval-item:			calc(var(--largeur-conteneur-max) - (var(--espacement-large) * 2)); /* Conteneur - les marges */
 
-	--url-logo-inactif:       url('https://i.imgur.com/OIsQ6DL.png');
-	--url-logo-actif:         url('https://i.imgur.com/Hfhftm1.png');
-	--url-logo-blanc:         url('https://i.imgur.com/KryCTLH.png');
-	--url-notede0:            url('https://i.imgur.com/gy5B1Wg.png');
-	--url-notea5:             url('https://i.imgur.com/oGZf3eC.png');
-	--url-visuel-fauteuil:    url('https://i.imgur.com/2xmmReX.png');
-	--url-visuel-accueil:     url('https://i.imgur.com/LILnWVO.png');   /* 1125px × 2436px | ratio:2,1653333333 */
+	--url-logo-inactif:				url('https://i.imgur.com/OIsQ6DL.png');
+	--url-logo-actif:				url('https://i.imgur.com/Hfhftm1.png');
+	--url-logo-blanc:				url('https://i.imgur.com/KryCTLH.png');
+	--url-notede0:					url('https://i.imgur.com/gy5B1Wg.png');
+	--url-notea5:					url('https://i.imgur.com/oGZf3eC.png');
+	--url-visuel-fauteuil:			url('https://i.imgur.com/2xmmReX.png');
+	--url-visuel-accueil:			url('https://i.imgur.com/LILnWVO.png');						/* 1125px × 2436px | ratio:2,1653333333 */
 }
 
-/* Textes                                                    (GLOBAL) */ 
+/* Textes																			  (GLOBAL)  */ 
 .trmdvsr-texte-h1 {
-	margin-bottom:            var(--espacement-court);
-	text-align:               left;
-	font-size:                var(--taille-h1);
-	font-weight:              var(--graisse-h1);
-	line-height:              120%; 
-	letter-spacing:           -0.0269rem;                               /* -0.43px iOS */
-	text-rendering:           optimizeLegibility;
-	color:                    var(--gris-trmdvsr-fonce);
+	margin-bottom:					var(--espacement-court);
+	font-size:						var(--taille-h1);
+	font-weight:					var(--graisse-h1);
+	line-height:					120%; 
+	letter-spacing:					-0.0269rem;													/* -0.43px iOS */
+	text-rendering:					optimizeLegibility;
+	color:							var(--gris-trmdvsr-fonce);
 } 
-
 .trmdvsr-texte-h2 {
-	/* margin-bottom:            var(--espacement-court); */
-	text-align:               left;
-	font-size:                var(--taille-h2);
-	font-weight:              var(--graisse-h2);
-	line-height:              120%; 
-	letter-spacing:           -0.0269rem;
-	text-rendering:           optimizeLegibility;
-	color:                    var(--gris-trmdvsr-fonce);
+	font-size:						var(--taille-h2);
+	font-weight:					var(--graisse-h2);
+	line-height:					120%; 
+	letter-spacing:					-0.0269rem;
+	text-rendering:					optimizeLegibility;
+	color:							var(--gris-trmdvsr-fonce);
 }
-
 .trmdvsr-texte-h3 {
-	padding:                  var(--espacement-moyen) 0; 
-	text-align:               left;
-	font-size:                var(--taille-h3);
-	font-weight:              var(--graisse-h3);
-	line-height:              120%; 
-	letter-spacing:           -0.0269rem;
-	text-rendering:           optimizeLegibility;
-	color:                    var(--gris-trmdvsr-fonce);
+	padding:						var(--espacement-moyen) 0;
+	font-size:						var(--taille-h3);
+	font-weight:					var(--graisse-h3);
+	line-height:					120%; 
+	letter-spacing:					-0.0269rem;
+	text-rendering:					optimizeLegibility;
+	color:							var(--gris-trmdvsr-fonce);
 }
-
 .trmdvsr-texte-h4 {
-	margin:                   0;                                        /* margin-bottom:            calc(var(--espacement-court) * 0.6); */
-	text-align:               left;
-	font-size:                calc(var(--taille-sstexte) * 0.66);       /* var(--taille-h4); */
-	font-weight:              var(--graisse-h4);
-	line-height:              120%;
-	letter-spacing:           2px;                                      /* -0.0269rem; */
-	text-rendering:           optimizeLegibility;
-	text-transform:           uppercase;
-	color:                    var(--bleu-trmdvsr-clair);
+	font-size:						calc(var(--taille-sstexte) * 0.66);       /* var(--taille-h4); */
+	font-weight:					var(--graisse-h4);
+	line-height:					120%;
+	letter-spacing:					2px;                                      /* -0.0269rem; */
+	text-rendering:					optimizeLegibility;
+	text-transform:					uppercase;
+	color:							var(--bleu-trmdvsr-clair);
 } 
-
 .trmdvsr-texte-chapo {
-	text-align:               left;
-	font-size:                var(--taille-chapo);
-	font-weight:              var(--graisse-chapo);
-	line-height:              120%;
-	letter-spacing:           -0.0269rem;
-	text-rendering:           optimizeLegibility;
-	color:                    var(--gris-trmdvsr-fonce);
+	font-size:						var(--taille-chapo);
+	font-weight:					var(--graisse-chapo);
+	line-height:					120%;
+	letter-spacing:					-0.0269rem;
+	text-rendering:					optimizeLegibility;
+	color:							var(--gris-trmdvsr-fonce);
 }
 .trmdvsr-texte-chapo p            { margin-bottom: var(--espacement-moyen); }/* Applique l'espace sous CHAQUE paragraphe */
 .trmdvsr-texte-chapo p:last-child { margin-bottom: var(--espacement-court); }/* Supprime l'espace sous le dernier paragraphe */
-
 .trmdvsr-texte {
-	text-align:               left;
-	font-size:                var(--taille-texte);
-	font-weight:              var(--graisse-texte);
-	letter-spacing:           -0.0269rem;
-	text-rendering:           optimizeLegibility;
-	color:                    var(--gris-trmdvsr-fonce);
+	font-size:						var(--taille-texte);
+	font-weight:					var(--graisse-texte);
+	letter-spacing:					-0.0269rem;
+	text-rendering:					optimizeLegibility;
+	color:							var(--gris-trmdvsr-fonce);
 }
 .trmdvsr-texte p            { margin-bottom: var(--espacement-court);           } /* Applique l'espace sous CHAQUE paragraphe */
 .trmdvsr-texte p:last-child { margin-bottom: calc(var(--espacement-court) / 2); } /* Supprime l'espace sous le dernier paragraphe */
-
 .trmdvsr-texte-btn {
-	text-align:               center;
-	font-size:                var(--taille-texte-btn);
-	font-weight:              var(--graisse-h3);
-	line-height:              140%;
-	letter-spacing:           -0.0269rem;
-	text-rendering:           optimizeLegibility;
-	color:                    var(--gris-trmdvsr-fonce);
+	text-align:						center;
+	font-size:						var(--taille-texte-btn);
+	font-weight:					var(--graisse-h3);
+	line-height:					140%;
+	letter-spacing:					-0.0269rem;
+	text-rendering:					optimizeLegibility;
+	color:							var(--gris-trmdvsr-fonce);
 }
-
 .trmdvsr-sstexte {
-	text-align:               left;
-	font-size:                var(--taille-sstexte); 
-	font-weight:              var(--graisse-sstexte);
-	line-height:              140%;
-	letter-spacing:           -0.0269rem;
-	text-rendering:           optimizeLegibility;
-	color:                    var(--gris-trmdvsr-fonce);
+	font-size:						var(--taille-sstexte); 
+	font-weight:					var(--graisse-sstexte);
+	line-height:					140%;
+	letter-spacing:					-0.0269rem;
+	text-rendering:					optimizeLegibility;
+	color:							var(--gris-trmdvsr-fonce);
 }
-
-
 .trmdvsr-label {
-	text-align:               left;
-	font-size:                var(--taille-label); 
-	font-weight:              var(--graisse-sstexte);
-	line-height:              140%;
-	letter-spacing:           -0.0269rem;
-	text-rendering:           optimizeLegibility;
-	color:                    var(--blanc-trmdvsr);
+	font-size:						var(--taille-label); 
+	font-weight:					var(--graisse-sstexte);
+	line-height:					140%;
+	letter-spacing:					-0.0269rem;
+	text-rendering:					optimizeLegibility;
+	color:							var(--blanc-trmdvsr);
 }
-
 em { font-weight: var(--graisse-texte); font-style: italic; }
 .lien-bleu        { text-decoration: none;        color: var(--bleu-trmdvsr-clair); }
 .lien-bleu:hover  { text-decoration: underline;   color: var(--bleu-trmdvsr-moyen); }
-ol { list-style-type: decimal; }                                                /* Rétablit l'affichage des chiffres (1, 2, 3...) */
-.etapes-creation {                                                              /* Styles pour la liste complète (espacement, couleur du texte) */
-	list-style-type:          "- ";
-	color:                    var(--bleu-trmdvsr-moyen);
-	margin-left:              var(--espacement-large);
-	padding-bottom:           var(--espacement-court);
+ol { list-style-type: decimal; }																/* Rétablit l'affichage des chiffres (1, 2, 3...) */
+.etapes-creation {																				/* Styles pour la liste complète (espacement, couleur du texte) */
+	list-style-type:				"- ";
+	color:							var(--bleu-trmdvsr-moyen);
+	margin-left:					var(--espacement-large);
+	padding-bottom:					var(--espacement-court);
 }
-.etapes-creation li { font-weight: bold; }                            /* Styles pour les éléments de la liste */
-
-/* Architecture                                              (GLOBAL) */
-html { width: 100%; height: 100%; margin: 0px; padding: 0px; }  			/* IDENTIQUE MOBILE & DESKTOP */
-body.trmdvsr-app-structure {                                    			/* IDENTIQUE MOBILE & DESKTOP : 1 OCCU. <body> */
-	display:                  flex;                               			/* Fuckin Footer */
-	flex-direction:           column;
-	justify-content:          flex-start;                         			/* ↕ */
-	align-items:              center;                             			/* ↔ */
-	width:                    100%;
-	min-height:               100%;
-	margin:                   0px;
-	padding:                  0px;
-	font-family:              Inter, sans-serif; 
-	background-color:         var(--bleu-trmdvsr-pur);
+.etapes-creation li { font-weight: bold; }														/* Styles pour les éléments de la liste */
+ 
+/* Architecture																		  (GLOBAL)  */
+html { width: 100%; height: 100%; margin: 0px; padding: 0px; }									/* IDENTIQUE MOBILE & DESKTOP */
+body.trmdvsr-app-structure {																	/* IDENTIQUE MOBILE & DESKTOP : 1 OCCU. <body> */
+	display:						flex;														/* F*ckin Footer */
+	flex-direction:					column;
+	justify-content:				flex-start;													/* ↕ */
+	align-items:					center;														/* ↔ */
+	width:							100%;
+	min-height:						100%;
+	margin:							0px;
+	padding:						0px;
+	font-family:					Inter, sans-serif;
+	box-sizing:						border-box;
+	background-color:				var(--bleu-trmdvsr-pur);
 }
 body.is-loading {                                                     /* => INTERACTION : Désactive l'interaction (survol et clic) */
 	pointer-events:         none;
