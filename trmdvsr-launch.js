@@ -100,6 +100,7 @@ function showPage(nwPgID = '', nwSecIndx = null) {
             nwPg.element.style.transition = 'none';                  // Désactive temporairement pour éviter flickering
             nwPg.element.style.transform = `translateX(100%)`;       // Position de DÉPART (hors écran)
             nwPg.element.style.display = 'block';                    // Rend la nouvelle page visible
+            curPg.element.style.opacity = '1';
             nwPg.element.classList.add('active');                    // => classe contient nouvelle position > lance anim
             updateSPA_Height_(nwPg.id);                              // Lance MaJ hauteur en meme temps
             
@@ -128,7 +129,7 @@ function showPage(nwPgID = '', nwSecIndx = null) {
             curPg.element.style.transform = '';
             curPg.element.scrollTop = 0;
             curPg.element.display = 'none';
-            curPg.element.style.opacity = '1';                        // Réinitialisation de l'opacité pour le retour
+            curPg.element.style.opacity = '0';                        // Réinitialisation de l'opacité pour le retour
             console.log (`.../📄✅.--End ||showPage => handleTransOutEnd (OUT complete)`);
             //updateStatus({ log: `.../📄✅.--End ||showPage => handleTransOutEnd (OUT complete)` });
         };
@@ -158,7 +159,7 @@ function showPage(nwPgID = '', nwSecIndx = null) {
                 nwPg.element.style.transition = 'transform 0.5s ease-out';
                 nwPg.element.style.transform = 'translateX(0)';
                 
-                curPg.element.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out';
+                curPg.element.style.transition = `transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out`;
                 curPg.element.classList.add('transition-out');        // 2. Préparation et Lancement de l'OUT (Page Courante)
                 curPg.element.style.transform = `translateX(${endPos})`;
                 curPg.element.style.opacity = '0';                    // Opacité à zéro pour la faire disparaître
