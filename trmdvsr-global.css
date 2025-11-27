@@ -1318,17 +1318,18 @@ border:                   1px solid red;
 }
 
 .composant-note .conteneur-lame.flex-col.col-middle {                           /* Composant notation */
-
-justify-content:          flex-end;                                           /* Princi:↕ */
-align-items:              center;                                             /* Transv:↔ */
-/*flex:                     2;                                                  /* flex:1 */
-width:                    var(--largeur-composant-note);
-background-image:         var(--url-logo-blanc);
-background-position:      top;
-background-size:          contain;
-background-repeat:        no-repeat;
-background-size:          90%;
-border:                   1px solid black; /* POUR DEBUG */
+	flex-direction:			column;
+	justify-content:		center;                                           /* Princi:↕ */
+	align-items:			center;                                             /* Transv:↔ */
+	/*flex:					2;                                                  /* flex:1 */
+	width:					var(--largeur-composant-note);
+	aspect-ratio:			1 / 1;
+	background-image:		var(--url-logo-blanc);
+	background-position:	top;
+	background-size:		contain;
+	background-repeat:		no-repeat;
+	background-size:		90%;
+	border:					1px solid black; /* POUR DEBUG */
 }
 .composant-note .conteneur-lame.flex-col.col-middle .rating-bar {               /* Conteneur de bouton radio avec id='rating-bar-q[X]' */
 margin:                   0;
@@ -2135,12 +2136,6 @@ justify-content:          space-between;
 	  </div>
 </div>
 */
-	.carousel-evaluation .eval-item {
-flex:                     0 0 var(--largeur-eval-item);                       /* Coeur du layout : section = largeur max - les marges */
-
-
-}
-
 	.composant-note .conteneur-lame.flex-col.col-first,  
     .composant-note .conteneur-lame.flex-col.col-last {
 		flex-direction:             column;
@@ -2150,50 +2145,25 @@ flex:                     0 0 var(--largeur-eval-item);                       /*
     }       
     .composant-note .conteneur-lame.flex-col.col-first {
 		justify-content:            flex-start;
-		max-width:                  var(--largeur-notede0);
+		/*max-width:                  var(--largeur-notede0);*/
 		padding-right:              var(--espacement-moyen);
     }
     .composant-note .conteneur-lame.flex-col.col-last {
 		justify-content:            flex-end;
-		max-width:                  var(--largeur-notea5);
+		/*max-width:                  var(--largeur-notea5);*/
 		padding-left:               var(--espacement-moyen);
     }
     .composant-note .conteneur-lame.flex-col.col-middle {
-		background-color: red;
 		width:						calc(var(--largeur-eval-item) - var(--largeur-notede0) - var(--largeur-notea5));
-		height:						calc(var(--largeur-eval-item) - var(--largeur-notede0) - var(--largeur-notea5));
-		
-		/*width:                    ; */
+		aspect-ratio:				1 / 1;
+		background-color: 			red;
     }
 	
-.composant-note .conteneur-lame.flex-col.col-first,
-.composant-note .conteneur-lame.flex-col.col-last {
-	width:					100%;
-	height:					auto;
-	justify-content:		center;
-	align-items:			flex-start;
-	padding:				var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
-	border:					1px solid red;
-}
 .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
-.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 0; padding-left: 1rem;         }
-.composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: auto; border:1px solid purple; }
-.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: auto; border:1px solid purple;  }
+.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 1rem; padding-left: 0;         }
+.composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: var(--largeur-notede0); border:1px solid purple; }
+.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5); border:1px solid purple;  }
 
-img.img-notede0 {
-width:                    100%;
-max-width:                var(--largeur-notede0);
-aspect-ratio:             199 / 81;
-height:                   auto;
-border:                   1px solid red;
-}
-img.img-notea5 {
-width:                    100%;
-max-width:                var(--largeur-notea5);
-aspect-ratio:             155 / 80;
-height:                   auto;
-border:                   1px solid red;
-}
 }
 
 /* ANIMATIONS CSS                                            (GLOBAL) */
