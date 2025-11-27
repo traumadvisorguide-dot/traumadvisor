@@ -201,7 +201,7 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 }
 /*------------------------------------------------------------------------------------- [PAGES] */
 .page {
-	display:						none;
+	display:						block;
 	position:						absolute;
 	top:							0;
 	left:							0;
