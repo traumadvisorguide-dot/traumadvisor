@@ -168,7 +168,146 @@ function updateBreadcrumbs(refElmnt, newSecID) {
             updateStatus({ log: `🚫.Catched |updateBreadcrumbs : Erreur lors de la mise à jour des breadcrumbs: ${error}`, type: 'error' });
       }
 }
+
+
+
+
+
+
+
+
+
+/* == NAVIGATION ============================================================= (EVALUATIONS) == */
+
+
+
+  // État global de l'application pour stocker toutes les notes
+  let appGlobalState = {}; 
+
+/**-------------------------------------------------------------------------------------------- //
+ * @version         25.11.17 (17:52)                - 25.10.09 (23:16)
+ * --------------- ----------------- ----------------- - -------------------------------------- //
+ * @function        initializeRatingSection
+ * @description     ???? 
+ *                  Initialise le comportement interactif (rollover, clic, dispatch) pour une section d'évaluation donnée.
+ *                  Met à jour les classes CSS des éléments de navigation breadcrumb.
+ * --------------- ----------------- ----------------- - -------------------------------------- //
+ * @param          {HTMLElement}     sectionElement    - L'élément <section> à initialiser.
+ * -------------------------------------------------------------------------------------------- */
+function initializeRatingSection(sectionElement) {
       
+      const questionId = sectionElement.dataset.questionId;                                     // 1. Récupération des éléments et IDs existants
+      const ratingBar = sectionElement.querySelector('.rating-bar');
+      
+      const resultInput = document.getElementById(`result-${questionId}`);                      // Le champ de résultat est trouvé par son ID pré-défini
+      const radioLabels = ratingBar.querySelectorAll('label.trmdvsr-radio-label');
+
+      if (!ratingBar || !resultInput) {
+            console.error(`[Init Error] Missing rating bar or result input for ${questionId}`);
+            return;
+      }
+
+      const updateSelectedDisplay = () => {                                                     // Fonction pour mettre à jour l'affichage en fonction de la valeur sélectionnée
+            const selectedRadio = ratingBar.querySelector(`input[name="eval-${questionId}"]:checked`);
+            
+            resultInput.classList.remove('border-green-500', 'border-yellow-500', 'border-blue-400'); // Réinitialiser les classes
+            if (selectedRadio) {
+                  const value = selectedRadio.value;
+                  appGlobalState[questionId] = { 
+                        note: parseInt(value), 
+                        description: DESCRIPTIONS[value],
+                        timestamp: new Date().toLocaleTimeString()
+                  };
+                  resultInput.value = DESCRIPTIONS[value];
+                  resultInput.classList.add('border-green-500');                                // Vert si sélectionné
+            } else {
+                  resultInput.value = "Non sélectionnée";
+                  resultInput.classList.add('border-yellow-500');                               // Jaune si non sélectionné
+            }
+      };
+      
+      radioLabels.forEach(label => {                                                            // --- Logique du Survol (Rollover pour le texte) ---
+            const value = label.dataset.value;
+            
+            label.addEventListener( 'mouseover', () => {                                        // MOUSEOVER (Survol) : Afficher le texte de la note survolée
+                  resultInput.value = DESCRIPTIONS[value];
+                  resultInput.classList.remove('border-green-500', 'border-yellow-500');        // Appliquer un style de survol temporaire (Bleu)
+                  resultInput.classList.add('border-blue-400'); 
+            } );
+
+            label.addEventListener('mouseout', () => {                                          // MOUSEOUT (Retrait) : Rétablir l'affichage de la note sélectionnée
+                  updateSelectedDisplay(); // Rétablir l'affichage permanent
+            });
+      });
+
+      
+      ratingBar.addEventListener('change', () => {                                              // --- Logique du Clic (Déclenchement de l'Event Dispatcher) ---
+            updateSelectedDisplay();                                                            // Mise à jour locale et de l'état global
+            
+            const ratingEvent = new CustomEvent('ratingSelected', {                             // 2. Déclenchement de l'événement personnalisé 'ratingSelected'
+                  detail: appGlobalState[questionId],
+                  bubbles: true 
+            });
+
+            sectionElement.dispatchEvent(ratingEvent);                                          // Dispatch l'événement à partir de l'élément conteneur
+      });
+
+      updateSelectedDisplay();                                                                  // Initialisation de l'affichage
+}
+
+  // --- GESTIONNAIRE GLOBAL (Écouteur de l'Event Dispatcher) ---
+/**-------------------------------------------------------------------------------------------- //
+ * @version         25.11.17 (17:52)                - 25.10.09 (23:16)
+ * --------------- ----------------- ----------------- - -------------------------------------- //
+ * @function        handleRatingSelected
+ * @description     ???? 
+ *                  Initialise le comportement interactif (rollover, clic, dispatch) pour une section d'évaluation donnée.
+ *                  Met à jour les classes CSS des éléments de navigation breadcrumb.
+ * --------------- ----------------- ----------------- - -------------------------------------- //
+ * @param          {HTMLElement}     sectionElement    - L'élément <section> à initialiser.
+ * -------------------------------------------------------------------------------------------- */
+  function handleRatingSelected(event) {
+      const { id, note, description } = event.detail;
+      
+      const stateDisplay = document.getElementById('app-state');                                // Mise à jour de l'affichage de l'état (pour debug/visualisation)
+      stateDisplay.innerHTML = JSON.stringify(appGlobalState, null, 2);
+
+      const totalSections = document.querySelectorAll('.eval-item').length;                     // Vous pouvez ici implémenter d'autres actions globales Par exemple, vérifier si toutes les notes sont remplies:
+      const completedNotes = Object.keys(appGlobalState).length;
+
+      if (completedNotes === totalSections) {
+          console.log("Toutes les étapes sont complétées ! Prêt à soumettre.");
+      }
+  }
+
+
+  
+document.addEventListener( 'DOMContentLoaded', () => {                                        // --- Démarrage de l'Application ---
+      const formElement = document.getElementById('evaluationForm');
+
+      const stepElements = formElement.querySelectorAll('.eval-item');                          // 1. Initialiser tous les composants en parcourant les sections
+      stepElements.forEach(el => {
+            initializeRatingSection(el);
+      });
+
+      formElement.addEventListener('ratingSelected', handleRatingSelected);                     // 2. Attacher le gestionnaire global au formulaire parent (délégation d'événements)
+      formElement.addEventListener( 'submit', (e) => {                                          // Empêcher la soumission du formulaire pour l'exemple
+            e.preventDefault();
+            console.log("Formulaire soumis ! Données finales:", appGlobalState);
+      } );
+});
+
+
+function initPageEvalElmnts() {
+      
+}
+
+
+
+
+
+
+
 /* == GÉNÉRATEUR D'AVIS ============================ (EVALUATIONS) == */
 /**------------------------------------------------------------------ //
 * @instanceIn      {initRatings}     ../trmdvsr-03-launch-js

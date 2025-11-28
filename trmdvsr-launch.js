@@ -603,20 +603,32 @@ function initializeDOMElements() {
         }
         
         //----------------------------------------------------------- // PAGES
-        Object.values(pages).forEach(page => {
-            const pageElementTemp = document.getElementById(page.id); // Récupération de l'élément du DOM avec cet id        
+        Object.values(pages).forEach( page => {
+            const pageElementTemp = document.getElementById(page.id);                       // Récupération de l'élément du DOM avec cet id        
             if (pageElementTemp) {
-                page.element = pageElementTemp;                       // 🛟 Enregistre DOM element 
+                page.element = pageElementTemp;                                             // 🛟 Enregistre DOM element 
+
+                if (page.id === "accueil_page") {
+                    console.log (`setting up DOM elements pour la page accueil`);
+                    tstmnlCrslElmnt = document.querySelector('.carousel-temoignage');       // 🛟 Enregistre le carousel témoignage <= page accueil
+                    tstmnlCrtElmnt = tstmnlCrslElmnt.querySelector('.carte-temoignage');    // 🛟 Enregistre une carte témoignage <= page accueil
+                    tstmnlScrllAmnt = tstmnlCrtElmnt.offsetWidth + 24;                      // 🛟 Enregistre le scroll amount <= page accueil
+                }
+
+                if (page.id === "creation-lieu_page") {
+                    console.log (`setting up DOM elements pour la page creation lieu`);
+                    creaPgElmnts.adressElmnt = document.getElementById('adresseSalle');// 🛟📘 Enregistre le champ adresse <= page création
+                }
             
-                if (page.hasSub) {                                    // Si section
-                    page.curSecIndx = 0;                              // 🛟 Définit l'index de la section active
-                    page.sectionCount = page.sub.length;              // 🛟 Enregistre le nombre de sections
+                if (page.id === "evaluations_page") {                                       // Si section
+                    page.curSecIndx = 0;                                                    // 🛟 Définit l'index de la section active
+                    page.sectionCount = page.sub.length;                                    // 🛟 Enregistre le nombre de sections
                     page.sub.forEach ((section, index) => {
                         const sectionElement = document.getElementById(section.id);
                         if (sectionElement) {
-                            section.element = sectionElement;         // 🛟 Enregistre DOM element 
-                            section.index = index;                    // 🛟 Enregistre index
-                            //section.element.style.display = index === 0 ? 'block' : 'none';  // <= Affiche la première section
+                            section.element = sectionElement;                               // 🛟 Enregistre DOM element 
+                            section.index = index;                                          // 🛟 Enregistre index
+
                         };
                     });
                     page.brdcrmbElmnts = document.querySelectorAll('.module-breadcrumb .breadcrumb-item'); // Cibler <li> avec classe .breadcrumb-item
@@ -625,13 +637,11 @@ function initializeDOMElements() {
             } else {
                 updateStatus({ type: 'error', log: `❌.Elsed |initializeDOMElements : L'élément DOM avec l'ID ${page.id} est introuvable.` });
             }
-        });
+        } );
         
-        tstmnlCrslElmnt = document.querySelector('.carousel-temoignage');// 🛟 Enregistre le carousel témoignage <= page accueil
-        tstmnlCrtElmnt = tstmnlCrslElmnt.querySelector('.carte-temoignage');// 🛟 Enregistre une carte témoignage <= page accueil
-        tstmnlScrllAmnt = tstmnlCrtElmnt.offsetWidth + 24;            // 🛟 Enregistre le scroll amount <= page accueil
         
-        creaPgElmnts.adressElmnt = document.getElementById('adresseSalle');// 🛟📘 Enregistre le champ adresse <= page création
+        
+        
         
         isInit.allDOMLoaded = true;                                   // 🛟 Enregistre FLAG => DOM prêt, activation drapeau
         tryToInitAutocomplete();                                      // Tentative d'initialisation (si Maps est déjà chargé)
@@ -661,14 +671,14 @@ function initModeGuide(initValue) {
     try {
         guideModeBTN = document.querySelectorAll('.composant-aide input[type="radio"]'); // 🛟 Enregistre les boutons radios
         if (!guideModeBTN) {
-            updateStatus({type: 'error', log: `❌.Elsed |.initModeGuide : Les boutons guidé/expert sont introuvables.`});
+            console.error( `❌.Elsed |.initModeGuide : Les boutons guidé/expert sont introuvables.` );
             return;
         }
         synchroniserModeGuide_(initValue);                            // Lance synchronisation
         updateStatus({ refCSS: 'intro', type: 'success', isLdng: true, imgType: 'blanc', msg: `.../🔌✅.--End |initModeGuide : Mode guidé mis en place`});
     
     } catch (error) {  
-        updateStatus({ refCSS: 'intro', type: 'error', isLdng: false, msg: `🚫.Catched |initModeGuide : [error] : ${error}` });
+        console.error(`🚫.Catched |initModeGuide : [error] : ${error}` );
     }
 }
 

@@ -51,6 +51,14 @@ let pages = {                                                         // 'key': 
                             { id: 'section_photo',      label: 'Photo',         needsAsyncValidation: true  }
                           ]}
 };
+const evaluations = {                                                  // Mappage des valeurs aux descriptions complètes
+    '5': `N'en rajoutez plus (5/5)`,
+    '4': `C'est super (4/5)`,
+    '3': 'Ça va (3/5)',
+    '2': 'On en attend plus (2/5)',
+    '1': `C'est pas top (1/5)`,
+    '0': `On ne recommande pas (0/5)`,
+};
 /** GLOBAL - Variables de navigation ----------------------------------------------------------- */
 let curPgID           = null;                                         // ID Page affichée                       <= showPage()
 let conteneurSPA      = null;                                         // DOMElement                             <= initializeDOMElements()
