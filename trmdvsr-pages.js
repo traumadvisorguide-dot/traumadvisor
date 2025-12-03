@@ -170,136 +170,231 @@ function updateBreadcrumbs(refElmnt, newSecID) {
 }
 
 
-
-
-
-
-
-
-
-/* == NAVIGATION ============================================================= (EVALUATIONS) == */
-
-
-
-  // État global de l'application pour stocker toutes les notes
-  let appGlobalState = {}; 
+// ***************************************************************
+// 1. Fonctions de Logique Métier (séparées du Dispatcher)
+// ***************************************************************
 
 /**-------------------------------------------------------------------------------------------- //
- * @version         25.11.17 (17:52)                - 25.10.09 (23:16)
- * --------------- ----------------- ----------------- - -------------------------------------- //
- * @function        initializeRatingSection
- * @description     ???? 
- *                  Initialise le comportement interactif (rollover, clic, dispatch) pour une section d'évaluation donnée.
- *                  Met à jour les classes CSS des éléments de navigation breadcrumb.
- * --------------- ----------------- ----------------- - -------------------------------------- //
- * @param          {HTMLElement}     sectionElement    - L'élément <section> à initialiser.
- * -------------------------------------------------------------------------------------------- */
-function initializeRatingSection(sectionElement) {
-      
-      const questionId = sectionElement.dataset.questionId;                                     // 1. Récupération des éléments et IDs existants
-      const ratingBar = sectionElement.querySelector('.rating-bar');
-      
-      const resultInput = document.getElementById(`result-${questionId}`);                      // Le champ de résultat est trouvé par son ID pré-défini
-      const radioLabels = ratingBar.querySelectorAll('label.trmdvsr-radio-label');
+* @version        25.12.01 (16:34)
+* @instanceIn     {actionDispatcher} & {handlePageData}   ../
+* @instanceCount  4 (3 + 1)
+* --------------- ----------------- ----------------- - --------------------------------------- //
+* @function       handleRatingChange
+* @description    MET A JOUR L'AFFICHAGE DE LA NOTE SÉLECTIONNÉE
+*                 Met à jour l'affichage numérique de la note sélectionnée et gère le bouton Suivant.
+*                 Cette fonction est appelée par actionDispatcher pour le cas 'handleRatingChange'.
+* --------------- ----------------- ----------------- - --------------------------------------- //
+* @param          {HTMLElement}     radioElement      - L'input radio qui a déclenché l'événement.
+* --------------------------------------------------------------------------------------------- */
+function handleRatingChange(radioElement) {
+      console.debug( `Init handleRatingChange... [param]${radioElement.name} && ${radioElement.value}` );
+      const radioName = radioElement.name;                                                      // Ex: 'eval-q1'
+      const score = radioElement.value;                                                         // Ex: '5'
+      if (!radioName.startsWith('eval-q')) return;
 
-      if (!ratingBar || !resultInput) {
-            console.error(`[Init Error] Missing rating bar or result input for ${questionId}`);
-            return;
+      const questionId = radioName.split('-')[1];                                               // Extrait l'identifiant de la question (ex: q1)
+      const sectionId = `section_${questionId}`;                                                // 'section_q1'
+      console.log(`handleRatingChange => ${radioName} && ${score} && ${questionId} && ${sectionId}`);
+
+      const scoreDisplay = document.getElementById(`result-${questionId}`);                     // 1. MaJ affichage numérique note <= ID élément cible
+      if (scoreDisplay) {
+            console.log(`scoreDisplay.id: ${scoreDisplay.id}`);
+            scoreDisplay.value = `${score}/5`;
       }
 
-      const updateSelectedDisplay = () => {                                                     // Fonction pour mettre à jour l'affichage en fonction de la valeur sélectionnée
-            const selectedRadio = ratingBar.querySelector(`input[name="eval-${questionId}"]:checked`);
-            
-            resultInput.classList.remove('border-green-500', 'border-yellow-500', 'border-blue-400'); // Réinitialiser les classes
-            if (selectedRadio) {
-                  const value = selectedRadio.value;
-                  appGlobalState[questionId] = { 
-                        note: parseInt(value), 
-                        description: DESCRIPTIONS[value],
-                        timestamp: new Date().toLocaleTimeString()
-                  };
-                  resultInput.value = DESCRIPTIONS[value];
-                  resultInput.classList.add('border-green-500');                                // Vert si sélectionné
-            } else {
-                  resultInput.value = "Non sélectionnée";
-                  resultInput.classList.add('border-yellow-500');                               // Jaune si non sélectionné
-            }
-      };
-      
-      radioLabels.forEach(label => {                                                            // --- Logique du Survol (Rollover pour le texte) ---
-            const value = label.dataset.value;
-            
-            label.addEventListener( 'mouseover', () => {                                        // MOUSEOVER (Survol) : Afficher le texte de la note survolée
-                  resultInput.value = DESCRIPTIONS[value];
-                  resultInput.classList.remove('border-green-500', 'border-yellow-500');        // Appliquer un style de survol temporaire (Bleu)
-                  resultInput.classList.add('border-blue-400'); 
-            } );
+      checkSectionCompletion(sectionId);                                                        // 2. Vérifie la complétion => active le bouton de navigation
+      const targetPage = Object.values(pages).find(p => p.label === 'eval');                    // Charge l'objet page à afficher <= nwPgID existe (if initial)
+      const targetSctn = targetPage?.sub.find(s => s.id === sectionId);                          // Charge l'objet page à afficher <= nwPgID existe (if initial)
+      if (targetSctn) {                                                                         // 3. Enregistre données de notation
+            appData['note${targetSctn.label}'] = score;                                        //noteAccessibilite/noteApparence/noteAssise/noteAttention/noteAttente
+      }
 
-            label.addEventListener('mouseout', () => {                                          // MOUSEOUT (Retrait) : Rétablir l'affichage de la note sélectionnée
-                  updateSelectedDisplay(); // Rétablir l'affichage permanent
-            });
-      });
-
-      
-      ratingBar.addEventListener('change', () => {                                              // --- Logique du Clic (Déclenchement de l'Event Dispatcher) ---
-            updateSelectedDisplay();                                                            // Mise à jour locale et de l'état global
-            
-            const ratingEvent = new CustomEvent('ratingSelected', {                             // 2. Déclenchement de l'événement personnalisé 'ratingSelected'
-                  detail: appGlobalState[questionId],
-                  bubbles: true 
-            });
-
-            sectionElement.dispatchEvent(ratingEvent);                                          // Dispatch l'événement à partir de l'élément conteneur
-      });
-
-      updateSelectedDisplay();                                                                  // Initialisation de l'affichage
+      console.warn( `✅.End-ng |handleRatingChange : Note ${score}/5 enregistrée pour ${questionId}.` );
 }
 
-  // --- GESTIONNAIRE GLOBAL (Écouteur de l'Event Dispatcher) ---
 /**-------------------------------------------------------------------------------------------- //
- * @version         25.11.17 (17:52)                - 25.10.09 (23:16)
- * --------------- ----------------- ----------------- - -------------------------------------- //
- * @function        handleRatingSelected
- * @description     ???? 
- *                  Initialise le comportement interactif (rollover, clic, dispatch) pour une section d'évaluation donnée.
- *                  Met à jour les classes CSS des éléments de navigation breadcrumb.
- * --------------- ----------------- ----------------- - -------------------------------------- //
- * @param          {HTMLElement}     sectionElement    - L'élément <section> à initialiser.
+ * @version         25.12.02 (23:33)
+ * ---------------- ------------------- ------------------- - --------------------------------- //
+ * @function        handleRatingChange
+ * @description     MET A JOUR L'AFFICHAGE DE LA NOTE SÉLECTIONNÉE
+ *                  LOGIQUE CLÉ : Utiliser l'attribut 'for' du label pour trouver l'input associé.
+ * ---------------- ------------------- ------------------- - --------------------------------- //
+ * @param           {HTMLElement}       labelElement        - L'élément label survolé.
+ * @returns         {string|null}                           > La valeur de la note ('1', '2', '3', etc.) ou null.    
  * -------------------------------------------------------------------------------------------- */
-  function handleRatingSelected(event) {
-      const { id, note, description } = event.detail;
+function getSectionFromLabel(labelElement) {
+    
+    const radioId = labelElement.getAttribute('for');                                           // 1. Récupère la valeur de l'attribut 'for' du label (e.g., "q1-r5")
+    console.log(`getScoreFromLabel => radioId:${radioId}`)
+    if (!radioId) {
+        console.error("L'attribut 'for' est manquant sur le label.");
+        return null;
+    }
+
+    const associatedRadio = document.getElementById(radioId);                                   // 2. Utilise document.getElementById() avec cet ID pour trouver l'input
+    if (!associatedRadio || associatedRadio.type !== 'radio') {
+        console.error(`Aucun input radio trouvé avec l'ID: ${radioId}`);
+        return null;
+    }
+    console.log(`getScoreFromLabel => associatedRadio.value:${associatedRadio.value}`)
+    return associatedRadio.value;                                                               // 3. Retourne la valeur de l'input
+}
+
+/**-------------------------------------------------------------------------------------------- //
+ * @version         25.12.02 (23:33)
+ * ---------------- ------------------- ------------------- - --------------------------------- //
+ * @function        getScoreFromLabel
+ * @description     MET A JOUR L'AFFICHAGE DE LA NOTE SÉLECTIONNÉE
+ *                  LOGIQUE CLÉ : Utiliser l'attribut 'for' du label pour trouver l'input associé.
+ * ---------------- ------------------- ------------------- - --------------------------------- //
+ * @param           {HTMLElement}       labelElement        - L'élément label survolé.
+ * @returns         {string|null}                           > La valeur de la note ('1', '2', '3', etc.) ou null.    
+ * -------------------------------------------------------------------------------------------- */
+function getScoreFromLabel(labelElement) {
+    
+    const radioId = labelElement.getAttribute('for');                                           // 1. Récupère la valeur de l'attribut 'for' du label (e.g., "q1-r5")
+    console.log(`getScoreFromLabel => radioId:${radioId}`)
+    if (!radioId) {
+        console.error("L'attribut 'for' est manquant sur le label.");
+        return null;
+    }
+
+    const associatedRadio = document.getElementById(radioId);                                   // 2. Utilise document.getElementById() avec cet ID pour trouver l'input
+    if (!associatedRadio || associatedRadio.type !== 'radio') {
+        console.error(`Aucun input radio trouvé avec l'ID: ${radioId}`);
+        return null;
+    }
+    console.log(`getScoreFromLabel => associatedRadio.value:${associatedRadio.value}`)
+    return associatedRadio.value;                                                               // 3. Retourne la valeur de l'input
+}
+
+/**-------------------------------------------------------------------------------------------- //
+ * @version         25.12.02 (14:38)
+ * ---------------- ------------------- ------------------- - --------------------------------- //
+ * @function        displayNote
+ * @description     MET À JOUR L'AFFICHAGE DE LA NOTE 
+ *                  en utilisant la référence DOM pré-stockée dans pages.eval.sub, recherchée par l'index de la question (q1, q2, ...).
+ * ---------------- ------------------- ------------------- - --------------------------------- //
+ * @param           {number}            score               - Le score numérique à afficher (ex: 3.5).
+ * @param           {HTMLElement}       element             - L'élément déclencheur du DOM (<label> ou <input> radio).
+ * -------------------------------------------------------------------------------------------- */
+/**
+ * Met à jour l'affichage de la note en utilisant la référence DOM pré-stockée 
+ * dans pages.eval.sub, recherchée par l'index de la question (q1, q2, ...).
+ * * @param {number|null|undefined} score - Le score numérique à afficher (entre 0 et 5).
+ * @param {HTMLElement} element - L'élément déclencheur du DOM (<label> ou <input> radio).
+ */
+function getInfos(element) {
+    if (!element || !pages.eval || !pages.eval.sub) {
+        console.error("Erreur: Structure pages.eval.sub ou élément déclencheur manquant.");
+        return;
+    }
+    
+    let questionId = null; // e.g., "q1", "q2"
+    const tagName = element.tagName;
+    
+    // --- 1. Extraction de l'ID de la question (qX) à partir du DOM ---
+    if (tagName === 'LABEL') { 
+        const radioId = element.getAttribute('for'); 
+        if (radioId) {
+            questionId = radioId.split('-')[0]; // Ex: "q1-r5" -> "q1"
+        }
+    } else if (tagName === 'INPUT' && element.type === 'radio') {
+        const nameAttr = element.getAttribute('name'); 
+        if (nameAttr) {
+            const parts = nameAttr.split('-');
+            questionId = parts[parts.length - 1]; // Ex: "eval-q1" -> "q1"
+        }
+    }
+    
+    if (!questionId || !questionId.startsWith('q')) {
+        console.warn(`ID de question invalide ou non trouvé dans le DOM: ${element.outerHTML}`);
+        return;
+    }
+
+    // --- 2. Détermination de l'INDEX dans pages.eval.sub ---
+    const questionNumber = parseInt(questionId.substring(1), 10); 
+    
+    if (isNaN(questionNumber) || questionNumber < 1) {
+        console.error(`Impossible de déterminer le numéro de question à partir de l'ID: ${questionId}`);
+        return;
+    }
+
+    const targetIndex = questionNumber - 1; // q1 -> index 0
+    if (targetIndex < 0 || targetIndex >= pages.eval.sub.length) { 
+        console.error(`Index de section ${targetIndex} hors limites pour pages.eval.sub.`);
+        return;
+    }
+        
+    return targetIndex;
+}
+
+function displayNote(score, targetIndex) {
+
+    const sectionData = pages.eval.sub[targetIndex];
+    const targetDisplayElmnt = sectionData.noteDisplayElmnt; 
+
+    console.log (`displayNote: >> ${sectionData} && targetDisplayElmnt`)
+    
+    // --- 3. Mise à jour de la valeur via la référence DOM stockée ---
+    if (!targetDisplayElmnt) {
+        console.error(`Référence DOM (noteDisplayElmnt) manquante dans les données pour l'index : ${targetIndex}`);
+        return;
+    }
+    
+    let scoreFinal;
+
+    // Vérifie si le score est un nombre valide (y compris 0)
+    if (typeof score === 'number' && !isNaN(score)) {
+        // Optionnel: Utilisez toFixed(1) pour un formatage uniforme comme 3.0/5
+        scoreFinal = `${score.toFixed(1)}/5`; 
+        
+        // Optionnel: Mettre à jour la propriété 'sub.note' si vous la suivez
+        if (sectionData.hasOwnProperty('note')) {
+             sectionData.note = score;
+        }
+    } else {
+        scoreFinal = `⏳/5`; // Placeholder
+    }
+    
+    // Si targetDisplayElmnt est un <span>/<div>, utilisez textContent. 
+    // Si c'est un <input> ou <textarea>, utilisez .value.
+    // Nous conservons votre choix (.textContent) :
+    targetDisplayElmnt.value = scoreFinal;
+    console.log(`Note (${scoreFinal}) mise à jour pour ${questionId} (Index ${targetIndex}) via référence DOM stockée.`);
+}
+
+// NOTE IMPORTANTE: 
+// Si 'noteDisplayElmnt' est un champ de formulaire (<input type="text">), 
+// il faudrait utiliser targetDisplayElmnt.value = scoreFinal; au lieu de .textContent.
+// Vérifiez si vous utilisez un <input> ou un <span>/<div> pour l'affichage du score.
+
+/**-------------------------------------------------------------------------------------------- //
+ * @version        25.12.01 (16:34)
+ * --------------- ----------------- ----------------- - -------------------------------------- //
+ * @function       checkSectionCompletion
+ * @description    VÉRIFIE SI UNE SECTION D'ÉVALUATION EST COMPLÉTÉE
+ *                 Et gère l'état du bouton Suivant.
+ *                 Cette fonction est réutilisée pour la validation avant la navigation
+ * --------------- ----------------- ----------------- - -------------------------------------- //
+ * @param          {string}          sectionId         - L'ID de la section (e.g., 'section_q1').
+ * @returns        {boolean}                           > Vrai si la section est complétée.
+ * -------------------------------------------------------------------------------------------- */
+function checkSectionCompletion(sectionId) {
+      const questionPrefix = sectionId.replace('section_', ''); // 'q1'
+      const radioGroupName = `eval-${questionPrefix}`;                     // Détermine le nom du groupe radio à partir de l'ID de section (ex: section_q1 -> eval-q1)
       
-      const stateDisplay = document.getElementById('app-state');                                // Mise à jour de l'affichage de l'état (pour debug/visualisation)
-      stateDisplay.innerHTML = JSON.stringify(appGlobalState, null, 2);
+      const FORM = document.getElementById('evaluationForm');           // !!!!!!! => VOIR SI ON UTILISE FORM Ou document
+      
+      const isCompleted = FORM.querySelector(`input[name="${radioGroupName}"]:checked`) !== null;     // Vérifie si un radio button de ce groupe est coché
+      const nextButtonId = `btn-next-${questionPrefix}`;                     // Détermine l'ID du bouton "Suivant" (ex: section_q1 -> btn-next-q1)
+      const nextButton = document.getElementById(nextButtonId);
 
-      const totalSections = document.querySelectorAll('.eval-item').length;                     // Vous pouvez ici implémenter d'autres actions globales Par exemple, vérifier si toutes les notes sont remplies:
-      const completedNotes = Object.keys(appGlobalState).length;
-
-      if (completedNotes === totalSections) {
-          console.log("Toutes les étapes sont complétées ! Prêt à soumettre.");
+      if (nextButton) {
+            nextButton.disabled = !isCompleted;
+            nextButton.textContent = isCompleted ? 'Suivant' : 'Sélectionnez une note...';
       }
-  }
-
-
-  
-document.addEventListener( 'DOMContentLoaded', () => {                                        // --- Démarrage de l'Application ---
-      const formElement = document.getElementById('evaluationForm');
-
-      const stepElements = formElement.querySelectorAll('.eval-item');                          // 1. Initialiser tous les composants en parcourant les sections
-      stepElements.forEach(el => {
-            initializeRatingSection(el);
-      });
-
-      formElement.addEventListener('ratingSelected', handleRatingSelected);                     // 2. Attacher le gestionnaire global au formulaire parent (délégation d'événements)
-      formElement.addEventListener( 'submit', (e) => {                                          // Empêcher la soumission du formulaire pour l'exemple
-            e.preventDefault();
-            console.log("Formulaire soumis ! Données finales:", appGlobalState);
-      } );
-});
-
-
-function initPageEvalElmnts() {
-      
+      return isCompleted;
 }
 
 

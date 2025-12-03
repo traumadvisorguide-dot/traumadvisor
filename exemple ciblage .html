@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciblage par Dataset et Classe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS PUR: Ciblage direct des éléments qui correspondent aux DEUX critères */
+        
+        /* Le sélecteur : [data-machin] cible tout élément ayant cet attribut.
+        Le sélecteur : [data-machin="valeur-spécifique"] cible uniquement si la valeur est "valeur-spécifique".
+        Le sélecteur : .truc cible tout élément ayant la classe 'truc'.
+        La combinaison : div[data-machin].truc cible les deux.
+        */
+        div[data-machin].truc {
+            /* Style appliqué par CSS seul */
+            border: 4px solid #f97316; /* Orange 500 */
+            background-color: #fff7ed; /* Orange 50 */
+            transition: all 0.3s ease;
+        }
+
+        /* Style pour l'élément qui sera ciblé et modifié par JavaScript */
+        .cible-js {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8 flex flex-col items-center">
+
+    <div class="max-w-4xl w-full space-y-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Ciblage d'Éléments avec Dataset et Classe</h1>
+
+        <!-- ÉLÉMENT CIBLÉ PAR CSS ET JAVASCRIPT -->
+        <div id="cible-principale"
+             class="p-6 rounded-xl border border-dashed border-gray-300 truc"
+             data-machin="valeur-cible">
+            <h2 class="font-semibold text-lg text-gray-700">Cible Principale (Élément #1)</h2>
+            <p class="text-gray-600 mt-1">J'ai <code>data-machin="valeur-cible"</code> ET la classe <code>.truc</code>. Je suis stylisé en orange par le CSS pur.</p>
+        </div>
+
+        <!-- ÉLÉMENT QUI A SEULEMENT LE DATASET -->
+        <div class="p-6 rounded-xl bg-white shadow-md" data-machin="valeur-cible">
+            <h2 class="font-semibold text-lg text-gray-700">Élément Similaire #2</h2>
+            <p class="text-gray-600 mt-1">J'ai <code>data-machin="valeur-cible"</code> mais pas la classe <code>.truc</code>.</p>
+        </div>
+        
+        <!-- ÉLÉMENT QUI A SEULEMENT LA CLASSE -->
+        <div class="p-6 rounded-xl bg-white shadow-md truc" data-bidule="autre-valeur">
+            <h2 class="font-semibold text-lg text-gray-700">Élément Similaire #3</h2>
+            <p class="text-gray-600 mt-1">J'ai la classe <code>.truc</code> mais pas <code>data-machin="valeur-cible"</code>.</p>
+        </div>
+
+        <!-- Section de Résultat JS -->
+        <div id="resultat-js" class="mt-8 p-4 bg-blue-100 border border-blue-300 rounded-lg hidden">
+            <p class="font-medium text-blue-800">Résultat JavaScript : L'élément ciblé a été trouvé et stylisé !</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // =================================================================
+            // PARTIE JAVASCRIPT : Ciblage précis
+            // =================================================================
+            
+            // Le sélecteur CSS utilisé est la combinaison de :
+            // 1. Tag ou Sélecteur de type (ici 'div' pour être spécifique)
+            // 2. Sélecteur d'attribut [data-machin="valeur-cible"]
+            // 3. Sélecteur de classe .truc
+            const selecteurCombine = 'div[data-machin="valeur-cible"].truc';
+            
+            // Utiliser document.querySelector() pour trouver le PREMIER élément correspondant
+            const elementCible = document.querySelector(selecteurCombine);
+            
+            // Élément pour afficher le résultat de l'opération JS
+            const resultatJSDiv = document.getElementById('resultat-js');
+
+            if (elementCible) {
+                // L'élément a été trouvé !
+                
+                // 1. Ajouter une classe CSS via JS pour prouver le ciblage
+                elementCible.classList.add('bg-orange-300', 'text-white', 'cible-js');
+                
+                // 2. Modifier du contenu pour confirmer
+                elementCible.querySelector('h2').textContent = "Cible JAVASCRIPT ATTEINTE !";
+                elementCible.querySelector('p').textContent = "Le JavaScript a pu me trouver car j'avais à la fois l'attribut data-machin et la classe .truc.";
+
+                // 3. Afficher le message de succès JS
+                resultatJSDiv.classList.remove('hidden');
+            } else {
+                resultatJSDiv.classList.remove('hidden');
+                resultatJSDiv.classList.replace('bg-blue-100', 'bg-red-100');
+                resultatJSDiv.classList.replace('border-blue-300', 'border-red-300');
+                resultatJSDiv.querySelector('p').textContent = "ERREUR JavaScript : L'élément cible n'a pas été trouvé avec le sélecteur combiné.";
+            }
+
+            // =================================================================
+            // PARTIE JAVASCRIPT : Récupération et Affichage des propriétés Dataset
+            // =================================================================
+            
+            if (elementCible) {
+                // Vous pouvez accéder aux valeurs du dataset en JS via l'objet .dataset
+                const valeurMachin = elementCible.dataset.machin; // Notez l'absence de 'data-'
+                
+                console.log(`L'élément ciblé a data-machin = "${valeurMachin}"`);
+                
+                // Si vous avez un attribut data-user-id, vous y accédez par:
+                // elementCible.dataset.userId; 
+            }
+        });
+    </script>
+
+</body>
+</html>

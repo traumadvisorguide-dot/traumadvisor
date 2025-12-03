@@ -28,22 +28,29 @@ let appData         = {                                               // 📘 Ob
     submissionEditURL : null,                                         // non pertinent
     lastUpdateDate    : null,                                         // submit eval-2-Form à chaque fois
 };
-/** @description     ARCHITECTURE D'INFO POUR LES PAGES 
- * ---------- ------------- ----------------------- - ------------------------------------------ //
- * @var       {element}     element                 - Élement du DOM                                /page <= initializeDOMElements()
- * @var       {number}      height                  - Hauteur                                       /page <= initializeDOMElements()
- * @var       {integer}     currentSectionIndex     - Index section active                          /page <= initializeDOMElements()
- * @var       {integer}     sectionCount            - Nombre de sections                            /page <= initializeDOMElements()
- * @var       {array}       sub.element             - Élement du DOM                        /section/page <= initializeDOMElements()
- * @var       {array}       sub.index               - Index section                         /section/page <= initializeDOMElements()
- * @var       {number}      sub.height              - Hauteur section                       /section/page <= calculatePageHeights()
- * @var       {number}      totalHeight             - Hauteur maximale de page  (qq soit la section)/page <= calculatePageHeights()
+/** @description     ARCHITECTURE D'INFOS POUR LES PAGES (celles enregistrées dynamiquement)
+ * -------- ----------- ----------------------- - ------------------------------------------ //
+ * @var     {element}   element                 - Élement du DOM                                            /page <= initializeDOMElements()
+ * @var     {number}    height                  - Hauteur                                                   /page <= initializeDOMElements()
+ * @var     {integer}   currentSectionIndex     - Index section active                                      /page <= initializeDOMElements()
+ * @var     {integer}   sectionCount            - Nombre de sections                                        /page <= initializeDOMElements()
+ * @var     {array}     sub                     - Tableau des sections                                      /page <= initializeDOMElements()
+ * @var     {element}   sub.element             - Élement du DOM                                    /section/page <= initializeDOMElements()
+ * @var     {array}     sub.index               - Index section                                     /section/page <= initializeDOMElements()
+ * @var     {number}    sub.height              - Hauteur section                                   /section/page <= calculatePageHeights()
+ * @var     {number}    totalHeight             - Hauteur maximale de page                                  /page <= calculatePageHeights()
+ * @var     {number}    sub.note                - Note donnée                                       /section/page <= ???
+ * @var     {element}   sub.noteModuleElmnt     - Élement du DOM                                    /section/page <= ???
+ * @var     {element}   sub.noteDisplayElmnt    - Élement du DOM                                    /section/page <= ???
+ * @var     {object}    sub.comment             - Objet commentaire                                 /section/page <= ???
+ * @var     {number}    sub.comment.ID          - Identifiant du commentaire                        /section/page <= ???
+ * @var     {string}    sub.comment.texte       - Commentaire en texte                              /section/page <= ???
  * --------------------------------------------------------------------------------------------- */
 let pages = {                                                         // 'key':   {value}
     'accueil':  { index: 0,   id: 'accueil_page',       label: 'Accueil',       hasSub: false, sub: null }, 
     'creation': { index: 1,   id: 'creation-lieu_page', label: 'Création Lieu', hasSub: false, sub: null },
-    'eval':     { index: 2,   id: 'evaluations_page',   label: 'Évaluations',   hasSub: true,  sub: [ 
-                            { id: 'section_q1',         label: 'Accessibilité', needsAsyncValidation: false },
+    'eval':     { index: 2,   id: 'evaluations_page',   label: 'eval',   hasSub: true,  sub: [ 
+                            { id: 'section_q1',         label: 'Accessibilite', needsAsyncValidation: false }, //   <= 🛟DOM{ Elmnts } + 📘{ Note + Comment (init[x,y,z] + finalText) }
                             { id: 'section_q2',         label: 'Apparence',     needsAsyncValidation: false }, 
                             { id: 'section_q3',         label: 'Assise',        needsAsyncValidation: false },
                             { id: 'section_q4',         label: 'Attention',     needsAsyncValidation: false },
@@ -51,6 +58,10 @@ let pages = {                                                         // 'key': 
                             { id: 'section_photo',      label: 'Photo',         needsAsyncValidation: true  }
                           ]}
 };
+const DOM_Elements = {
+    'loader':   { container: null, currentContainer: null, animContainer: { Elmnt:null, animIMG: null, animSpinner: null }, progressContainer: null, progressText: null, progressBar: null},
+    'accueil':  { index: null}
+}
 const evaluations = {                                                  // Mappage des valeurs aux descriptions complètes
     '5': `N'en rajoutez plus (5/5)`,
     '4': `C'est super (4/5)`,
@@ -87,6 +98,7 @@ let prgrssGrpLgElmnt  = null;                                         //        
 let prgrssBrLgElmnt   = null;                                         //                                        <= init_updateStatus()
 let prgrssTxtLgElmnt  = null;                                         //                                        <= init_updateStatus()
 
+let selectLieuxElmnt  = null;           
 let tstmnlCrslElmnt   = null;                                         // Témoignage Carousel                    <= initializeDOMElements()
 let tstmnlCrtElmnt    = null;                                         // Témoignage Carte                       <= initializeDOMElements()
 let tstmnlScrllAmnt   = null;                                         // Valeur du scroll                       <= initializeDOMElements()

@@ -1178,8 +1178,22 @@ pointer-events:           none;
 }
 
 /*<!-- CAROUSEL EVALUATIONS								(Page Evaluation)-->*/
-.carousel-evaluation::-webkit-scrollbar { display: none; }					/* Cache la barre de défilement (WebKit/Chrome/Safari) */
-.carousel-evaluation {
+.eval-carousel-viewport::-webkit-scrollbar { display: none; }				/* Cache la barre de défilement (WebKit/Chrome/Safari) */
+.eval-carousel-viewport {
+    max-width: 				var(--largeur-conteneur-max);
+    margin: 				0;
+    padding:				var(--espacement-court) var(--espacement-large) var(--espacement-tres-large);
+    overflow-x: hidden;
+    scroll-behavior: 		smooth;
+    scroll-snap-type:		x mandatory;									/* Force le conteneur à capturer les points d'accroche */
+	-ms-overflow-style:		none;											/* Pour IE/Edge/Firefox */
+	scrollbar-width:		none;
+    /*box-shadow: 			0 10px 25px -5px rgba(0, 0, 0, 0.1);*/
+    background-color:		var(--gris-trmdvsr-tres-clair);
+    border: 4px solid green;
+}
+
+.eval-carousel-track {
 	display:				flex;
 	flex-direction:			row;
 	flex-wrap:				nowrap;											/* Empêche les enfants de réduire et force à la taille demandée  */
@@ -1187,17 +1201,11 @@ pointer-events:           none;
 	align-items:			flex-start;
 	gap:					var(--espacement-court);
 	width:					100%;
-	padding:				var(--espacement-court) var(--espacement-large) var(--espacement-tres-large);
-	overflow-x:				scroll;											/* Activation du défilement horizontal */
-	overflow-y:				hidden;       
-	scroll-snap-type:		x mandatory;									/* Force le conteneur à capturer les points d'accroche */
-	-ms-overflow-style:		none;											/* Pour IE/Edge/Firefox */
-	scrollbar-width:		none;
 	box-sizing:				border-box;
 	background-color:		var(--gris-trmdvsr-tres-clair);
 	border: 				2px dotted red;
 }
-.carousel-evaluation .eval-item {
+.eval-carousel-track .eval-item {
 	display:				flex;
 	flex-direction:			column;
 	flex:					0 0 var(--largeur-eval-item);					/* Coeur du layout : section = largeur max - les marges */
@@ -1216,11 +1224,11 @@ pointer-events:           none;
 	<div class="conteneur-lame flex-col col-first">
 		<img class="img-notede0"> <div class="trmdvsr-sstexte">
 	<div class="conteneur-lame flex-col col-middle">
-		<label class="rating-bar trmdvsr-texte">
-		<div class="rating-bar" data-action="rating-selection" data-action-group="rating-selection">
+		<label class="module-note trmdvsr-texte">
+		<div class="module-note" data-action="rating-selection" data-action-group="rating-selection">
 			<input type="radio" id="q1-r5" value="5"/>
 			<label class="trmdvsr-radio-label"></label>
-		<div class="rating-bar trmdvsr-sstexte">
+		<div class="module-note trmdvsr-sstexte">
 			<label for="q1-r5">5</label>
 	<div class="conteneur-lame flex-col col-last">
 		<img class="img-notea5">
@@ -1274,7 +1282,7 @@ img.img-notea5 {
 	background-size:				66%;
 	background-repeat:				no-repeat;
 }
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar.trmdvsr-texte {				/* Texte dans le bloc avec balise <em> et <b> */
+.composant-note .conteneur-lame.flex-col.col-middle .module-note.trmdvsr-texte {				/* Texte dans le bloc avec balise <em> et <b> */
 	display:						block;
 	width:							auto;
 	margin:							0;
@@ -1283,7 +1291,7 @@ img.img-notea5 {
 	text-align:						center;
 }
 
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar {								/* Conteneur de bouton radio avec id='rating-bar-q[X]' */
+.composant-note .conteneur-lame.flex-col.col-middle .module-note {								/* Conteneur de bouton radio avec id='module-note[X]' */
 	display:						flex;
 	flex-direction:					row-reverse; 
 	justify-content:				center;														/* Aligne le groupe à gauche */
@@ -1295,8 +1303,8 @@ img.img-notea5 {
 	padding-bottom:					calc(var(--espacement-court) * 0.33);
 	border:							1px solid purple;
 }
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar input[type="radio"] { display: none; } /* Cache l'élément radio natif */
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-radio-label {                                         /* Spécificité de style */
+.composant-note .conteneur-lame.flex-col.col-middle .module-note input[type="radio"] { display: none; } /* Cache l'élément radio natif */
+.composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-radio-label {                                         /* Spécificité de style */
 	display: 						block;
 	box-sizing: 					border-box;
 	width:							calc( var(--largeur-logo-bouton) + var(--espacement-button) );    
@@ -1307,13 +1315,13 @@ img.img-notea5 {
 	animation:						none;
 	transition:						all 0.2s ease-in-out;  
 }
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-radio-label:first-of-type { width: var(--largeur-logo-bouton); }
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-radio-label:hover,
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-radio-label:hover ~ label { background-image: var(--url-logo-actif); } /* Allume la note survolée et tous les labels qui la SUIVENT */
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar input:checked + label.trmdvsr-radio-label,
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar input:checked ~ label.trmdvsr-radio-label { background-image: var(--url-logo-actif); } /* Activation des notes cliquées et inférieures */
+.composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-radio-label:first-of-type { width: var(--largeur-logo-bouton); }
+.composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-radio-label:hover,
+.composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-radio-label:hover ~ label { background-image: var(--url-logo-actif); } /* Allume la note survolée et tous les labels qui la SUIVENT */
+.composant-note .conteneur-lame.flex-col.col-middle .module-note input:checked + label.trmdvsr-radio-label,
+.composant-note .conteneur-lame.flex-col.col-middle .module-note input:checked ~ label.trmdvsr-radio-label { background-image: var(--url-logo-actif); } /* Activation des notes cliquées et inférieures */
 
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-sstexte {                                             /* texte sous les boutons customs */
+.composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-sstexte {                                             /* texte sous les boutons customs */
 	display: 						block;
 	box-sizing: 					border-box;
 	width:							calc( var(--largeur-logo-bouton) + var(--espacement-button) );   
@@ -1322,8 +1330,12 @@ img.img-notea5 {
 	color:							var(--gris-trmdvsr-clair);
 	text-align:						center;
 }
-.composant-note .conteneur-lame.flex-col.col-middle .rating-bar label.trmdvsr-sstexte:first-of-type { width: var(--largeur-logo-bouton); padding-right: 0; }
-
+.composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-sstexte:first-of-type { width: var(--largeur-logo-bouton); padding-right: 0; }
+.composant-note .conteneur-lame.flex-col.col-middle input.module-note {
+	padding: var(--espacement-large) 0;
+	text-align: center;
+	background: initial;
+}
 /*------------------------------------------------------------------------------ */
 /* SUBMIT => Gestion Humeur */
 
@@ -1870,6 +1882,9 @@ justify-content:          space-between;
 } */
 /* RÈGLES - ADAPTATIVE @MEDIA												 (GLOBAL X DESKTOP) */
 @media (min-width: 60rem) {																		/* Comportement à partir d'au moins 768px (a.k.a. pour desktop) */
+	:root {
+		--largeur-eval-item:			calc(var(--largeur-conteneur-max) - (var(--espacement-large) * 2)); /* Conteneur - les marges */
+	}
 	.insta-desktop            { display: block;       }											/* Affiche le bouton Desktop du Header */
 	.insta-mobile             { display: none;        }											/* Cache le bouton Mobile du Footer */
 	.menu-toggle              { display: none;        }											/* Menu BURGER Masqué sur desktop */
@@ -2016,11 +2031,11 @@ justify-content:          space-between;
 		<div class="conteneur-lame flex-col col-first">
 			<img class="img-notede0"> <div class="trmdvsr-sstexte">
 		<div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-			<label class="rating-bar trmdvsr-texte">
-			<div class="rating-bar" data-action="rating-selection" data-action-group="rating-selection">
+			<label class="module-note trmdvsr-texte">
+			<div class="module-note" data-action="rating-selection" data-action-group="rating-selection">
 				<input type="radio" id="q1-r5" value="5"/>
 				<label class="trmdvsr-radio-label"></label>
-			<div class="rating-bar trmdvsr-sstexte">
+			<div class="module-note trmdvsr-sstexte">
 				<label for="q1-r5">5</label>
 		<div class="conteneur-lame flex-col col-last">
 			<img class="img-notea5">

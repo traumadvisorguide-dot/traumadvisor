@@ -568,710 +568,716 @@
             </li> 
           </ul>
         </nav>
-        <form id="evaluationForm" class="carousel-evaluation">
-          <section class="eval-item" id="section_q1">   <!-- SECTION -->
-            <hgroup class="conteneur-lame">
-              <h4 class="trmdvsr-texte-h4">Le premier A de AAAAA</h4>
-              <h3 class="trmdvsr-texte-h3">♿ A comme Accessibilité</h3>
-              <div data-maskable class="as-block trmdvsr-texte">
-                <p>Est-ce au rez-de-chaussée ou au troisème étage <i>« mais c'est des demi-étages ça ira pour vous... »</i> parce qu'il y a une rampe ou une rambarde ou une rambardounette? ou summum du luxe, y-a-t-il un ascenseur ?</p>
-                <p>Est-ce assez large pour le passage d’un fauteuil? Y-a-t-il assez d’espace pour que 2 fauteuils se croisent?</p> 
-                <p>Bref, vous l'avez compris, l'accessibilité, c’est essentiel pour un lieu de santé.</p>
-                <p><em>Observez. Et notez.</em></p>
-              </div>
-            </hgroup>
-            <div class="composant-note conteneur-lame flex-into-row">
-              <div class="conteneur-lame flex-col col-first">
-                <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
-                <div class="trmdvsr-sstexte"><p>...Pour un dernier étage.<br/>Sans ascenseur.</p></div>
-              </div>
-              <div class="conteneur-lame flex-col col-middle">
-                <h4 class="trmdvsr-texte-h4">La note</h4>
-                <label class="rating-bar trmdvsr-texte" for="eval-q1"><em><b>♿ Sélectionnez une note</b></em></label>
-                <div class="rating-bar" data-action="rating-selection" data-action-group="rating-selection">
-                  <input type="radio" name="eval-q1" id="q1-r5" value="5" required />
-                  <label class="trmdvsr-radio-label" for="q1-r5" title="Excellent (5/5)"></label>
-                  <input type="radio" name="eval-q1" id="q1-r4" value="4" />
-                  <label class="trmdvsr-radio-label" for="q1-r4" title="Très bien (4/5)"></label>
-                  <input type="radio" name="eval-q1" id="q1-r3" value="3" />
-                  <label class="trmdvsr-radio-label" for="q1-r3" title="Moyen (3/5)"></label>
-                  <input type="radio" name="eval-q1" id="q1-r2" value="2" />
-                  <label class="trmdvsr-radio-label" for="q1-r2" title="Peu satisfaisant (2/5)"></label>
-                  <input type="radio" name="eval-q1" id="q1-r1" value="1" />
-                  <label class="trmdvsr-radio-label" for="q1-r1" title="Mauvais (1/5)"></label>
-                  <input type="radio" name="eval-q1" id="q1-r0" value="0" />
-                  <label class="trmdvsr-radio-label" for="q1-r0" title="Très Mauvais (0/5)"></label>
-                </div>
-                <input type="text" id="result-q1_accueil" value="Aucune note sélectionnée" readonly class="trmdvsr-texte-h2" />
-              </div>
-              <div class="conteneur-lame flex-col col-last">
-                <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
-                <div class="trmdvsr-sstexte"><p>...Si c'est <i>the place to</i> attendre sans problème d’accès.</p></div>
-              </div>
-            </div>
-            <hr class="traum-divider-small" />
-            <div class="composant-avis conteneur-lame flex-into-row">
-              <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
-                <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
-                <p>Notre IA va pré-écrire un commentaire selon votre note.</p>
-                <p>Comme un <em>rédac' chef</em>, validez ou réécrivez sa proposition.</p> 
-                <p data-maskable class="as-block"> Vous pouvez-lui demander de réécrire, mais nous ne sommes pas sûr que l'IA fera une nouvelle proposition.</p>
-                <p data-maskable class="as-block">Par rapport avec le droit du trav.IA.l selon ses mots. <em>Par flemme selon nous</em>.</p>
-              </hgroup>
-              <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q1" spellcheck="true" autocorrect="on"></textarea>
-                <div class="conteneur-humeur" >
-                  <div class="conteneur-lame flex-into-row button-multi trmdvsr-texte" id="boutons-humour-q1">
-                    <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
-                    <button 
-                        type="button" 
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorRed"
-                        class="trmdvsr-texte-btn trmdvsr-button primary" 
-                        disabled >
-                      ...Plus sérieux
-                    </button>
-                    <button 
-                        type="button"
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorAdd"
-                        class="trmdvsr-texte-btn trmdvsr-button primary"
-                        disabled >
-                      <span>+ drôle</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="trmdvsr-button-picto">
-                        <path d="M13.354 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14v6a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341l1.218-1.348"/>
-                        <path d="M16 6h6"/>
-                        <path d="M19 3v6"/>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr class="traum-divider-big" />
-            <nav class="conteneur-lame button-solo trmdvsr-texte" aria-label="Progression du formulaire">
-              <button type="button" data-action="navigateSection" data-maintarget="evaluations_page" data-sectiontarget="section_q2" data-param="true" class="eval-btn trmdvsr-texte-btn trmdvsr-button primary" > <!-- A VOIR eval-btn -->Suivant</button>
-            </nav>
-          </section>
-          <section class="eval-item" id="section_q2">   <!-- SECTION -->
-            <hgroup class="conteneur-lame">
-              <h4 class="trmdvsr-texte-h4">Le second A de AAAAA</h4>
-              <h3 class="trmdvsr-texte-h3">🎨 A comme Apparence</h3>
-              <div data-maskable class="as-block trmdvsr-texte">
-                <p><em>Oui</em> chez les salles d’attente aussi, l’apparence est aussi très importante.</p>
-                <p> Mais n’ayez pas de scrupule. <b>Jugez-la</b>.</p>
-                <p> Comment est la déco? Sobre, Feng Shui, sympa ou moche?</p>
-                <p> Les cadres, oui il y a des cadres? Sinon c’est peut-être que vous vous êtes plantés et que vous attendez chez un voisin. <em>Ou que ça méritait vraiment un avis Traumadvisor.</em> Avec un peu de chance, votre professionnel de santé va investir un peu d’argent chez Ikea, Merci ou Cinna. </p>
-                <p> Observez... Prêt ? Notez.</p>
-              </div>
-            </hgroup>
-            <div class="composant-note conteneur-lame flex-into-row">
-              <div class="conteneur-lame flex-col col-first">
-                <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
-                <div class="trmdvsr-sstexte"><p>...genre ça ressemble à chez mamie, mais pas la mamie sympa. L’autre.</p></div>
-              </div>
-              <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-                <label class="rating-bar trmdvsr-texte" for="eval-q2"><em><b>🎨 Sélectionnez une note</b></em></label>
-                <div 
-                    data-action="rating-selection"
-                    data-action-group="rating-selection"
-                    class="rating-bar" >
-                  <!---->
-                  <input type="radio" name="eval-q2" id="q2-r5" value="5" required />
-                  <label class="trmdvsr-radio-label" for="q2-r5" title="Excellent (5/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q2" id="q2-r4" value="4" />
-                  <label class="trmdvsr-radio-label" for="q2-r4" title="Très bien (4/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q2" id="q2-r3" value="3" />
-                  <label class="trmdvsr-radio-label" for="q2-r3" title="Moyen (3/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q2" id="q2-r2" value="2" />
-                  <label class="trmdvsr-radio-label" for="q2-r2" title="Peu satisfaisant (2/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q2" id="q2-r1" value="1" />
-                  <label class="trmdvsr-radio-label" for="q2-r1" title="Mauvais (1/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q2" id="q2-r0" value="0" />
-                  <label class="trmdvsr-radio-label" for="q2-r0" title="Très Mauvais (0/5)"></label>
-                  <!---->
-                </div>
-                <div class="rating-bar trmdvsr-sstexte">
-                  <label for="q2-r5">5</label>
-                  <label for="q2-r4">4</label>
-                  <label for="q2-r3">3</label>
-                  <label for="q2-r2">2</label>
-                  <label for="q2-r1">1</label>
-                  <label for="q2-r0">0</label>
-                </div>
-              </div>
-              <div class="conteneur-lame flex-col col-last">
-                <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
-                <div class="trmdvsr-sstexte"><p>...vous savez où passent les dépassements d’honoraires et ça claque.</p></div>
-              </div>
-            </div>
-            <hr class="traum-divider-small" />
-            <div class="composant-avis conteneur-lame flex-into-row">                                 
-              <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
-                <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
-                <p>Oui ici aussi, notre IA va pré-écrire un avis selon votre note.</p>
-                <p>Comme un <em>flemm...</em>, validez ou réécrivez sa proposition.</p> 
-                <p data-maskable class="as-block">Vous pouvez-lui demander de réécrire, nous ne sommes pas sûr que l'IA fera une nouvelle proposition.</p>
-                <p data-maskable class="as-block">En vrai on le sait. <em>Mais on préfère ne pas vous le dire</em>.</p>
-              </hgroup>
-              <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q2" spellcheck="true" autocorrect="on"></textarea>
-                <div class="status-layer traum-shape overlay-avis" id="status_layer_q2">
-                  <div class="status-box">
-                    <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
-                    <div class="spinner"></div>
-                  </div>
-                  <p class="trmdvsr-sstexte status-message">Chargement des données...</p>
-                </div>
-                <div class="conteneur-humeur" >     
-                  <div class="conteneur-lame flex-into-row button-multi" id="boutons-humour-q2">
-                    <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
-                    <button 
-                        type="button" 
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorRed"
-                        class="trmdvsr-texte-btn trmdvsr-button primary" 
-                        disabled >
-                      ...Plus sérieux
-                    </button>
-                    <button 
-                        type="button"
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorAdd"
-                        class="trmdvsr-texte-btn trmdvsr-button primary"
-                        disabled >
-                      ...Plus drôle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="traum-divider-big"></div>
-            <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">
-              <button 
-                  type="button"
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_q1"
-                  data-param="false" 
-                  class="trmdvsr-texte-btn trmdvsr-button" >
-                Précédent
-              </button>
-              <button 
-                  type="button" 
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_q3"
-                  data-param="true" 
-                  class="trmdvsr-texte-btn trmdvsr-button primary" >
-                Suivant
-              </button>
-            </nav>
-          </section>
-          <section class="eval-item" id="section_q3">   <!-- SECTION -->
-            <hgroup class="conteneur-lame">
-              <h4 class="trmdvsr-texte-h4">Le troisième A de AAAAA</h4>
-              <h3 class="trmdvsr-texte-h3">🪑 A comme Assise</h3>
-              <div data-maskable class="as-block trmdvsr-texte">
-                <p>Comme sont les sièges? Ce sont des chaises ou des fauteuils?</p>
-                <p> C’est peut-être même un canapé? Ce critère est vital pour nos fesses.</p>
-                <p> Car plus on attend et plus cela peut devenir inconfortable ou pire, douloureux. Alors vérifiez, sautillez, testez l’amorti, la vitesse de regonflement. <em>Y-a-t-il une mémoire de forme?</em></p>
-                <p>Essayez. Ressentez. Notez.</p>
-              </div>
-            </hgroup>
-            <div class="composant-note conteneur-lame flex-into-row">
-              <div class="conteneur-lame flex-col col-first">
-                <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
-                <div class="trmdvsr-sstexte"><p>...c’est une chaise dure.</p></div>
-              </div>
-              <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-                <label class="rating-bar trmdvsr-texte" for="eval-q3"><em><b>🪑 Sélectionnez une note</b></em></label>
-                <div 
-                    data-action="rating-selection"
-                    data-action-group="rating-selection"
-                    class="rating-bar" >
-                  <!---->
-                  <input type="radio" name="eval-q3" id="q3-r5" value="5" required />
-                  <label class="trmdvsr-radio-label" for="q3-r5" title="Excellent (5/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q3" id="q3-r4" value="4" />
-                  <label class="trmdvsr-radio-label" for="q3-r4" title="Très bien (4/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q3" id="q3-r3" value="3" />
-                  <label class="trmdvsr-radio-label" for="q3-r3" title="Moyen (3/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q3" id="q3-r2" value="2" />
-                  <label class="trmdvsr-radio-label" for="q3-r2" title="Peu satisfaisant (2/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q3" id="q3-r1" value="1" />
-                  <label class="trmdvsr-radio-label" for="q3-r1" title="Mauvais (1/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q3" id="q3-r0" value="0" />
-                  <label class="trmdvsr-radio-label" for="q3-r0" title="Très Mauvais (0/5)"></label>
-                  <!---->
-                </div>
-                <div class="rating-bar trmdvsr-sstexte">
-                  <label for="q3-r5">5</label>
-                  <label for="q3-r4">4</label>
-                  <label for="q3-r3">3</label>
-                  <label for="q3-r2">2</label>
-                  <label for="q3-r1">1</label>
-                  <label for="q3-r0">0</label>
-                </div>
-              </div>
-              <div class="conteneur-lame flex-col col-last">
-                <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
-                <div class="trmdvsr-sstexte"><p>...c’est bon pour nos petites fesses.</p><p class="trmdvsr-label"><br/>NOTE: Ça marche aussi si les fesses ne sont pas petites. De toute façon, la taille c'est relatif. Si on se dit qu’elles sont petites, alors oui elles sont petites.</p></div>
-              </div>
-            </div>
-            <hr class="traum-divider-small" />
-            <div class="composant-avis conteneur-lame flex-into-row">                                 
-              <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
-                <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
-                <p>C'est la 3e fois, vous savez qu'on a une IA et qu'elle écrit super bien.</p>
-                <p>Validez ou réécrivez sa proposition.</p> 
-                <p data-maskable class="as-block">Demandez-lui de réécrire, y a 50% de chance qu'elle le fasse.</p>
-                <p data-maskable class="as-block"><em>Il y a aussi 50% de chance qu'elle ne le fasse pas</em>.</p>
-              </hgroup>
-              <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q3" spellcheck="true" autocorrect="on"></textarea>
-                <div class="status-layer traum-shape overlay-avis" id="status_layer_q3">
-                  <div class="status-box">
-                    <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
-                    <div class="spinner"></div>
-                  </div>
-                  <p class="trmdvsr-sstexte status-message">Chargement des données...</p>
-                </div>
-                <div class="conteneur-humeur" >     
-                  <div class="conteneur-lame flex-into-row button-multi trmdvsr-sstexte" id="boutons-humour-q3">
-                    <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
-                    <button 
-                        type="button" 
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorRed"
-                        class="traum-shape trmdvsr-button validate-action" 
-                        disabled >
-                      ...Plus sérieux
-                    </button>
-                    <button 
-                        type="button"
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorAdd"
-                        class="traum-shape trmdvsr-button validate-action"
-                        disabled >
-                      ...Plus drôle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">                                 <!-- NAVIGATION -->
-              <button 
-                  type="button"
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_q2"
-                  data-param="false" 
-                  class="trmdvsr-texte-btn trmdvsr-button" >
-                Précédent
-              </button>
-              <button 
-                  type="button" 
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_q4"
-                  data-param="true" 
-                  class="trmdvsr-texte-btn trmdvsr-button primary" >
-                Suivant
-              </button>
-            </nav>
-          </section>
-          <section class="eval-item" id="section_q4">   <!-- SECTION -->
-            <hgroup class="conteneur-lame">
-              <h4 class="trmdvsr-texte-h4">Le quatrième A de AAAAA</h4>
-              <h3 class="trmdvsr-texte-h3">🎁 A comme Attention</h3>
-              <div data-maskable class="as-block trmdvsr-texte">
-                <p>Pas comme <em>“Faites attention”</em>, mais plutôt comme une petite attention. Et encore mieux, comme <b>des</b> petites attentions.</p>
-                <p> Du type, est-ce-que les magazines datent de l’an dernier ou du jour même? </p>
-                <p>Une télé? Un distributeur de boissons, de snacks. <em>Ou mieux, vous a-t-on proposé un café?</em></p> 
-                <p>Et, y-a-til une prise pour charger son téléphone?</p>
-                <p>Inspectez. Notez.</p>
-              </div>
-            </hgroup>
-            <div class="composant-note conteneur-lame flex-into-row">
-              <div class="conteneur-lame flex-col col-first">
-                <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
-                <div class="trmdvsr-sstexte"><p>...y a R, Nada, quedal. </p></div>
-              </div>
-              <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-                <label class="rating-bar trmdvsr-texte" for="eval-q3"><em><b>🎁 Sélectionnez une note</b></em></label>
-                <div 
-                    data-action="rating-selection"
-                    data-action-group="rating-selection"
-                    class="rating-bar" >
-                  <!---->
-                  <input type="radio" name="eval-q4" id="q4-r5" value="5" required />
-                  <label class="trmdvsr-radio-label" for="q4-r5" title="Excellent (5/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q4" id="q4-r4" value="4" />
-                  <label class="trmdvsr-radio-label" for="q4-r4" title="Très bien (4/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q4" id="q4-r3" value="3" />
-                  <label class="trmdvsr-radio-label" for="q4-r3" title="Moyen (3/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q4" id="q4-r2" value="2" />
-                  <label class="trmdvsr-radio-label" for="q4-r2" title="Peu satisfaisant (2/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q4" id="q4-r1" value="1" />
-                  <label class="trmdvsr-radio-label" for="q4-r1" title="Mauvais (1/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q4" id="q4-r0" value="0" />
-                  <label class="trmdvsr-radio-label" for="q4-r0" title="Très Mauvais (0/5)"></label>
-                  <!---->
-                </div>
-                <div class="rating-bar trmdvsr-sstexte">
-                  <label for="q4-r5">5</label>
-                  <label for="q4-r4">4</label>
-                  <label for="q4-r3">3</label>
-                  <label for="q4-r2">2</label>
-                  <label for="q4-r1">1</label>
-                  <label for="q4-r0">0</label>
-                </div>
-              </div>
-              <div class="conteneur-lame flex-col col-last">
-                <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
-                <div class="trmdvsr-sstexte"><p>...t’as l’impression d’être dans un lobby de palace. Il y a des magazines internationaux <em>à la date d’aujourd’hui</em>. À la TV, il y a Derrick. Ou votre programme préféré à vous. Ne me jugez pas. On ne juge que les salles d’attente.</p></div>
-              </div>
-            </div>
-            <hr class="traum-divider-small" />
-            <div class="composant-avis conteneur-lame flex-into-row">
-              <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
-                <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
-                <p data-maskable class="as-block">Jamais 3 sans 4. Notre traum<i>IA</i>dvisor écrit super bien.</p>
-                <p>Validez ou réécrivez sa proposition, <em>et ce nom</em>.</p> 
-              </hgroup>
-              <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q4" spellcheck="true" autocorrect="on"></textarea>
-                <div class="status-layer traum-shape overlay-avis" id="status_layer_q4">
-                  <div class="status-box">
-                    <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
-                    <div class="spinner"></div>
-                  </div>
-                  <p class="trmdvsr-sstexte status-message">Chargement des données...</p>
-                </div>
-                <div class="conteneur-humeur" >
-                  <div class="conteneur-lame flex-into-row button-multi" id="boutons-humour-q4">
-                    <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
-                    <button 
-                        type="button" 
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorRed"
-                        class="trmdvsr-texte-btn trmdvsr-button primary" 
-                        disabled >
-                      ...Plus sérieux
-                    </button>
-                    <button 
-                        type="button"
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorAdd"
-                        class="trmdvsr-texte-btn trmdvsr-button primary"
-                        disabled >
-                      ...Plus drôle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">                                 <!-- NAVIGATION -->
-              <button 
-                  type="button"
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_q3"
-                  data-param="false" 
-                  class="trmdvsr-texte-btn trmdvsr-button" >
-                Précédent
-              </button>
-              <button 
-                  type="button" 
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_q5"
-                  data-param="true" 
-                  class="trmdvsr-texte-btn trmdvsr-button primary" >
-                Suivant
-              </button>
-            </nav>
-          </section>
-          <section class="eval-item" id="section_q5">   <!-- SECTION -->
-            <hgroup class="conteneur-lame">
-              <h4 class="trmdvsr-texte-h4">Le cinquième et dernier A de AAAAA</h4>
-              <h3 class="trmdvsr-texte-h3">⏰ A comme Attente</h3>
-              <div data-maskable class="as-block trmdvsr-texte">
-                <p>Et oui, forcément, dans une salle d’attente, c’est le nerf de la guerre.</p>
-                <p>Et le plus frustrant c’est finalement de ne pas passer suffisamment de temps dans les salles qui sont les plus accueillantes.</p>
-                <p>On aurait pu le mettre en premier, mais s’il est en dernier ça marche aussi.</p>
-                <p>À vos chronos!</p>
-              </div>
-            </hgroup>
-            <div class="composant-note conteneur-lame flex-into-row">
-              <div class="conteneur-lame flex-col col-first">
-                <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
-                <div class="trmdvsr-sstexte"><p>...pour le temps d'attente au guichet des impôts, 48h avant de devoir finir sa déclaration</p></div>
-              </div>
-              <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-                <label class="rating-bar trmdvsr-texte" for="eval-q3"><em><b>⏰ Sélectionnez une note</b></em></label>
-                <div 
-                    data-action="rating-selection"
-                    data-action-group="rating-selection"
-                    class="rating-bar" >
-                  <!---->
-                  <input type="radio" name="eval-q5" id="q5-r5" value="5" required />
-                  <label class="trmdvsr-radio-label" for="q5-r5" title="Excellent (5/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q5" id="q5-r4" value="4" />
-                  <label class="trmdvsr-radio-label" for="q5-r4" title="Très bien (4/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q5" id="q5-r3" value="3" />
-                  <label class="trmdvsr-radio-label" for="q5-r3" title="Moyen (3/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q5" id="q5-r2" value="2" />
-                  <label class="trmdvsr-radio-label" for="q5-r2" title="Peu satisfaisant (2/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q5" id="q5-r1" value="1" />
-                  <label class="trmdvsr-radio-label" for="q5-r1" title="Mauvais (1/5)"></label>
-                  <!---->
-                  <input type="radio" name="eval-q5" id="q5-r0" value="0" />
-                  <label class="trmdvsr-radio-label" for="q5-r0" title="Très Mauvais (0/5)"></label>
-                  <!---->
-                </div>
-                <div class="rating-bar trmdvsr-sstexte">
-                  <label for="q5-r5">5</label>
-                  <label for="q5-r4">4</label>
-                  <label for="q5-r3">3</label>
-                  <label for="q5-r2">2</label>
-                  <label for="q5-r1">1</label>
-                  <label for="q5-r0">0</label>
-                </div>
-              </div>
-              <div class="conteneur-lame flex-col col-last">
-                <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
-                <div class="trmdvsr-sstexte"><p>...pour un retard de 15 minutes. Car oui, pour un professionnel de santé, 15 minutes de retard, c'est quasiment être à l’heure, ça vaut 5.</p></div>
-              </div>
-            </div>
-            <hr class="traum-divider-small" />
-            <div class="composant-avis conteneur-lame flex-into-row">                                 
-              <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
-                <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
-                <p>C'est la 3e fois, vous savez qu'on a une IA et qu'elle écrit super bien.</p>
-                <p>Validez ou réécrivez sa proposition.</p> 
-                <p data-maskable class="as-block">Demandez-lui de réécrire, y a 50% de chance qu'elle le fasse.</p>
-                <p data-maskable class="as-block"><em>Il y a aussi 50% de chance qu'elle ne le fasse pas</em>.</p>
-              </hgroup>
-              <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q5" spellcheck="true" autocorrect="on"></textarea>
-                <div class="status-layer traum-shape overlay-avis" id="status_layer_q5">
-                  <div class="status-box">
-                    <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
-                    <div class="spinner"></div>
-                  </div>
-                  <p class="trmdvsr-sstexte status-message">Chargement des données...</p>
-                </div>
-                <div class="conteneur-humeur">
-                  <div class="conteneur-lame flex-into-row button-multi" id="boutons-humour-q5">
-                    <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
-                    <button 
-                        type="button" 
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorRed"
-                        class="trmdvsr-texte-btn trmdvsr-button primary" 
-                        disabled >
-                      ...Plus sérieux
-                    </button>
-                    <button 
-                        type="button"
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorAdd"
-                        class="trmdvsr-texte-btn trmdvsr-button primary"
-                        disabled >
-                      ...Plus drôle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr class="traum-divider-small" />
-            <div class="zone-bonus conteneur-lame flex-into-row">
-              <hgroup class="bonus-zone-edito conteneur-lame flex-col col-first">
-                <h4 class="trmdvsr-texte-h4">⏰ Le point Bonus</h4>
-                <p data-maskable class="as-block">Oui car, si par un alignement des planètes, votre professionnel de santé est à l'heure, ça vaut un point bonus.</p>
-                <p>Alors, allez-vous accorder un point bonus?</p>
-              </hgroup>
-              <div class="bonus-zone-bouton conteneur-flex flex-col col-last">
-                <label class="bonus-toggle-switch" data-action-group="bonus-selection" aria-label="Accordez-vous un point bonus ?">
-                  <input type="checkbox" id="q5-bonus" autocorrect="on"> 
-                  <span class="bonus-slider"></span>
-                  <span class="bonus-text trmdvsr-sstexte bonus-text-off"><i>Non, vraiment... non.<br/>Pas pour cette fois.</i></span>
-                  <span class="bonus-text trmdvsr-sstexte bonus-text-on"><i>Oui, un grand oui.<br/>Ce bonus est une consécration.</i></span>
-                </label>                
-              </div>
-            </div>
-            <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">                                 <!-- NAVIGATION -->
-              <button 
-                  type="button"
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_q4"
-                  data-param="false" 
-                  class="trmdvsr-texte-btn trmdvsr-button" >
-                Précédent
-              </button>
-              <button 
-                  type="button" 
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_photo"
-                  data-param="true" 
-                  class="trmdvsr-texte-btn trmdvsr-button primary" >
-                Suivant
-              </button>
-            </nav>
-          </section>
-          <section class="eval-item composant-photo" id="section_photo">   <!-- SECTION -->
-            <hgroup class="conteneur-lame">
-              <h4 class="trmdvsr-texte-h4">Le P de AAAAA</h4>
-              <h3 class="trmdvsr-texte-h3">📸 Partagez au moins une photo de la salle d'attente</h3>
-              <div data-maskable class="as-block trmdvsr-texte">
-                <p>Une ou plusieurs selon votre temps, votre inspiration et votre envie. Il en faut au moins une qui montre une Assise. Et s’il y a du monde avec vous, évitez que les personnes soient reconnaissables.</p>
-                <p> Uploadez vos photos. Format recommandé: carré 1080x1080px pour Instagram</p>
-              </div>
-            </hgroup>  
-            <div class="conteneur-lame flex-into-row">  
-              <div class="conteneur-lame flex-col col-first">
+        <div class="eval-carousel-viewport">
+          <form class="eval-carousel-track" id="evaluationForm">
 
-                <label for="input_photo_principale" class="trmdvsr-texte">Photos <span class="form-required">*</span></label>              
-                <input 
-                    type="file" 
-                    class="form-input trmdvsr-texte"
-                    id="input_photo_upload" 
-                    name="photo_upload" 
-                    accept="image/*" 
-                    
-                    multiple 
-                    required 
-                    aria-describedby="aide_photo_upload" >
-                <p id="aide_photo_upload" class="trmdvsr-sstexte">
-                  Glissez-déposez ici pour réorganiser. 
-                </p>
-                <div id="limit-message" class="limite-message trmdvsr-texte"></div>
-              </div>
-              <div class="conteneur-flex flex-col col-last">
-                <div id="preview-list-container" class="conteneur-image-preview trmdvsr-texte"> 
-                  <p class="trmdvsr-sstexte">Aucun fichier sélectionné pour le moment.</p>
+            <section class="eval-item" id="section_q1">
+              <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">Le premier A de AAAAA</h4>
+                <h3 class="trmdvsr-texte-h3">♿ A comme Accessibilité</h3>
+                <div data-maskable class="as-block trmdvsr-texte">
+                  <p>Est-ce au rez-de-chaussée ou au troisème étage <i>« mais c'est des demi-étages ça ira pour vous... »</i> parce qu'il y a une rampe ou une rambarde ou une rambardounette? ou summum du luxe, y-a-t-il un ascenseur ?</p>
+                  <p>Est-ce assez large pour le passage d’un fauteuil? Y-a-t-il assez d’espace pour que 2 fauteuils se croisent?</p> 
+                  <p>Bref, vous l'avez compris, l'accessibilité, c’est essentiel pour un lieu de santé.</p>
+                  <p><em>Observez. Et notez.</em></p>
                 </div>
-                <div class="status-layer traum-shape overlay-photo" id="status_layer_export" style="display: none;">       <!-- COMPOSANT LOADING v2 -->
-                  <div class="status-box">
-                    <img class="spinner-image logo-info" src="https://i.imgur.com/KryCTLH.png" alt="Logo de statut" />
-                    <div class="spinner"></div>
-                  </div>
-                  <div class="progress-track-container">
-                    <div class="progress-track">
-                      <div id="progressBar" class="progress-bar" style="width: 0%"></div>
-                    </div>
-                    <div id="progressText" class="trmdvsr-sstexte progress-text">0% (0/0 images enregistrées)</div>
-                  </div>
-                  <p class="trmdvsr-sstexte status-message loading">Prêt à commencer l'exportation.</p>
-                </div>
-              </div>
-            </div>
-            <div class="traum-divider-small"></div>
-            <div class="conteneur-lame" id="progressContainer-export">
-              <button 
-                  type="button"
-                  data-action="navigate"
-                  class="trmdvsr-texte"
-                  id="export-btn" 
-                  disabled> 
-                <span class="export-content">
-                  Enregistrer les photos rognées dans Google Drive
-                </span>
-              </button>
-            </div>
-          </section>
-          <section class="eval-item" id="section_accroche">   <!-- SECTION -->
-            <hgroup class="conteneur-lame">
-              <h4 class="trmdvsr-texte-h4">La phrase qui vient attraper l'attention</h4>
-              <h3 class="trmdvsr-texte-h3">Votre accroche</h3>
-              <div data-maskable class="as-block trmdvsr-texte">
-                <p>Est-ce au rez-de-chaussée ou au « <i>l’escalier n’a que 3 marche, ça va</i>...» ou mieux, y-a-t-il un ascenseur ?</p>
-                <p>Une rampe, une rambarde, une rambardounette?<p> 
-                <p>Est-ce assez large pour le passage d’un fauteuil? Y-a-t-il assez d’espace pour que 2 fauteuils se croisent?</p> 
-                <p>Bref, vous l'avez compris, l'accessibilité, c’est essentiel pour un lieu de santé.</p>
-                <p>Observez. Et notez.</p>
-              </div>
-            </hgroup>
-            <hr class="traum-divider-small" />
-            <div class="composant-avis conteneur-lame flex-into-row">
-              <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
-                <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
-                <p>Notre IA va pré-écrire un commentaire selon votre note.</p>
-                <p>Comme un <em>rédac' chef</em>, validez ou réécrivez sa proposition.</p> 
-                <p data-maskable class="as-block"> Vous pouvez-lui demander de réécrire, mais nous ne sommes pas sûr que l'IA fera une nouvelle proposition.</p>
-                <p data-maskable class="as-block">Par rapport avec le droit du trav.IA.l selon ses mots. <em>Par flemme selon nous</em>.</p>
               </hgroup>
-              <div class="avis-zone-creation conteneur-flex flex-col col-last">
-                <textarea class="trmdvsr-texte-chapo traum-shape" id="accroche-zone-creation" spellcheck="true" autocorrect="on"></textarea>
-                <div class="conteneur-humeur" >
-                  <div class="conteneur-lame flex-into-row button-multi trmdvsr-texte" id="boutons-humour-accroche">
-                    <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
-                    <button 
-                        type="button" 
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorRed"
-                        class="trmdvsr-texte-btn trmdvsr-button primary" 
-                        disabled >
-                      ...Plus sérieux
-                    </button>
-                    <button 
-                        type="button"
-                        data-action="changeHumourLevel"
-                        data-humor-type="humorAdd"
-                        class="trmdvsr-texte-btn trmdvsr-button primary"
-                        disabled >
-                      ...Plus drôle
-                    </button>
+              <div class="composant-note conteneur-lame flex-into-row">
+                <div class="conteneur-lame flex-col col-first">
+                  <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
+                  <div class="trmdvsr-sstexte"><p>...Pour un dernier étage.<br/>Sans ascenseur.</p></div>
+                </div>
+                <div class="conteneur-lame flex-col col-middle">
+                  <h4 class="trmdvsr-texte-h4">La note</h4>
+                  <label class="module-note trmdvsr-texte" for="eval-q1">♿<br/><em><b>Sélectionnez une note</b></em></label>
+
+                  <div class="module-note" data-action="handleRatingChange" data-handler-group="rating-selection">
+                    <input type="radio" name="eval-q1" id="q1-r5" value="5" required />
+                    <label class="trmdvsr-radio-label" for="q1-r5" title="Excellent (5/5)"></label>
+                    <input type="radio" name="eval-q1" id="q1-r4" value="4" />
+                    <label class="trmdvsr-radio-label" for="q1-r4" title="Très bien (4/5)"></label>
+                    <input type="radio" name="eval-q1" id="q1-r3" value="3" />
+                    <label class="trmdvsr-radio-label" for="q1-r3" title="Moyen (3/5)"></label>
+                    <input type="radio" name="eval-q1" id="q1-r2" value="2" />
+                    <label class="trmdvsr-radio-label" for="q1-r2" title="Peu satisfaisant (2/5)"></label>
+                    <input type="radio" name="eval-q1" id="q1-r1" value="1" />
+                    <label class="trmdvsr-radio-label" for="q1-r1" title="Mauvais (1/5)"></label>
+                    <input type="radio" name="eval-q1" id="q1-r0" value="0" />
+                    <label class="trmdvsr-radio-label" for="q1-r0" title="Très Mauvais (0/5)"></label>
+                  </div>
+                  <input type="text" id="result-q1" class="module-note trmdvsr-texte-h2" value="⏳/5" readonly/>
+                </div>
+                <div class="conteneur-lame flex-col col-last">
+                  <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
+                  <div class="trmdvsr-sstexte"><p>...Si c'est <i>the place to</i> attendre sans problème d’accès.</p></div>
+                </div>
+              </div>
+              
+              <hr class="traum-divider-small" />
+
+              <div class="composant-avis conteneur-lame flex-into-row">
+                <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
+                  <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
+                  <p>Notre IA va pré-écrire un commentaire selon votre note.</p>
+                  <p>Comme un <em>rédac' chef</em>, validez ou réécrivez sa proposition.</p> 
+                  <p data-maskable class="as-block"> Vous pouvez-lui demander de réécrire, mais nous ne sommes pas sûr que l'IA fera une nouvelle proposition.</p>
+                  <p data-maskable class="as-block">Par rapport avec le droit du trav.IA.l selon ses mots. <em>Par flemme selon nous</em>.</p>
+                </hgroup>
+                <div class="avis-zone-creation conteneur-flex flex-col col-last">
+                  <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q1" spellcheck="true" autocorrect="on"></textarea>
+                  <div class="conteneur-humeur" >
+                    <div class="conteneur-lame flex-into-row button-multi trmdvsr-texte" id="boutons-humour-q1">
+                      <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
+                      <button 
+                          type="button" 
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorRed"
+                          class="trmdvsr-texte-btn trmdvsr-button primary" 
+                          disabled >
+                        ...Plus sérieux
+                      </button>
+                      <button 
+                          type="button"
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorAdd"
+                          class="trmdvsr-texte-btn trmdvsr-button primary"
+                          disabled >
+                        <span>+ drôle</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="trmdvsr-button-picto">
+                          <path d="M13.354 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14v6a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341l1.218-1.348"/>
+                          <path d="M16 6h6"/>
+                          <path d="M19 3v6"/>
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="traum-divider-big"></div>
-            <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">
-              <button 
-                  type="button"
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_q4"
-                  data-param="false" 
-                  class="trmdvsr-texte-btn trmdvsr-button" >
-                Précédent
-              </button>
-              <button 
-                  type="button" 
-                  data-action="navigateSection"
-                  data-maintarget="evaluations_page"
-                  data-sectiontarget="section_photo"
-                  data-param="true" 
-                  class="trmdvsr-texte-btn trmdvsr-button primary" >
-                Suivant
-              </button>
-            </nav>
-          </section>
-        </form>
+              <hr class="traum-divider-big" />
+              <nav class="conteneur-lame button-solo trmdvsr-texte" aria-label="Progression du formulaire">
+                <button type="button" data-action="navigateSection" data-maintarget="evaluations_page" data-sectiontarget="section_q2" data-param="true" class="eval-btn trmdvsr-texte-btn trmdvsr-button primary" > <!-- A VOIR eval-btn -->Suivant</button>
+              </nav>
+            </section>
+            <section class="eval-item" id="section_q2">
+              <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">Le second A de AAAAA</h4>
+                <h3 class="trmdvsr-texte-h3">🎨 A comme Apparence</h3>
+                <div data-maskable class="as-block trmdvsr-texte">
+                  <p><em>Oui</em> chez les salles d’attente aussi, l’apparence est aussi très importante.</p>
+                  <p> Mais n’ayez pas de scrupule. <b>Jugez-la</b>.</p>
+                  <p> Comment est la déco? Sobre, Feng Shui, sympa ou moche?</p>
+                  <p> Les cadres, oui il y a des cadres? Sinon c’est peut-être que vous vous êtes plantés et que vous attendez chez un voisin. <em>Ou que ça méritait vraiment un avis Traumadvisor.</em> Avec un peu de chance, votre professionnel de santé va investir un peu d’argent chez Ikea, Merci ou Cinna. </p>
+                  <p> Observez... Prêt ? Notez.</p>
+                </div>
+              </hgroup>
+              <div class="composant-note conteneur-lame flex-into-row">
+                <div class="conteneur-lame flex-col col-first">
+                  <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
+                  <div class="trmdvsr-sstexte"><p>...genre ça ressemble à chez mamie, mais pas la mamie sympa. L’autre.</p></div>
+                </div>
+                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
+                  <label class="module-note trmdvsr-texte" for="eval-q2"><em><b>🎨 Sélectionnez une note</b></em></label>
+                  <div 
+                      data-action="rating-selection"
+                      data-action-group="rating-selection"
+                      class="module-note" >
+                    <!---->
+                    <input type="radio" name="eval-q2" id="q2-r5" value="5" required />
+                    <label class="trmdvsr-radio-label" for="q2-r5" title="Excellent (5/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q2" id="q2-r4" value="4" />
+                    <label class="trmdvsr-radio-label" for="q2-r4" title="Très bien (4/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q2" id="q2-r3" value="3" />
+                    <label class="trmdvsr-radio-label" for="q2-r3" title="Moyen (3/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q2" id="q2-r2" value="2" />
+                    <label class="trmdvsr-radio-label" for="q2-r2" title="Peu satisfaisant (2/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q2" id="q2-r1" value="1" />
+                    <label class="trmdvsr-radio-label" for="q2-r1" title="Mauvais (1/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q2" id="q2-r0" value="0" />
+                    <label class="trmdvsr-radio-label" for="q2-r0" title="Très Mauvais (0/5)"></label>
+                    <!---->
+                  </div>
+                  <div class="module-note trmdvsr-sstexte">
+                    <label for="q2-r5">5</label>
+                    <label for="q2-r4">4</label>
+                    <label for="q2-r3">3</label>
+                    <label for="q2-r2">2</label>
+                    <label for="q2-r1">1</label>
+                    <label for="q2-r0">0</label>
+                  </div>
+                </div>
+                <div class="conteneur-lame flex-col col-last">
+                  <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
+                  <div class="trmdvsr-sstexte"><p>...vous savez où passent les dépassements d’honoraires et ça claque.</p></div>
+                </div>
+              </div>
+              <hr class="traum-divider-small" />
+              <div class="composant-avis conteneur-lame flex-into-row">                                 
+                <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
+                  <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
+                  <p>Oui ici aussi, notre IA va pré-écrire un avis selon votre note.</p>
+                  <p>Comme un <em>flemm...</em>, validez ou réécrivez sa proposition.</p> 
+                  <p data-maskable class="as-block">Vous pouvez-lui demander de réécrire, nous ne sommes pas sûr que l'IA fera une nouvelle proposition.</p>
+                  <p data-maskable class="as-block">En vrai on le sait. <em>Mais on préfère ne pas vous le dire</em>.</p>
+                </hgroup>
+                <div class="avis-zone-creation conteneur-flex flex-col col-last">
+                  <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q2" spellcheck="true" autocorrect="on"></textarea>
+                  <div class="status-layer traum-shape overlay-avis" id="status_layer_q2">
+                    <div class="status-box">
+                      <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
+                      <div class="spinner"></div>
+                    </div>
+                    <p class="trmdvsr-sstexte status-message">Chargement des données...</p>
+                  </div>
+                  <div class="conteneur-humeur" >     
+                    <div class="conteneur-lame flex-into-row button-multi" id="boutons-humour-q2">
+                      <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
+                      <button 
+                          type="button" 
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorRed"
+                          class="trmdvsr-texte-btn trmdvsr-button primary" 
+                          disabled >
+                        ...Plus sérieux
+                      </button>
+                      <button 
+                          type="button"
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorAdd"
+                          class="trmdvsr-texte-btn trmdvsr-button primary"
+                          disabled >
+                        ...Plus drôle
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="traum-divider-big"></div>
+              <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">
+                <button 
+                    type="button"
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_q1"
+                    data-param="false" 
+                    class="trmdvsr-texte-btn trmdvsr-button" >
+                  Précédent
+                </button>
+                <button 
+                    type="button" 
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_q3"
+                    data-param="true" 
+                    class="trmdvsr-texte-btn trmdvsr-button primary" >
+                  Suivant
+                </button>
+              </nav>
+            </section>
+            <section class="eval-item" id="section_q3">
+              <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">Le troisième A de AAAAA</h4>
+                <h3 class="trmdvsr-texte-h3">🪑 A comme Assise</h3>
+                <div data-maskable class="as-block trmdvsr-texte">
+                  <p>Comme sont les sièges? Ce sont des chaises ou des fauteuils?</p>
+                  <p> C’est peut-être même un canapé? Ce critère est vital pour nos fesses.</p>
+                  <p> Car plus on attend et plus cela peut devenir inconfortable ou pire, douloureux. Alors vérifiez, sautillez, testez l’amorti, la vitesse de regonflement. <em>Y-a-t-il une mémoire de forme?</em></p>
+                  <p>Essayez. Ressentez. Notez.</p>
+                </div>
+              </hgroup>
+              <div class="composant-note conteneur-lame flex-into-row">
+                <div class="conteneur-lame flex-col col-first">
+                  <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
+                  <div class="trmdvsr-sstexte"><p>...c’est une chaise dure.</p></div>
+                </div>
+                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
+                  <label class="module-note trmdvsr-texte" for="eval-q3"><em><b>🪑 Sélectionnez une note</b></em></label>
+                  <div 
+                      data-action="rating-selection"
+                      data-action-group="rating-selection"
+                      class="module-note" >
+                    <!---->
+                    <input type="radio" name="eval-q3" id="q3-r5" value="5" required />
+                    <label class="trmdvsr-radio-label" for="q3-r5" title="Excellent (5/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q3" id="q3-r4" value="4" />
+                    <label class="trmdvsr-radio-label" for="q3-r4" title="Très bien (4/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q3" id="q3-r3" value="3" />
+                    <label class="trmdvsr-radio-label" for="q3-r3" title="Moyen (3/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q3" id="q3-r2" value="2" />
+                    <label class="trmdvsr-radio-label" for="q3-r2" title="Peu satisfaisant (2/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q3" id="q3-r1" value="1" />
+                    <label class="trmdvsr-radio-label" for="q3-r1" title="Mauvais (1/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q3" id="q3-r0" value="0" />
+                    <label class="trmdvsr-radio-label" for="q3-r0" title="Très Mauvais (0/5)"></label>
+                    <!---->
+                  </div>
+                  <div class="module-note trmdvsr-sstexte">
+                    <label for="q3-r5">5</label>
+                    <label for="q3-r4">4</label>
+                    <label for="q3-r3">3</label>
+                    <label for="q3-r2">2</label>
+                    <label for="q3-r1">1</label>
+                    <label for="q3-r0">0</label>
+                  </div>
+                </div>
+                <div class="conteneur-lame flex-col col-last">
+                  <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
+                  <div class="trmdvsr-sstexte"><p>...c’est bon pour nos petites fesses.</p><p class="trmdvsr-label"><br/>NOTE: Ça marche aussi si les fesses ne sont pas petites. De toute façon, la taille c'est relatif. Si on se dit qu’elles sont petites, alors oui elles sont petites.</p></div>
+                </div>
+              </div>
+              <hr class="traum-divider-small" />
+              <div class="composant-avis conteneur-lame flex-into-row">                                 
+                <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
+                  <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
+                  <p>C'est la 3e fois, vous savez qu'on a une IA et qu'elle écrit super bien.</p>
+                  <p>Validez ou réécrivez sa proposition.</p> 
+                  <p data-maskable class="as-block">Demandez-lui de réécrire, y a 50% de chance qu'elle le fasse.</p>
+                  <p data-maskable class="as-block"><em>Il y a aussi 50% de chance qu'elle ne le fasse pas</em>.</p>
+                </hgroup>
+                <div class="avis-zone-creation conteneur-flex flex-col col-last">
+                  <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q3" spellcheck="true" autocorrect="on"></textarea>
+                  <div class="status-layer traum-shape overlay-avis" id="status_layer_q3">
+                    <div class="status-box">
+                      <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
+                      <div class="spinner"></div>
+                    </div>
+                    <p class="trmdvsr-sstexte status-message">Chargement des données...</p>
+                  </div>
+                  <div class="conteneur-humeur" >     
+                    <div class="conteneur-lame flex-into-row button-multi trmdvsr-sstexte" id="boutons-humour-q3">
+                      <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
+                      <button 
+                          type="button" 
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorRed"
+                          class="traum-shape trmdvsr-button validate-action" 
+                          disabled >
+                        ...Plus sérieux
+                      </button>
+                      <button 
+                          type="button"
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorAdd"
+                          class="traum-shape trmdvsr-button validate-action"
+                          disabled >
+                        ...Plus drôle
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">                                 <!-- NAVIGATION -->
+                <button 
+                    type="button"
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_q2"
+                    data-param="false" 
+                    class="trmdvsr-texte-btn trmdvsr-button" >
+                  Précédent
+                </button>
+                <button 
+                    type="button" 
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_q4"
+                    data-param="true" 
+                    class="trmdvsr-texte-btn trmdvsr-button primary" >
+                  Suivant
+                </button>
+              </nav>
+            </section>
+            <section class="eval-item" id="section_q4">
+              <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">Le quatrième A de AAAAA</h4>
+                <h3 class="trmdvsr-texte-h3">🎁 A comme Attention</h3>
+                <div data-maskable class="as-block trmdvsr-texte">
+                  <p>Pas comme <em>“Faites attention”</em>, mais plutôt comme une petite attention. Et encore mieux, comme <b>des</b> petites attentions.</p>
+                  <p> Du type, est-ce-que les magazines datent de l’an dernier ou du jour même? </p>
+                  <p>Une télé? Un distributeur de boissons, de snacks. <em>Ou mieux, vous a-t-on proposé un café?</em></p> 
+                  <p>Et, y-a-til une prise pour charger son téléphone?</p>
+                  <p>Inspectez. Notez.</p>
+                </div>
+              </hgroup>
+              <div class="composant-note conteneur-lame flex-into-row">
+                <div class="conteneur-lame flex-col col-first">
+                  <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
+                  <div class="trmdvsr-sstexte"><p>...y a R, Nada, quedal. </p></div>
+                </div>
+                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
+                  <label class="module-note trmdvsr-texte" for="eval-q3"><em><b>🎁 Sélectionnez une note</b></em></label>
+                  <div 
+                      data-action="rating-selection"
+                      data-action-group="rating-selection"
+                      class="module-note" >
+                    <!---->
+                    <input type="radio" name="eval-q4" id="q4-r5" value="5" required />
+                    <label class="trmdvsr-radio-label" for="q4-r5" title="Excellent (5/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q4" id="q4-r4" value="4" />
+                    <label class="trmdvsr-radio-label" for="q4-r4" title="Très bien (4/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q4" id="q4-r3" value="3" />
+                    <label class="trmdvsr-radio-label" for="q4-r3" title="Moyen (3/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q4" id="q4-r2" value="2" />
+                    <label class="trmdvsr-radio-label" for="q4-r2" title="Peu satisfaisant (2/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q4" id="q4-r1" value="1" />
+                    <label class="trmdvsr-radio-label" for="q4-r1" title="Mauvais (1/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q4" id="q4-r0" value="0" />
+                    <label class="trmdvsr-radio-label" for="q4-r0" title="Très Mauvais (0/5)"></label>
+                    <!---->
+                  </div>
+                  <div class="module-note trmdvsr-sstexte">
+                    <label for="q4-r5">5</label>
+                    <label for="q4-r4">4</label>
+                    <label for="q4-r3">3</label>
+                    <label for="q4-r2">2</label>
+                    <label for="q4-r1">1</label>
+                    <label for="q4-r0">0</label>
+                  </div>
+                </div>
+                <div class="conteneur-lame flex-col col-last">
+                  <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
+                  <div class="trmdvsr-sstexte"><p>...t’as l’impression d’être dans un lobby de palace. Il y a des magazines internationaux <em>à la date d’aujourd’hui</em>. À la TV, il y a Derrick. Ou votre programme préféré à vous. Ne me jugez pas. On ne juge que les salles d’attente.</p></div>
+                </div>
+              </div>
+              <hr class="traum-divider-small" />
+              <div class="composant-avis conteneur-lame flex-into-row">
+                <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
+                  <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
+                  <p data-maskable class="as-block">Jamais 3 sans 4. Notre traum<i>IA</i>dvisor écrit super bien.</p>
+                  <p>Validez ou réécrivez sa proposition, <em>et ce nom</em>.</p> 
+                </hgroup>
+                <div class="avis-zone-creation conteneur-flex flex-col col-last">
+                  <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q4" spellcheck="true" autocorrect="on"></textarea>
+                  <div class="status-layer traum-shape overlay-avis" id="status_layer_q4">
+                    <div class="status-box">
+                      <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
+                      <div class="spinner"></div>
+                    </div>
+                    <p class="trmdvsr-sstexte status-message">Chargement des données...</p>
+                  </div>
+                  <div class="conteneur-humeur" >
+                    <div class="conteneur-lame flex-into-row button-multi" id="boutons-humour-q4">
+                      <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
+                      <button 
+                          type="button" 
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorRed"
+                          class="trmdvsr-texte-btn trmdvsr-button primary" 
+                          disabled >
+                        ...Plus sérieux
+                      </button>
+                      <button 
+                          type="button"
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorAdd"
+                          class="trmdvsr-texte-btn trmdvsr-button primary"
+                          disabled >
+                        ...Plus drôle
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">                                 <!-- NAVIGATION -->
+                <button 
+                    type="button"
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_q3"
+                    data-param="false" 
+                    class="trmdvsr-texte-btn trmdvsr-button" >
+                  Précédent
+                </button>
+                <button 
+                    type="button" 
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_q5"
+                    data-param="true" 
+                    class="trmdvsr-texte-btn trmdvsr-button primary" >
+                  Suivant
+                </button>
+              </nav>
+            </section>
+            <section class="eval-item" id="section_q5">
+              <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">Le cinquième et dernier A de AAAAA</h4>
+                <h3 class="trmdvsr-texte-h3">⏰ A comme Attente</h3>
+                <div data-maskable class="as-block trmdvsr-texte">
+                  <p>Et oui, forcément, dans une salle d’attente, c’est le nerf de la guerre.</p>
+                  <p>Et le plus frustrant c’est finalement de ne pas passer suffisamment de temps dans les salles qui sont les plus accueillantes.</p>
+                  <p>On aurait pu le mettre en premier, mais s’il est en dernier ça marche aussi.</p>
+                  <p>À vos chronos!</p>
+                </div>
+              </hgroup>
+              <div class="composant-note conteneur-lame flex-into-row">
+                <div class="conteneur-lame flex-col col-first">
+                  <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
+                  <div class="trmdvsr-sstexte"><p>...pour le temps d'attente au guichet des impôts, 48h avant de devoir finir sa déclaration</p></div>
+                </div>
+                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
+                  <label class="module-note trmdvsr-texte" for="eval-q3"><em><b>⏰ Sélectionnez une note</b></em></label>
+                  <div 
+                      data-action="rating-selection"
+                      data-action-group="rating-selection"
+                      class="module-note" >
+                    <!---->
+                    <input type="radio" name="eval-q5" id="q5-r5" value="5" required />
+                    <label class="trmdvsr-radio-label" for="q5-r5" title="Excellent (5/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q5" id="q5-r4" value="4" />
+                    <label class="trmdvsr-radio-label" for="q5-r4" title="Très bien (4/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q5" id="q5-r3" value="3" />
+                    <label class="trmdvsr-radio-label" for="q5-r3" title="Moyen (3/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q5" id="q5-r2" value="2" />
+                    <label class="trmdvsr-radio-label" for="q5-r2" title="Peu satisfaisant (2/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q5" id="q5-r1" value="1" />
+                    <label class="trmdvsr-radio-label" for="q5-r1" title="Mauvais (1/5)"></label>
+                    <!---->
+                    <input type="radio" name="eval-q5" id="q5-r0" value="0" />
+                    <label class="trmdvsr-radio-label" for="q5-r0" title="Très Mauvais (0/5)"></label>
+                    <!---->
+                  </div>
+                  <div class="module-note trmdvsr-sstexte">
+                    <label for="q5-r5">5</label>
+                    <label for="q5-r4">4</label>
+                    <label for="q5-r3">3</label>
+                    <label for="q5-r2">2</label>
+                    <label for="q5-r1">1</label>
+                    <label for="q5-r0">0</label>
+                  </div>
+                </div>
+                <div class="conteneur-lame flex-col col-last">
+                  <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
+                  <div class="trmdvsr-sstexte"><p>...pour un retard de 15 minutes. Car oui, pour un professionnel de santé, 15 minutes de retard, c'est quasiment être à l’heure, ça vaut 5.</p></div>
+                </div>
+              </div>
+              <hr class="traum-divider-small" />
+              <div class="composant-avis conteneur-lame flex-into-row">                                 
+                <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
+                  <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
+                  <p>C'est la 3e fois, vous savez qu'on a une IA et qu'elle écrit super bien.</p>
+                  <p>Validez ou réécrivez sa proposition.</p> 
+                  <p data-maskable class="as-block">Demandez-lui de réécrire, y a 50% de chance qu'elle le fasse.</p>
+                  <p data-maskable class="as-block"><em>Il y a aussi 50% de chance qu'elle ne le fasse pas</em>.</p>
+                </hgroup>
+                <div class="avis-zone-creation conteneur-flex flex-col col-last">
+                  <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q5" spellcheck="true" autocorrect="on"></textarea>
+                  <div class="status-layer traum-shape overlay-avis" id="status_layer_q5">
+                    <div class="status-box">
+                      <img class="spinner-image" src="https://i.imgur.com/Hfhftm1.png" alt="Logo de chargement" />
+                      <div class="spinner"></div>
+                    </div>
+                    <p class="trmdvsr-sstexte status-message">Chargement des données...</p>
+                  </div>
+                  <div class="conteneur-humeur">
+                    <div class="conteneur-lame flex-into-row button-multi" id="boutons-humour-q5">
+                      <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
+                      <button 
+                          type="button" 
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorRed"
+                          class="trmdvsr-texte-btn trmdvsr-button primary" 
+                          disabled >
+                        ...Plus sérieux
+                      </button>
+                      <button 
+                          type="button"
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorAdd"
+                          class="trmdvsr-texte-btn trmdvsr-button primary"
+                          disabled >
+                        ...Plus drôle
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr class="traum-divider-small" />
+              <div class="zone-bonus conteneur-lame flex-into-row">
+                <hgroup class="bonus-zone-edito conteneur-lame flex-col col-first">
+                  <h4 class="trmdvsr-texte-h4">⏰ Le point Bonus</h4>
+                  <p data-maskable class="as-block">Oui car, si par un alignement des planètes, votre professionnel de santé est à l'heure, ça vaut un point bonus.</p>
+                  <p>Alors, allez-vous accorder un point bonus?</p>
+                </hgroup>
+                <div class="bonus-zone-bouton conteneur-flex flex-col col-last">
+                  <label class="bonus-toggle-switch" data-action-group="bonus-selection" aria-label="Accordez-vous un point bonus ?">
+                    <input type="checkbox" id="q5-bonus" autocorrect="on"> 
+                    <span class="bonus-slider"></span>
+                    <span class="bonus-text trmdvsr-sstexte bonus-text-off"><i>Non, vraiment... non.<br/>Pas pour cette fois.</i></span>
+                    <span class="bonus-text trmdvsr-sstexte bonus-text-on"><i>Oui, un grand oui.<br/>Ce bonus est une consécration.</i></span>
+                  </label>                
+                </div>
+              </div>
+              <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">                                 <!-- NAVIGATION -->
+                <button 
+                    type="button"
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_q4"
+                    data-param="false" 
+                    class="trmdvsr-texte-btn trmdvsr-button" >
+                  Précédent
+                </button>
+                <button 
+                    type="button" 
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_photo"
+                    data-param="true" 
+                    class="trmdvsr-texte-btn trmdvsr-button primary" >
+                  Suivant
+                </button>
+              </nav>
+            </section>
+            <section class="eval-item composant-photo" id="section_photo">
+              <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">Le P de AAAAA</h4>
+                <h3 class="trmdvsr-texte-h3">📸 Partagez au moins une photo de la salle d'attente</h3>
+                <div data-maskable class="as-block trmdvsr-texte">
+                  <p>Une ou plusieurs selon votre temps, votre inspiration et votre envie. Il en faut au moins une qui montre une Assise. Et s’il y a du monde avec vous, évitez que les personnes soient reconnaissables.</p>
+                  <p> Uploadez vos photos. Format recommandé: carré 1080x1080px pour Instagram</p>
+                </div>
+              </hgroup>  
+              <div class="conteneur-lame flex-into-row">  
+                <div class="conteneur-lame flex-col col-first">
+
+                  <label for="input_photo_principale" class="trmdvsr-texte">Photos <span class="form-required">*</span></label>              
+                  <input 
+                      type="file" 
+                      class="form-input trmdvsr-texte"
+                      id="input_photo_upload" 
+                      name="photo_upload" 
+                      accept="image/*" 
+                      
+                      multiple 
+                      required 
+                      aria-describedby="aide_photo_upload" >
+                  <p id="aide_photo_upload" class="trmdvsr-sstexte">
+                    Glissez-déposez ici pour réorganiser. 
+                  </p>
+                  <div id="limit-message" class="limite-message trmdvsr-texte"></div>
+                </div>
+                <div class="conteneur-flex flex-col col-last">
+                  <div id="preview-list-container" class="conteneur-image-preview trmdvsr-texte"> 
+                    <p class="trmdvsr-sstexte">Aucun fichier sélectionné pour le moment.</p>
+                  </div>
+                  <div class="status-layer traum-shape overlay-photo" id="status_layer_export" style="display: none;">       <!-- COMPOSANT LOADING v2 -->
+                    <div class="status-box">
+                      <img class="spinner-image logo-info" src="https://i.imgur.com/KryCTLH.png" alt="Logo de statut" />
+                      <div class="spinner"></div>
+                    </div>
+                    <div class="progress-track-container">
+                      <div class="progress-track">
+                        <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+                      </div>
+                      <div id="progressText" class="trmdvsr-sstexte progress-text">0% (0/0 images enregistrées)</div>
+                    </div>
+                    <p class="trmdvsr-sstexte status-message loading">Prêt à commencer l'exportation.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="traum-divider-small"></div>
+              <div class="conteneur-lame" id="progressContainer-export">
+                <button 
+                    type="button"
+                    data-action="navigate"
+                    class="trmdvsr-texte"
+                    id="export-btn" 
+                    disabled> 
+                  <span class="export-content">
+                    Enregistrer les photos rognées dans Google Drive
+                  </span>
+                </button>
+              </div>
+            </section>
+            <section class="eval-item" id="section_accroche">   <!-- SECTION -->
+              <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">La phrase qui vient attraper l'attention</h4>
+                <h3 class="trmdvsr-texte-h3">Votre accroche</h3>
+                <div data-maskable class="as-block trmdvsr-texte">
+                  <p>Est-ce au rez-de-chaussée ou au « <i>l’escalier n’a que 3 marche, ça va</i>...» ou mieux, y-a-t-il un ascenseur ?</p>
+                  <p>Une rampe, une rambarde, une rambardounette?<p> 
+                  <p>Est-ce assez large pour le passage d’un fauteuil? Y-a-t-il assez d’espace pour que 2 fauteuils se croisent?</p> 
+                  <p>Bref, vous l'avez compris, l'accessibilité, c’est essentiel pour un lieu de santé.</p>
+                  <p>Observez. Et notez.</p>
+                </div>
+              </hgroup>
+              <hr class="traum-divider-small" />
+              <div class="composant-avis conteneur-lame flex-into-row">
+                <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
+                  <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
+                  <p>Notre IA va pré-écrire un commentaire selon votre note.</p>
+                  <p>Comme un <em>rédac' chef</em>, validez ou réécrivez sa proposition.</p> 
+                  <p data-maskable class="as-block"> Vous pouvez-lui demander de réécrire, mais nous ne sommes pas sûr que l'IA fera une nouvelle proposition.</p>
+                  <p data-maskable class="as-block">Par rapport avec le droit du trav.IA.l selon ses mots. <em>Par flemme selon nous</em>.</p>
+                </hgroup>
+                <div class="avis-zone-creation conteneur-flex flex-col col-last">
+                  <textarea class="trmdvsr-texte-chapo traum-shape" id="accroche-zone-creation" spellcheck="true" autocorrect="on"></textarea>
+                  <div class="conteneur-humeur" >
+                    <div class="conteneur-lame flex-into-row button-multi trmdvsr-texte" id="boutons-humour-accroche">
+                      <h4 class="trmdvsr-texte-h4"><i>Nan j'pense qu'il faut être...</i></h4>
+                      <button 
+                          type="button" 
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorRed"
+                          class="trmdvsr-texte-btn trmdvsr-button primary" 
+                          disabled >
+                        ...Plus sérieux
+                      </button>
+                      <button 
+                          type="button"
+                          data-action="changeHumourLevel"
+                          data-humor-type="humorAdd"
+                          class="trmdvsr-texte-btn trmdvsr-button primary"
+                          disabled >
+                        ...Plus drôle
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="traum-divider-big"></div>
+              <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">
+                <button 
+                    type="button"
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_q4"
+                    data-param="false" 
+                    class="trmdvsr-texte-btn trmdvsr-button" >
+                  Précédent
+                </button>
+                <button 
+                    type="button" 
+                    data-action="navigateSection"
+                    data-maintarget="evaluations_page"
+                    data-sectiontarget="section_photo"
+                    data-param="true" 
+                    class="trmdvsr-texte-btn trmdvsr-button primary" >
+                  Suivant
+                </button>
+              </nav>
+            </section>
+          </form>
+        </div>
       </main> 
     </div>
     <footer class="conteneur-lame flex-trmdvsr-id">

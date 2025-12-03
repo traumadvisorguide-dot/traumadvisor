@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation Conditionnelle</title>
+    <!-- Chargement de Tailwind CSS pour le style -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Configuration générale pour Tailwind et la police */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root {
+            --primary-color: #3b82f6; /* blue-500 */
+            --secondary-color: #f59e0b; /* amber-500 */
+            --bg-color: #f9fafb; /* gray-50 */
+            --card-bg: #ffffff;
+            --text-color: #1f2937; /* gray-800 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+        }
+
+        /* Styles spécifiques au carrousel */
+        .carousel-viewport {
+            max-width: 900px;
+            margin: 0 auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            background-color: var(--card-bg);
+        }
+
+        .carousel-track {
+            display: flex;
+            width: fit-content;
+        }
+
+        .eval-item {
+            min-width: 100%;
+            padding: 3rem 2rem;
+            box-sizing: border-box;
+        }
+
+        /* Styles des composants */
+        .trmdvsr-texte-h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .trmdvsr-texte-h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .trmdvsr-texte p {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .flex-into-row {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        @media (max-width: 768px) {
+            .flex-into-row {
+                flex-direction: column;
+            }
+        }
+
+        .col-first, .col-middle, .col-last {
+            flex: 1;
+        }
+
+        .img-notede0, .img-notea5 {
+            max-width: 100px;
+            height: auto;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Styles de la barre de notation (Rating Bar) */
+        .rating-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            direction: rtl; /* Pour inverser l'ordre des étoiles (labels) */
+            padding: 5px 0;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        /* État initial des étoiles (non colorées) */
+        .rating-bar .trmdvsr-radio-label::before {
+            content: '★'; /* Unicode Star */
+            font-size: 30px;
+            color: #d1d5db; /* gray-400 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: color 0.2s;
+        }
+
+        /* Couleur de l'étoile au survol (hover) OU si le conteneur est marqué 'is-hovering' */
+        .rating-bar:hover .trmdvsr-radio-label::before,
+        .rating-bar.is-hovering .trmdvsr-radio-label::before,
+        .rating-bar .trmdvsr-radio-label:hover ~ .trmdvsr-radio-label::before {
+            color: var(--secondary-color);
+        }
+
+        /* Couleur de l'étoile sélectionnée et celles avant (Prioritaire) */
+        .rating-bar input[type="radio"]:checked ~ .trmdvsr-radio-label::before,
+        .rating-bar input[type="radio"]:checked + .trmdvsr-radio-label::before {
+            color: var(--secondary-color);
+        }
+
+        /* Masque l'input radio standard */
+        .rating-bar input[type="radio"] {
+            display: none;
+        }
+
+        .trmdvsr-radio-label {
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            background-color: transparent;
+            position: relative;
+        }
+
+        /* Styles pour l'affichage de la note */
+        .trmdvsr-texte-h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            border: none;
+            background: none;
+            width: 100px;
+        }
+
+        /* Boutons */
+        .trmdvsr-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        .trmdvsr-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .trmdvsr-button:hover:not(:disabled) {
+            background-color: #2563eb; /* blue-600 */
+        }
+
+        .trmdvsr-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .button-solo {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .button-multi {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+
+<div class="carousel-viewport">
+    <form id="evaluationForm" class="carousel-track">
+
+        <!-- SECTION 1 -->
+        <section class="eval-item" id="section_q1">
+            <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">Le premier A de AAAAA</h4>
+                <h3 class="trmdvsr-texte-h3">♿ A comme Accessibilité</h3>
+                <div class="trmdvsr-texte">
+                    <p>Est-ce au rez-de-chaussée ou au troisème étage <i>« mais c'est des demi-étages ça ira pour vous... »</i> parce qu'il y a une rampe ou une rambarde ou une rambardounette? ou summum du luxe, y-a-t-il un ascenseur ?</p>
+                    <p>Est-ce assez large pour le passage d’un fauteuil? Y-a-t-il assez d’espace pour que 2 fauteuils se croisent?</p>
+                    <p>Bref, vous l'avez compris, l'accessibilité, c’est essentiel pour un lieu de santé.</p>
+                    <p><em>Observez. Et notez.</em></p>
+                </div>
+            </hgroup>
+            <div class="composant-note conteneur-lame flex-into-row my-8">
+                <div class="conteneur-lame flex-col col-first">
+                    <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..." onerror="this.onerror=null; this.src='https://placehold.co/100x100/f87171/ffffff?text=Note+0'"/>
+                    <div class="trmdvsr-sstexte"><p>...Pour un dernier étage.<br/>Sans ascenseur.</p></div>
+                </div>
+                <div class="conteneur-lame flex-col col-middle">
+                    <h4 class="trmdvsr-texte-h4 text-center">La note</h4>
+
+
+                    <label class="rating-bar trmdvsr-texte block text-center mb-2" for="eval-q1">♿<br/><em><b>Sélectionnez une note</b></em></label>
+                    
+                    <!-- AJOUT DE data-handler-group pour le Rollover (mouseover/mouseout) -->
+                    <!-- AJOUT DE data-action="handleRatingChange" pour le Clic/Change (Logique métier) -->
+                    <div class="rating-bar" data-action="handleRatingChange" data-handler-group="rating-selection">
+                        <!-- Les radios doivent avoir le même NAME pour être un groupe -->
+                        <input type="radio" name="eval-q1" id="q1-r5" value="5" />
+                        <label class="trmdvsr-radio-label" for="q1-r5" title="Excellent (5/5)"></label>
+                        <input type="radio" name="eval-q1" id="q1-r4" value="4" />
+                        <label class="trmdvsr-radio-label" for="q1-r4" title="Très bien (4/5)"></label>
+                        <input type="radio" name="eval-q1" id="q1-r3" value="3" />
+                        <label class="trmdvsr-radio-label" for="q1-r3" title="Moyen (3/5)"></label>
+                        <input type="radio" name="eval-q1" id="q1-r2" value="2" />
+                        <label class="trmdvsr-radio-label" for="q1-r2" title="Peu satisfaisant (2/5)"></label>
+                        <input type="radio" name="eval-q1" id="q1-r1" value="1" />
+                        <label class="trmdvsr-radio-label" for="q1-r1" title="Mauvais (1/5)"></label>
+                        <input type="radio" name="eval-q1" id="q1-r0" value="0" />
+                        <label class="trmdvsr-radio-label" for="q1-r0" title="Très Mauvais (0/5)"></label>
+                    </div>
+                    <input type="text" id="result-q1_accueil" class="trmdvsr-texte-h2 mt-4 mx-auto" value="? /5" readonly/>
+                </div>
+                <div class="conteneur-lame flex-col col-last">
+                    <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5" onerror="this.onerror=null; this.src='https://placehold.co/100x100/3b82f6/ffffff?text=Note+5'"/>
+                    <div class="trmdvsr-sstexte"><p>...Si c'est <i>the place to</i> attendre sans problème d’accès.</p></div>
+                </div>
+            </div>
+
+            <hr class="traum-divider-small border-gray-200 my-4" />
+
+            <!-- Zone Commentaire -->
+            <div class="composant-avis conteneur-lame flex-into-row mb-8">
+                <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
+                    <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
+                    <p>Notre IA va pré-écrire un commentaire selon votre note. Validez ou réécrivez.</p>
+                </hgroup>
+                <div class="avis-zone-creation conteneur-flex flex-col col-last">
+                    <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q1" spellcheck="true" autocorrect="on" placeholder="Votre commentaire..."></textarea>
+                </div>
+            </div>
+
+            <hr class="traum-divider-big border-gray-300 my-6" />
+
+            <!-- Navigation -->
+            <nav class="conteneur-lame button-solo trmdvsr-texte" aria-label="Progression du formulaire">
+                <button
+                    type="button"
+                    data-action="navigateSection"
+                    data-sectiontarget="section_q2"
+                    data-direction="next"
+                    data-current-section="section_q1"
+                    data-param="true"
+                    id="btn-next-q1"
+                    class="eval-btn trmdvsr-texte-btn trmdvsr-button primary"
+                    disabled>
+                    Sélectionnez une note...
+                </button>
+            </nav>
+        </section>
+
+        <!-- SECTION 2 -->
+        <section class="eval-item" id="section_q2">
+            <hgroup class="conteneur-lame">
+                <h4 class="trmdvsr-texte-h4">Le second A de AAAAA</h4>
+                <h3 class="trmdvsr-texte-h3">🎨 A comme Apparence</h3>
+                <div class="trmdvsr-texte">
+                    <p><em>Oui</em> chez les salles d’attente aussi, l’apparence est aussi très importante. Mais n’ayez pas de scrupule. <b>Jugez-la</b>.</p>
+                    <p> Comment est la déco? Sobre, Feng Shui, sympa ou moche?</p>
+                    <p> Observez... Prêt ? Notez.</p>
+                </div>
+            </hgroup>
+
+            <div class="composant-note conteneur-lame flex-into-row my-8">
+                <div class="conteneur-lame flex-col col-first">
+                    <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..." onerror="this.onerror=null; this.src='https://placehold.co/100x100/f87171/ffffff?text=Note+0'"/>
+                    <div class="trmdvsr-sstexte"><p>...genre ça ressemble à chez mamie, mais pas la mamie sympa. L’autre.</p></div>
+                </div>
+                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
+                    <h4 class="trmdvsr-texte-h4 text-center">La note</h4>
+                    <label class="rating-bar trmdvsr-texte block text-center mb-2" for="eval-q2"><em><b>🎨 Sélectionnez une note</b></em></label>
+                    
+                    <!-- AJOUT DE data-handler-group pour le Rollover (mouseover/mouseout) -->
+                    <!-- AJOUT DE data-action="handleRatingChange" pour le Clic/Change (Logique métier) -->
+                    <div data-action="handleRatingChange" data-handler-group="rating-selection" class="rating-bar" >
+                        <!-- Les radios doivent avoir le même NAME pour être un groupe -->
+                        <input type="radio" name="eval-q2" id="q2-r5" value="5" />
+                        <label class="trmdvsr-radio-label" for="q2-r5" title="Excellent (5/5)"></label>
+                        <input type="radio" name="eval-q2" id="q2-r4" value="4" />
+                        <label class="trmdvsr-radio-label" for="q2-r4" title="Très bien (4/5)"></label>
+                        <input type="radio" name="eval-q2" id="q2-r3" value="3" />
+                        <label class="trmdvsr-radio-label" for="q2-r3" title="Moyen (3/5)"></label>
+                        <input type="radio" name="eval-q2" id="q2-r2" value="2" />
+                        <label class="trmdvsr-radio-label" for="q2-r2" title="Peu satisfaisant (2/5)"></label>
+                        <input type="radio" name="eval-q2" id="q2-r1" value="1" />
+                        <label class="trmdvsr-radio-label" for="q2-r1" title="Mauvais (1/5)"></label>
+                        <input type="radio" name="eval-q2" id="q2-r0" value="0" />
+                        <label class="trmdvsr-radio-label" for="q2-r0" title="Très Mauvais (0/5)"></label>
+                    </div>
+                    <input type="text" id="result-q2_accueil" class="trmdvsr-texte-h2 mt-4 mx-auto" value="? /5" readonly/>
+                </div>
+                <div class="conteneur-lame flex-col col-last">
+                    <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5" onerror="this.onerror=null; this.src='https://placehold.co/100x100/3b82f6/ffffff?text=Note+5'"/>
+                    <div class="trmdvsr-sstexte"><p>...vous savez où passent les dépassements d’honoraires et ça claque.</p></div>
+                </div>
+            </div>
+
+            <hr class="traum-divider-small border-gray-200 my-4" />
+
+            <!-- Zone Commentaire -->
+            <div class="composant-avis conteneur-lame flex-into-row mb-8">
+                <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
+                    <h4 class="trmdvsr-texte-h4">Le commentaire</h4>
+                    <p>Ici aussi, l'IA va pré-écrire un avis. Validez ou réécrivez.</p>
+                </hgroup>
+                <div class="avis-zone-creation conteneur-flex flex-col col-last">
+                    <textarea class="trmdvsr-texte-chapo traum-shape" id="avis-zone-creation_q2" spellcheck="true" autocorrect="on" placeholder="Votre commentaire..."></textarea>
+                </div>
+            </div>
+
+            <hr class="traum-divider-big border-gray-300 my-6" />
+
+            <!-- Navigation -->
+            <nav class="conteneur-lame flex-into-row justify-between button-multi trmdvsr-texte" aria-label="Progression du formulaire">
+                <button
+                    type="button"
+                    data-action="navigateSection"
+                    data-sectiontarget="section_q1"
+                    data-direction="prev"
+                    data-param="false"
+                    class="trmdvsr-texte-btn trmdvsr-button">
+                    Précédent
+                </button>
+                <button
+                    type="button"
+                    data-action="navigateSection"
+                    data-sectiontarget="section_q_fin"
+                    data-direction="next"
+                    data-current-section="section_q2"
+                    data-param="true"
+                    id="btn-next-q2"
+                    class="trmdvsr-texte-btn trmdvsr-button primary"
+                    disabled>
+                    Sélectionnez une note...
+                </button>
+            </nav>
+        </section>
+
+        <!-- SECTION FINALE (pour la démonstration) -->
+        <section class="eval-item flex flex-col items-center justify-center text-center" id="section_q_fin">
+            <h3 class="trmdvsr-texte-h3 text-green-600">✅ Formulaire Terminé !</h3>
+            <p class="trmdvsr-texte-h4">Vous avez rempli toutes les conditions pour avancer. Merci !</p>
+            <nav class="conteneur-lame button-solo trmdvsr-texte mt-8" aria-label="Progression du formulaire">
+                <button
+                    type="button"
+                    data-action="navigateSection"
+                    data-sectiontarget="section_q2"
+                    data-direction="prev"
+                    data-param="false"
+                    class="trmdvsr-texte-btn trmdvsr-button">
+                    Retour
+                </button>
+            </nav>
+        </section>
+    </form>
+</div>
+
+<!-- L'implémentation JS serait dans un fichier séparé si vous aviez un projet complet, 
+     mais ici elle est dans la balise script finale -->
+<script>
+    // NOTE: Il est supposé que vous avez défini les variables globales (pages, appData, updateStatus, etc.)
+    // et les fonctions utilitaires (showPage, updateSPA_Height_, debounce_, etc.)
+    // dans votre environnement de code réel. Les fonctions ci-dessous sont des exemples de refactorisation.
+
+    // ***************************************************************
+    // 1. Fonctions de Logique Métier (séparées du Dispatcher)
+    // ***************************************************************
+
+    /**
+     * Met à jour l'affichage numérique de la note sélectionnée et gère le bouton Suivant.
+     * Cette fonction est appelée par actionDispatcher pour le cas 'handleRatingChange'.
+     * @param {HTMLElement} radioElement - L'input radio qui a déclenché l'événement.
+     */
+    function handleRatingChange(radioElement) {
+        const radioName = radioElement.name; // Ex: 'eval-q1'
+        const score = radioElement.value;    // Ex: '5'
+        
+        // Extrait l'identifiant de la question (ex: q1)
+        const questionId = radioName.split('-')[1]; // 'q1'
+        const sectionId = `section_${questionId}`;   // 'section_q1'
+        
+        // 1. Mise à jour de l'affichage numérique de la note
+        // Utilise l'ID de l'élément cible, ajusté pour correspondre à vos conventions
+        const scoreDisplay = document.getElementById(`result-${radioName}_accueil`);
+        if (scoreDisplay) {
+            scoreDisplay.value = `${score} /5`;
+        }
+
+        // 2. Vérification de la complétion pour activer le bouton de navigation
+        checkSectionCompletion(sectionId);
+
+        // 3. Enregistrement des données de notation (à implémenter dans votre structure appData)
+        // appData.evaluations[questionId] = score;
+
+        // updateStatus({ log: `✅.End-ng |handleRatingChange : Note ${score}/5 enregistrée pour ${questionId}.` });
+    }
+
+    /**
+     * Vérifie si une section d'évaluation est complétée et gère l'état du bouton Suivant.
+     * Cette fonction est réutilisée pour la validation avant la navigation.
+     * @param {string} sectionId - L'ID de la section (e.g., 'section_q1').
+     * @returns {boolean} Vrai si la section est complétée.
+     */
+    function checkSectionCompletion(sectionId) {
+        const questionPrefix = sectionId.replace('section_', ''); // 'q1'
+        const radioGroupName = `eval-${questionPrefix}`; // 'eval-q1'
+
+        const isCompleted = document.querySelector(`input[name="${radioGroupName}"]:checked`) !== null;
+
+        const nextButtonId = `btn-next-${questionPrefix}`;
+        const nextButton = document.getElementById(nextButtonId);
+
+        if (nextButton) {
+            nextButton.disabled = !isCompleted;
+            nextButton.textContent = isCompleted ? 'Suivant' : 'Sélectionnez une note...';
+        }
+        return isCompleted;
+    }
+
+
+    // ***************************************************************
+    // 2. REFONTE du Dispatcher (Intégration du Rollover/Notation)
+    // ***************************************************************
+
+    /**
+     * Le dispatcher centralisé pour tous les événements utilisateur délégués au body.
+     */
+    function actionDispatcher(event) {
+        const eventType = event.type;
+        // updateStatus({ log: `⚙️.Init actionDispatcher ${eventType} ...[param]event: ${event}` });
+
+        try {
+            if (!event || !event.target) {
+                // updateStatus({log: `❌.If-ed |actionDispatcher : Pas d'objet event ou event.target.`, type: 'error' });
+                return;
+            }
+
+            let trgtElmnt = null;
+            let action = '';
+            
+            // --- 1. Ciblage Prioritaire pour les Interactions Complexes (Rollover) ---
+            // On cherche le conteneur rating-bar si c'est un mouse event
+            if (eventType === 'mouseover' || eventType === 'mouseout') {
+                trgtElmnt = event.target.closest('[data-handler-group="rating-selection"]'); 
+                // Si trouvé, l'action est forcée au rollover
+                action = trgtElmnt ? 'handleRatingRollover' : ''; 
+            }
+
+            // --- 2. Ciblage Standard pour les Actions Basées sur data-action (Click, Change, Input, etc.) ---
+            // Si l'action n'est pas encore définie (i.e., ce n'était pas un rollover ciblé), on cherche data-action
+            if (!trgtElmnt && !action) {
+                trgtElmnt = event.target.closest('[data-action]');
+                action = trgtElmnt ? trgtElmnt.dataset.action ?? '' : '';
+            }
+
+            if (!trgtElmnt) return;
+            
+            // Récupération des données communes
+            const pgTrgtID = trgtElmnt.dataset.maintarget ?? null;
+            const scTrgtID = trgtElmnt.dataset.sectiontarget ?? null;
+            const param = trgtElmnt.dataset.param ?? null; 
+            
+            switch (action) {
+                // ... (Vos cases existants: navBurger, navLinks, temoignageScroll, etc.) ...
+                
+                // Gère la navigation entre les sections (doit valider avant)
+                case 'navigateSection':
+                    const currentSectionId = trgtElmnt.dataset.currentSection;
+                    const isFrwrd = param === 'true';
+
+                    // Validation conditionnelle (uniquement si on va en avant)
+                    if (isFrwrd && !checkSectionCompletion(currentSectionId)) {
+                        trgtElmnt.textContent = 'Note requise !';
+                        setTimeout(() => checkSectionCompletion(currentSectionId), 1000);
+                        // updateStatus({ log: `❌.If-ed |actionDispatcher : Validation section échouée.`, type: 'error' });
+                        return;
+                    }
+                    
+                    // Votre fonction showSection doit gérer le scroll du carrousel
+                    // showSection(scTrgtID, pgTrgtID, isFrwrd); 
+                    // Temporairement pour le HTML de démo, on utilise l'API de scroll
+                    const CAROUSEL_CONTAINER = document.getElementById('evaluations_page');
+                    const targetSection = document.getElementById(scTrgtID);
+                    if (targetSection && CAROUSEL_CONTAINER) {
+                        CAROUSEL_CONTAINER.scroll({
+                            left: targetSection.offsetLeft,
+                            behavior: 'smooth'
+                        });
+                    }
+                    // updateStatus({log: `./⚙️.Run-ng |actionDispatcher : navigateSection: ${pgTrgtID} / ${scTrgtID} / ${isFrwrd}.`});
+                break;
+
+                // --- NOUVEAUX CAS POUR LA NOTATION ---
+                case 'handleRatingRollover':
+                    // Le trgtElmnt est le conteneur [data-handler-group="rating-selection"]
+                    if (eventType === 'mouseover') {
+                        trgtElmnt.classList.add('is-hovering');
+                    } else if (eventType === 'mouseout') {
+                        trgtElmnt.classList.remove('is-hovering');
+                    }
+                break;
+                    
+                case 'handleRatingChange':
+                    // Le trgtElmnt est le conteneur [data-action="handleRatingChange"]
+                    // L'événement CHANGE provient de l'input radio. event.target est l'input radio.
+                    if (eventType === 'change' && event.target.type === 'radio') {
+                        handleRatingChange(event.target); // On passe l'input radio à la logique métier
+                    }
+                break;
+                
+                case 'updateData': 
+                    if (eventType === 'change' || event.type === 'input') {
+                        // EXCLUSION : S'assure que les radios de notation ne passent pas par la gestion standard des formulaires
+                        if (event.target.type === 'radio' && event.target.name.startsWith('eval-q')) {
+                            return;
+                        }
+                        const key = param;
+                        const value = event.target.value; 
+                        // updateData(key, value, event.target); // Votre fonction d'update
+                        // updateStatus({log: `actionDispatcher | updateData : key: ${key} / value: ${value}`});
+                    }
+                break;
+                
+                default:
+                    // updateStatus({log: `⚠️.Defaulted |actionDispatcher : Action non gérée: ${action}.`, type: 'warn' });
+                break;
+            }
+        
+        } catch (error) {
+            // updateStatus({ log: `🚫.Catched |actionDispatcher : ${error} `, type: 'error' });
+        }
+    }
+
+    // ***************************************************************
+    // 3. MISE À JOUR de initNavigationListeners (Ajout Mouse Events)
+    // ***************************************************************
+
+    function initNavigationListeners() {
+        // updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, log: `🎙️.Init initNavigationListeners...`});
+        
+        try {
+            document.body.addEventListener('click', actionDispatcher);
+            // AJOUT: Dispatcher gère les changements (pour la notation)
+            document.body.addEventListener('change', actionDispatcher);
+            
+            // AJOUT: Dispatcher gère le rollover/survol
+            document.body.addEventListener('mouseover', actionDispatcher);
+            document.body.addEventListener('mouseout', actionDispatcher);
+
+            document.body.addEventListener('submit', handleFormSubmit);
+            document.body.addEventListener('input', handleFieldUpdate);
+            document.body.addEventListener('keydown', handleKeyEvents);
+            
+            // ... (reste de vos listeners resize, etc.) ...
+
+            // updateStatus({ refCSS: 'intro', type: 'success', isLdng: true, log: `.../🎙️✅.--End |initNavigationListeners OK. `});
+        
+        } catch (error) {
+            // updateStatus({ refCSS: 'intro', type: 'error', isLdng: true, log: `🚫.Catched |initNavigationListeners [error] : ${error}. `});
+        }
+    }
+
+    // ***************************************************************
+    // 4. MISE À JOUR de initializeDOMElements (Vérification et Initialisation État)
+    // ***************************************************************
+
+    /**
+     * La fonction initializeDOMElements n'a pas besoin d'enregistrer les éléments de notation
+     * car ils sont gérés par délégation d'événements et n'ont pas de besoin d'accès direct
+     * après le chargement, SAUF pour l'initialisation de leur état (score, bouton).
+     */
+    function initializeDOMElements() {
+        // updateStatus({ conteneurID: 'intro', type: 'loading', isLdng: true, log: `⚙️.Init initializeDOMElements...`});
+        
+        try {
+            // ... (Vos enregistrements existants du menu, SPA, et autres pages) ...
+            
+            // ----------------------------------------------------------- // ÉVALUATIONS
+            const evaluationsPage = document.getElementById("evaluations_page");
+            if (evaluationsPage) {
+                // Initialisation des états des sections d'évaluation
+                evaluationsPage.querySelectorAll('.eval-item').forEach(section => {
+                    // Désactive les boutons "Suivant" et initialise l'affichage du score
+                    checkSectionCompletion(section.id);
+                    const questionPrefix = section.id.replace('section_', '');
+                    const scoreDisplay = document.getElementById(`result-${questionPrefix}_accueil`);
+                    if (scoreDisplay) {
+                         scoreDisplay.value = '? /5';
+                    }
+                });
+            }
+            
+            // ... (reste de votre fonction initializeDOMElements) ...
+            
+            // isInit.allDOMLoaded = true; 
+            // tryToInitAutocomplete();
+            
+            // updateStatus({ refCSS: 'intro', type: 'success', log: `.../⚙️✅.--End |initializeDOMElements : Réfs DOM initialisées.` });
+        
+        } catch (error) {
+            // updateStatus({ refCSS: 'intro', type: 'error', log: `🚫.Catched |initializeDOMElements : ${error}` });
+        }
+    }
+
+</script>
+
+</body>
+</html>
