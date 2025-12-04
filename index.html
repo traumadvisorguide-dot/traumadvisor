@@ -14,15 +14,15 @@
       <div>
         <img src="https://i.imgur.com/Di2g0u1.png" class="logo-trmdvsr" alt="Traumadvisor, le guide des salles d'attente"/>
       </div>
-      <button class="menu-toggle" data-action="navBurger" aria-expanded="false" aria-controls="nav-links"> <!-- Menu Burger (pour mobile) -->
+      <button class="menu-toggle" data-action="navBurger" aria-expanded="false" aria-controls="nav-links">
           <span class="menu-icon" ></span>
           <span class="menu-icon"></span>
           <span class="menu-icon"></span>
       </button>
       <ul class="nav-globale trmdvsr-texte-h4">
-        <li class="active" ><a href="#" data-action="navLinks" data-param="accueil">Accueil</a></li>
-        <li><a href="#" data-action="navLinks" data-param="about">À propos</a></li>
-        <li><a href="#" data-action="navLinks" data-param="contact">Contact</a></li>
+        <li class="active" ><a data-action="navLinks" data-param="accueil">Évaluations</a></li>
+        <li><a data-action="navLinks" data-param="about">À propos</a></li>
+        <li><a data-action="navLinks" data-param="contact">Contact</a></li>
       </ul>
       <div class="insta-desktop">
         <a href="https://www.instagram.com/traumadvisor/" target="_blank" class="neutre">
@@ -591,7 +591,7 @@
                   <h4 class="trmdvsr-texte-h4">La note</h4>
                   <label class="module-note trmdvsr-texte" for="eval-q1">♿<br/><em><b>Sélectionnez une note</b></em></label>
 
-                  <div class="module-note" data-action="handleRatingChange" data-handler-group="rating-selection">
+                  <div class="module-note " data-action="handleRatingChange" data-handler-group="rating-selection">
                     <input type="radio" name="eval-q1" id="q1-r5" value="5" required />
                     <label class="trmdvsr-radio-label" for="q1-r5" title="Excellent (5/5)"></label>
                     <input type="radio" name="eval-q1" id="q1-r4" value="4" />
@@ -605,7 +605,7 @@
                     <input type="radio" name="eval-q1" id="q1-r0" value="0" />
                     <label class="trmdvsr-radio-label" for="q1-r0" title="Très Mauvais (0/5)"></label>
                   </div>
-                  <input type="text" id="result-q1" class="module-note trmdvsr-texte-h2" value="⏳/5" readonly/>
+                  <input type="text" id="result-q1" class="module-note trmdvsr-texte-h2" value="⏳/ 5" readonly/>
                 </div>
                 <div class="conteneur-lame flex-col col-last">
                   <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
@@ -1288,7 +1288,7 @@
       </div>
       <div class="footer-content trmdvsr-sstexte"><p>Crédits. Tous droits réservés.</p></div>
     </footer>
-    <div id="status_layer_single" class="status-layer">
+    <div class="status-layer">
       <div class="status-box">
         <img class="spinner-image" src="https://i.imgur.com/KryCTLH.png" alt="Logo de chargement"/>
         <div class="spinner"></div>

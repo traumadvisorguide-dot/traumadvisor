@@ -203,10 +203,10 @@ function handleRatingChange(radioElement) {
       }
 
       checkSectionCompletion(sectionId);                                                        // 2. Vérifie la complétion => active le bouton de navigation
-      const targetPage = Object.values(pages).find(p => p.label === 'eval');                    // Charge l'objet page à afficher <= nwPgID existe (if initial)
-      const targetSctn = targetPage?.sub.find(s => s.id === sectionId);                          // Charge l'objet page à afficher <= nwPgID existe (if initial)
+      const targetPage = Object.values(pages).find(p => p.id === 'evaluations_page');           // Charge l'objet page à afficher <= nwPgID existe (if initial)
+      const targetSctn = targetPage?.sub.find(s => s.id === sectionId);                         // Charge l'objet page à afficher <= nwPgID existe (if initial)
       if (targetSctn) {                                                                         // 3. Enregistre données de notation
-            appData['note${targetSctn.label}'] = score;                                        //noteAccessibilite/noteApparence/noteAssise/noteAttention/noteAttente
+            appData[`note${targetSctn.label}`] = score;                                         //noteAccessibilite/noteApparence/noteAssise/noteAttention/noteAttente
       }
 
       console.warn( `✅.End-ng |handleRatingChange : Note ${score}/5 enregistrée pour ${questionId}.` );
@@ -361,7 +361,7 @@ function displayNote(score, targetIndex) {
     // Si c'est un <input> ou <textarea>, utilisez .value.
     // Nous conservons votre choix (.textContent) :
     targetDisplayElmnt.value = scoreFinal;
-    console.log(`Note (${scoreFinal}) mise à jour pour ${questionId} (Index ${targetIndex}) via référence DOM stockée.`);
+    //console.log(`Note (${scoreFinal}) mise à jour pour ${questionId} (Index ${targetIndex}) via référence DOM stockée.`);
 }
 
 // NOTE IMPORTANTE: 

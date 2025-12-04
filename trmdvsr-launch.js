@@ -266,47 +266,44 @@ function scrollToSection(nwSecID) {                                   // Logique
 function actionDispatcher(event) {
     const eventType = event.type;
 
-    
-
     try {
         if (!event || !event.target) {                                                          // Garde fou contre appels sans argument
             console.error( `❌.If-ed |actionDispatcher: Pas d'objet event ou event.target. Check les appels manuels.` );
             return;
         }
-        let trgtElmnt = null;
-        let action = '';                                                                        // ex const action = trgtElmnt.dataset.action ?? ''; <= Coalescence des nuls pour assurer bon traitement info
+        let trgtElmnt   = null;
+        let action      = '';                                                                   // const action = trgtElmnt.dataset.action ?? ''; <= Coalescence des nuls pour assurer bon traitement info
         
         if (eventType === 'mouseover' || eventType === 'mouseout' || (eventType === 'click' && event.target.closest('[data-handler-group="rating-selection"]') ) ) {  // 1. Cible Prio => Interactions Complexes => Cible conteneur groupe pour 'mouseover'/'mouseout'
-            const hoveredLabel = event.target.closest('.trmdvsr-radio-label');                  // Cible le label qui a l'action, PAS le conteneur <= quel *label* a été survolé. => Cherche le label cliquable, qui est l'élément visuel de l'étoile
+            const hoveredLabel  = event.target.closest('.trmdvsr-radio-label');                 // Cible le label qui a l'action, PAS le conteneur <= quel *label* a été survolé. => Cherche le label cliquable, qui est l'élément visuel de l'étoile
             if (hoveredLabel && hoveredLabel.closest('[data-handler-group="rating-selection"]')) { // Si c'est un mouse event ET que nous avons survolé un label de notation
-                trgtElmnt = hoveredLabel;
-                action = 'handleRatingRollover';                                                // Force l'action sur le label
+                trgtElmnt       = hoveredLabel;
+                action          = 'handleRatingRollover';                                       // Force l'action sur le label
             }
         }
 
         if (!trgtElmnt && !action) {                                                            // 2. Cible Standard => Actions basées sur data-action (Click, Change, Input, etc.)
-            trgtElmnt = event.target.closest('[data-action]');                                  // Trouve l'élément qui a l'attribut data-action, en remontant l'arbre DOM
-            action = trgtElmnt ? trgtElmnt.dataset.action ?? '' : '';
+            trgtElmnt   = event.target.closest('[data-action]');                                // Trouve l'élément qui a l'attribut data-action, en remontant l'arbre DOM
+            action      = trgtElmnt ? trgtElmnt.dataset.action ?? '' : '';
         }
            
         if (!trgtElmnt) return;                                                                 // Si aucun élément avec data-action n'est trouvé
-        
-        const pgTrgtID = trgtElmnt.dataset.maintarget ?? null;                                  // Récupération des données communes <= Ex: page ID, section ID
-        const scTrgtID = trgtElmnt.dataset.sectiontarget ?? null;                               // Uniquement pour 'evaluations'
-        const param = trgtElmnt.dataset.param ?? null;                                          // Ex: true/false pour isFrwrd, ou une autre valeur
+        const pgTrgtID  = trgtElmnt.dataset.maintarget      ?? null;                            // Récupération des données communes <= Ex: page ID, section ID
+        const scTrgtID  = trgtElmnt.dataset.sectiontarget   ?? null;                            // Uniquement pour 'evaluations'
+        const param     = trgtElmnt.dataset.param           ?? null;                            // Ex: true/false pour isFrwrd, ou une autre valeur
 
         switch (action) {
             // -------------------------------------------------------------------------------- //
             case 'navBurger':
-                menuElements.burgerIconElements.forEach( burgerIconElement => { burgerIconElement.classList.toggle('active'); } );
-                menuElements.navElement.classList.toggle('active');                             // Bascule la classe 'active' pour afficher/masquer le menu
-                const isExpanded = menuElements.navElement.classList.contains('active');        // Gère l'accessibilité (ARIA)
-                menuElements.burgerElement.setAttribute('aria-expanded', isExpanded);
+                pages.menu.iconElements.forEach( burgerIconElement => { burgerIconElement.classList.toggle('active'); } );
+                pages.menu.navElemens.classList.toggle('active');                             // Bascule la classe 'active' pour afficher/masquer le menu
+                const isExpanded = pages.menu.navElemens.classList.contains('active');        // Gère l'accessibilité (ARIA)
+                pages.loader.element.setAttribute('aria-expanded', isExpanded);
             break;
             // -------------------------------------------------------------------------------- //
             case 'navLinks':
-                menuElements.navElement.classList.remove('active');
-                menuElements.burgerElement.setAttribute('aria-expanded', 'false');
+                pages.menu.navElemens.classList.remove('active');
+                pages.loader.element.setAttribute('aria-expanded', 'false');
                 console.log( `⚙️.Tested |actionDispatcher : navLinks => ${param} ` );
             break;
             // -------------------------------------------------------------------------------- //
@@ -623,70 +620,68 @@ function initNavigationListeners() {
  * @instanceIn      {handlePageData}
  * @instanceCount    1 - unique
  * ---------------- --------------------------------------------------------------------------- //
- * @function         initializeDOMElements
- * @description      INITIALISE LES RÉFÉRENCES DOM ET LES AJOUTE À L'OBJET 'PAGES'
- *                   Appelée après que le DOM soit chargé pour que document.getElementById() fonctionne
- *                   Intérêt pour éviter d'interroger le DOM à chaque resize.
- *                   Important pour gain de performance en enregistrant une fois les <HTMLElements> et ne plus faire de ref getElementById ou querySelector
- *                   La fonction initializeDOMElements n'a pas besoin d'enregistrer les éléments de notation car ils sont gérés par délégation d'événements et n'ont pas de besoin d'accès direct après le chargement, SAUF pour l'initialisation de leur état (score, bouton).
+ * @function        initializeDOMElements
+ * @description     INITIALISE LES RÉFÉRENCES DOM ET LES AJOUTE À L'OBJET 'PAGES'
+ *                  Appelée après que le DOM soit chargé pour que document.getElementById() fonctionne
+ *                  Intérêt pour éviter d'interroger le DOM à chaque resize.
+ *                  Important pour gain de performance en enregistrant une fois les <HTMLElements> 
+ *                  et ne plus faire de ref getElementById ou querySelector. La fonction initializeDOMElements 
+ *                  n'a pas besoin d'enregistrer les éléments de notation car ils sont gérés par délégation d'événements 
+ *                  et n'ont pas de besoin d'accès direct après le chargement, SAUF pour l'initialisation de leur état (score, bouton).
  * -------------------------------------------------------------------------------------------- */
 function initializeDOMElements() {
-    updateStatus({ conteneurID: 'intro', type: 'loading', isLdng: true, log: `⚙️.Init initializeDOMElements...`, imgType: 'blanc',  
-        msg: `Initialisation des pages...` 
-    });
+    console.debug( `⚙️.Init initializeDOMElements...` );
+    updateStatus({ conteneurID: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', msg: `Initialisation des pages...` });
     
     try {
-        //===================================================================================== // MENU
-        const burgerElementTemp = document.querySelector('.menu-toggle');
-        if (burgerElementTemp) menuElements.burgerElement = burgerElementTemp;                  // 🛟 Enregistre le bouton de nav burger
-        
-        const burgerIconElementTemp = document.querySelectorAll('.menu-icon');
-        if (burgerIconElementTemp) menuElements.burgerIconElements = burgerIconElementTemp;     // 🛟 Enregistre le bouton de nav burger
-        
-        const navElementsTemp = document.querySelector('.nav-globale');
-        if (navElementsTemp) menuElements.navElement = navElementsTemp;                         // 🛟 Enregistre la nav
-        
-        if (!menuElements.burgerElement || !menuElements.navElement) console.error( `❌.Elsed |.initializeDOMElements : Erreur. Le menu n'est pas initialisé correctement...` );
-        
         //===================================================================================== // SPA
         conteneurSPA = document.querySelector('.conteneur-spa-global');                         // 🛟 Enregistre le conteneur
         if (!conteneurSPA) {
             console.error( `❌.Elsed |.initializeDOMElements : Erreur fatale. L'app est indisponible...` );
             return;
         }
-
+        //===================================================================================== // MENU GÉNÉRAL
+        const burgerElmntTmp        = document.querySelector('.menu-toggle');                   // <= bouton
+        const burgerIconElmntTmp    = burgerElmntTmp.querySelectorAll('.menu-icon');            // Lignes x3
+        const navElmntTmp           = document.querySelector('.nav-globale');                   // <= <ul> conteneur des <li>
+        if (burgerElmntTmp)         menu.toggleElmnt  = burgerElmntTmp;                         // 🛟 Enregistre le bouton de nav burger
+        if (burgerIconElmntTmp)     menu.iconElements = burgerIconElmntTmp;                     // 🛟 Enregistre le bouton de nav burger
+        if (navElmntTmp)            menu.navElemens   = navElmntTmp;                            // 🛟 Enregistre la nav
+        
+        if (!pages.loader.element || !pages.menu.navElemens) console.error( `❌.Elsed |.initializeDOMElements : Erreur. Le menu n'est pas initialisé correctement...` );
+        
         //===================================================================================== // PAGES
-        Object.values(pages)?.forEach( page => {
-            const pageElementTemp = document.getElementById(page.id);                           // Récupération de l'élément du DOM avec cet id        
+        Object.values(pages)?.forEach( p => {
+            const pageElmntTmp = document.getElementById(p.id);                           // Récupération de l'élément du DOM avec cet id        
             
-            if (pageElementTemp) {
-                page.element = pageElementTemp;                                                 // 🛟 Enregistre DOM element <= parent de la page
+            if (pageElmntTmp) {
+                p.element = pageElmntTmp;                                                 // 🛟 Enregistre DOM element <= Agit comme parent des sous-elements 
 
                 //----------------------------------------------------------------------------- // ACCUEIL
-                if (page.id === "accueil_page") {
-                    selectLieuxElmnt = document.getElementById('selectLieux');                  // 🛟 Enregistre le champ input principal
-                    tstmnlCrslElmnt = document.querySelector('.carousel-temoignage');           // 🛟 Enregistre le carousel témoignage <= page accueil
-                    tstmnlCrtElmnt = tstmnlCrslElmnt.querySelector('.carte-temoignage');        // 🛟 Enregistre une carte témoignage <= page accueil
+                if (p.id === "accueil_page") {
+                    selectLieuxElmnt= p.element.querySelector('.trmdvsr-superselect #selectLieux');                  // 🛟 Enregistre le champ input principal
+                    tstmnlCrslElmnt = p.element.querySelector('.carousel-temoignage');           // 🛟 Enregistre le carousel témoignage <= page accueil
+                    tstmnlCrtElmnt  = tstmnlCrslElmnt.querySelector('.carte-temoignage');        // 🛟 Enregistre une carte témoignage <= page accueil
                     tstmnlScrllAmnt = tstmnlCrtElmnt.offsetWidth + 24;                          // 🛟 Enregistre le scroll amount <= page accueil
                 }
                 
                 //----------------------------------------------------------------------------- // CREATION LIEU
-                if (page.id === "creation-lieu_page") {
+                if (p.id === "creation-lieu_page") {
                     creaPgElmnts.adressElmnt = document.getElementById('adresseSalle');         // 🛟📘 Enregistre le champ adresse <= page création
                 }
 
                 //----------------------------------------------------------------------------- // EVALUATIONS
-                if (page.id === "evaluations_page") {
+                if (p.id === "evaluations_page") {
                     
                     //......................................................................... // GESTION DES SECTIONS => MENU ETC...
-                    page.brdcrmbElmnts = document.querySelectorAll('.module-breadcrumb .breadcrumb-item');      //  <= cible <li> via .breadcrumb-item
-                    if (page.brdcrmbElmnts.length === 0) console.error( `❌.Elsed |.initializeDOMElements : Erreur. La sous-nav n'a pas été chargée.` );
+                    p.brdcrmbElmnts = document.querySelectorAll('.module-breadcrumb .breadcrumb-item');      //  <= cible <li> via .breadcrumb-item
+                    if (p.brdcrmbElmnts.length === 0) console.error( `❌.Elsed |.initializeDOMElements : Erreur. La sous-nav n'a pas été chargée.` );
 
-                    page.curSecIndx = 0;                                                        // 🛟 Définit l'index de la section active
-                    page.sectionCount = page.sub.length;                                        // 🛟 Enregistre le nombre de sections
+                    p.curSecIndx = 0;                                                        // 🛟 Définit l'index de la section active
+                    p.sectionCount = p.sub.length;                                        // 🛟 Enregistre le nombre de sections
                     
                     //......................................................................... // SECTIONS
-                    page.sub.forEach ( (section, index) => {
+                    p.sub.forEach ( (section, index) => {
                         
                         //¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨ // UTILE
                         const sectionElement = document.getElementById(section.id);
@@ -728,7 +723,7 @@ function initializeDOMElements() {
                     } );        
                 }
             } else {
-                console.error( `❌.Elsed |initializeDOMElements : L'élément DOM avec l'ID ${page.id} est introuvable.` );
+                console.error( `❌.Elsed |initializeDOMElements : L'élément DOM avec l'ID ${p.id} est introuvable.` );
             }
         } );
         isInit.allDOMLoaded = true;                                                             // 🛟 Enregistre FLAG => DOM prêt, activation drapeau
@@ -1039,15 +1034,16 @@ try {
 }
 }
 
-/**------------------------------------------------------------------ //
-* @instanceIn      {window.onLoad}                   ../
-* @instanceCount   1 - unique     
-* ---------------- --------------- --------------- - ---------------- //
-* @function        loadPage
-* @description     L'INITIALISEUR DE LA PAGE
-*                  Lance l'appel unique à google.script.run et spécifie les clés de données (calledKeys).
-*                  Placement après son appel pour un souci de lisibilité, le hoisting se charge de remonter la fonction.
-* ------------------------------------------------------------------- */
+/* == FONCTIONS NAVIGATION SPA - PRIVATE FN =================================================== */
+/** ------------------------------------------------------------------------------------------- //
+ * @instanceIn      {window.onLoad}                   ../
+ * @instanceCount   1 - unique     
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @function        loadPage
+ * @description     L'INITIALISEUR DE LA PAGE
+ *                  Lance l'appel unique à google.script.run et spécifie les clés de données (calledKeys).
+ *                  Placement après son appel pour un souci de lisibilité, le hoisting se charge de remonter la fonction.
+ * -------------------------------------------------------------------------------------------- */
 function loadPage() {
     try {
         if (!isInit.updateStatus) {
@@ -1060,24 +1056,21 @@ function loadPage() {
         
         google.script.run                                             // ☎️ APPEL SERVEUR
         .withSuccessHandler( (result) => {                            // => SUCCESS CALLBACK
-            updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, log: `.../📡✅.Ended |loadPage : ${result} `, imgType: 'blanc',
-                msg: `IA réveillée, arrivée dans votre navigateur...`
-            });
+            console.log(``.../📡✅.Ended |loadPage : ${result} ``);
+            updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, log: , imgType: 'blanc', msg: `IA réveillée, arrivée dans votre navigateur...` });
             console.dir(result);
             handlePageData(result);                                   // => Fonction côté client si succès : traite toutes les données reçues
         })
         .withFailureHandler((error) => {                              // => FAILURE CALLBACK
-            updateStatus({ refCSS: 'intro', type: 'fail', log: `📡❌.Failed |loadPage : Échec critique : ${error}`,       
-                msg: `Une erreur est survenue lors du chargement des données. Veuillez réessayer.` 
-            });
+            console.log( ``📡❌.Failed |loadPage : Échec critique : ${error}`` );
+            updateStatus({ refCSS: 'intro', type: 'fail', msg: `Une erreur est survenue lors du chargement des données. Veuillez réessayer.` });
         })
         .getInitialPageData(calledKeys);                              // Fonction côté serveur
         
-        updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', log: `./📡⚙️.Run-ng |loadPage : Server Request => getInitialPageData for [${calledKeys}]`, message:  `Allo l'IA?` });
+        console.log( `./📡⚙️.Run-ng |loadPage : Server Request => getInitialPageData for [${calledKeys}]` );
+        updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', message: `Allo l'IA?` });
         
-    } catch (error) {
-        updateStatus({ refCSS: 'intro', type: 'error', log: `📡🚫.Catched |loadPage : Big error: ${error}` });
-    }
+    } catch (error) console.error( `📡🚫.Catched |loadPage : Big error: ${error}` );
 }
 /** =========================================================================================== //
  * @description 'Fin du fichier. with care.'

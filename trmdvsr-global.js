@@ -1,4 +1,4 @@
-/* == DÉCLARATION DES VARIABLES =============================================================== */
+/** == DÉCLARATION DES VARIABLES ============================================================== */
 let appData         = {                                               // 📘 Objet global qui récupère toutes les données du formulaire
     submissionID      : null,                                         // au lancement par handlePageData()
     submissionDate    : null,	                                      // submit eval-2-Form si pas null
@@ -28,41 +28,131 @@ let appData         = {                                               // 📘 Ob
     submissionEditURL : null,                                         // non pertinent
     lastUpdateDate    : null,                                         // submit eval-2-Form à chaque fois
 };
-/** @description     ARCHITECTURE D'INFOS POUR LES PAGES (celles enregistrées dynamiquement)
- * -------- ----------- ----------------------- - ------------------------------------------ //
- * @var     {element}   element                 - Élement du DOM                                            /page <= initializeDOMElements()
- * @var     {number}    height                  - Hauteur                                                   /page <= initializeDOMElements()
- * @var     {integer}   currentSectionIndex     - Index section active                                      /page <= initializeDOMElements()
- * @var     {integer}   sectionCount            - Nombre de sections                                        /page <= initializeDOMElements()
- * @var     {array}     sub                     - Tableau des sections                                      /page <= initializeDOMElements()
- * @var     {element}   sub.element             - Élement du DOM                                    /section/page <= initializeDOMElements()
- * @var     {array}     sub.index               - Index section                                     /section/page <= initializeDOMElements()
- * @var     {number}    sub.height              - Hauteur section                                   /section/page <= calculatePageHeights()
- * @var     {number}    totalHeight             - Hauteur maximale de page                                  /page <= calculatePageHeights()
- * @var     {number}    sub.note                - Note donnée                                       /section/page <= ???
- * @var     {element}   sub.noteModuleElmnt     - Élement du DOM                                    /section/page <= ???
- * @var     {element}   sub.noteDisplayElmnt    - Élement du DOM                                    /section/page <= ???
- * @var     {object}    sub.comment             - Objet commentaire                                 /section/page <= ???
- * @var     {number}    sub.comment.ID          - Identifiant du commentaire                        /section/page <= ???
- * @var     {string}    sub.comment.texte       - Commentaire en texte                              /section/page <= ???
- * --------------------------------------------------------------------------------------------- */
-let pages = {                                                         // 'key':   {value}
-    'accueil':  { index: 0,   id: 'accueil_page',       label: 'Accueil',       hasSub: false, sub: null }, 
-    'creation': { index: 1,   id: 'creation-lieu_page', label: 'Création Lieu', hasSub: false, sub: null },
-    'eval':     { index: 2,   id: 'evaluations_page',   label: 'eval',   hasSub: true,  sub: [ 
-                            { id: 'section_q1',         label: 'Accessibilite', needsAsyncValidation: false }, //   <= 🛟DOM{ Elmnts } + 📘{ Note + Comment (init[x,y,z] + finalText) }
-                            { id: 'section_q2',         label: 'Apparence',     needsAsyncValidation: false }, 
-                            { id: 'section_q3',         label: 'Assise',        needsAsyncValidation: false },
-                            { id: 'section_q4',         label: 'Attention',     needsAsyncValidation: false },
-                            { id: 'section_q5',         label: 'Attente',       needsAsyncValidation: false },
-                            { id: 'section_photo',      label: 'Photo',         needsAsyncValidation: true  }
-                          ]}
+/** == DÉCLARATION DES INFOS DANS LES PAGES =================================================== */ 
+let pages                       = {                                                             // 'key':   {value}
+    'accueil'                   : { 
+        index                     : 0,                      //
+        ID                        : 'accueil_page',         //
+        element:                    null,                   // {element} 🛟 Ref DOM                                             /page <= initializeDOMElements()
+        height:                     null,                   // {nomber} - Hauteur de la page de base (hors absolute)            /page <= initializeDOMElements()
+        totalHeight:                null,                   // {nomber} - Hauteur de la page avec les sélections                /page <= calculatePageHeights()
+        hasSub:                     false,                  // {boolean}
+        sub:                        null                    // {array}
+    },
+    'creation': { 
+        index:                      1,                      //
+        ID:                         'creation-lieu_page',   //
+        element:                    null,                   //                                                                  /page <= initializeDOMElements()
+        hasSub:                     false,                  // {boolean}
+        sub:                        null                    // {array}
+    },
+    'eval': {
+        index: 2,                                           //
+        ID:                         'evaluations_page',     //
+        element:                    null,                   // {element} 🛟 Ref DOM                                             /page <= initializeDOMElements()
+        currntSctnIndx:             null,                   // {integer} - Index de la section active
+        sectionCount:               null,                   //
+        hasSub:                     true,                   // {boolean} 
+        sub: [ {   ID:                 'section_q1',           // {string}                                             /section/page <= initializeDOMElements()
+                type:               'notation',             // {string}
+                element:            null,                   // {element} 🛟 Ref DOM SECTION                         /section/page <= initializeDOMElements()
+                noteModuleElmnt:    null,                   // {element} 🛟 Ref DOM module de notation              /section/page <= initializeDOMElements()
+                noteDisplayElmnt:   null,                   // {element} 🛟 Ref DOM module d'affichage              /section/page <= initializeDOMElements()
+                note: { // ---------------------------- // {object} - fonctionnel ------------ //
+                    key:            'noteAccessibilite',    // {string}
+                    value:          null                    // {number} 📘 NOTEACCESSIBILITE
+                },
+                comment: { // -------------------------- // {object} - fonctionnel ------------ //
+                    key:            null,                   // {string} 📘 combo[xN,yO,zP]                          /section/page <= ???
+                    texte:          null                    // {string} 📘 finalText peut-être modifié              /section/page <= ???
+                }
+            },
+            {   ID:                 'section_q2',           // {string}  
+                type:               'notation',             // {string}
+                element:            null,                   // {element} 🛟 Ref DOM SECTION                         /section/page <= initializeDOMElements()
+                noteModuleElmnt:    null,                   // {element} 🛟 Ref DOM module de notation              /section/page <= initializeDOMElements()
+                noteDisplayElmnt:   null,                   // {element} 🛟 Ref DOM module d'affichage              /section/page <= initializeDOMElements()
+                note : { // ---------------------------- // {object} - fonctionnel ------------ //
+                    key:            'noteApparence',        // {string}
+                    value:          null                    // {number} 📘 NOTEACCESSIBILITE
+                },
+                comment: { // -------------------------- // {object} - fonctionnel ------------ //
+                    key:            null,                   // {string} 📘 combo[xN,yO,zP]                          /section/page <= ???
+                    texte:          null                    // {string} 📘 finalText peut-être modifié              /section/page <= ???
+                }
+            },
+            {   ID:                 'section_q3',           // {string}  
+                type:               'notation',             // {string}
+                element:            null,                   // {element} 🛟 Ref DOM SECTION                         /section/page <= initializeDOMElements()
+                noteModuleElmnt:    null,                   // {element} 🛟 Ref DOM module de notation              /section/page <= initializeDOMElements()
+                noteDisplayElmnt:   null,                   // {element} 🛟 Ref DOM module d'affichage              /section/page <= initializeDOMElements()
+                note : { // ---------------------------- // {object} - fonctionnel ------------ //
+                    key:            'noteAssise',           // {string}
+                    value:          null                    // {number} 📘 NOTEACCESSIBILITE
+                },
+                comment: { // -------------------------- // {object} - fonctionnel ------------ //
+                    key:            null,                   // {string} 📘 combo[xN,yO,zP]                          /section/page <= ???
+                    texte:          null                    // {string} 📘 finalText peut-être modifié              /section/page <= ???
+                } 
+            },
+            {   ID:                 'section_q4',           // {string}
+                type:               'notation',             // {string}
+                element:            null,                   // {element} 🛟 Ref DOM SECTION                         /section/page <= initializeDOMElements()
+                noteModuleElmnt:    null,                   // {element} 🛟 Ref DOM module de notation              /section/page <= initializeDOMElements()
+                noteDisplayElmnt:   null,                   // {element} 🛟 Ref DOM module d'affichage              /section/page <= initializeDOMElements()
+                note : { // ---------------------------- // {object} - fonctionnel ------------ //
+                    key:            'noteAttention',        // {string}
+                    value:          null                    // {number} 📘 NOTEACCESSIBILITE
+                },
+                comment: { // -------------------------- // {object} - fonctionnel ------------ //
+                    key:            null,                   // {string} 📘 combo[xN,yO,zP]                          /section/page <= ???
+                    texte:          null                    // {string} 📘 finalText peut-être modifié              /section/page <= ???
+                }
+            },
+            {   ID:                 'section_q5',           // {string}       
+                type:               'notation',             // {string}
+                element:            null,                   // {element} 🛟 Ref DOM SECTION                         /section/page <= initializeDOMElements()
+                noteModuleElmnt:    null,                   // {element} 🛟 Ref DOM module de notation              /section/page <= initializeDOMElements()
+                noteDisplayElmnt:   null,                   // {element} 🛟 Ref DOM module d'affichage              /section/page <= initializeDOMElements()
+                note : { // ---------------------------- // {object} - fonctionnel ------------ //
+                    key:            'noteAttente',          // {string}
+                    value:          null                    // {number} 📘 NOTEACCESSIBILITE
+                },
+                comment: { // -------------------------- // {object} - fonctionnel ------------ //
+                    key:            null,                   // {string} 📘 combo[xN,yO,zP]                          /section/page <= ???
+                    texte:          null                    // {string} 📘 finalText peut-être modifié              /section/page <= ???
+                }
+            }, // ============================================================================= // q5
+            {   ID:                 'section_photo',        // {string}
+                type:               'fileupload',           // {string}
+                element:            null,                   // {element} 🛟 Ref DOM SECTION                         /section/page <= initializeDOMElements()
+            }
+        ]    
+    }
 };
-const DOM_Elements = {
-    'loader':   { container: null, currentContainer: null, animContainer: { Elmnt:null, animIMG: null, animSpinner: null }, progressContainer: null, progressText: null, progressBar: null},
-    'accueil':  { index: null}
-}
-const evaluations = {                                                  // Mappage des valeurs aux descriptions complètes
+let loader                      = {
+    ID                            : 'loader',               // {string}
+    type                          : 'status',               // {string}
+    element                       : null,                   // {element} 🛟 Ref DOM -> ./status-layer
+    // ------------------------------------------------------------------------------------ //
+    animContainerElmnt            : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box
+    animImgElmnt                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/spinner-image
+    animSpinnerElmnt              : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/spinner
+    // ------------------------------------------------------------------------------------ //
+    progressContainer             : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container
+    progressBar                   : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container/progress-bar
+    progressText                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container/progress-text
+    // ------------------------------------------------------------------------------------ //
+    statusMessage                 : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-message (trmdvsr-sstexte)        
+};
+
+let menu                        = {
+    toggleElmnt                   : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
+    iconElements                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
+    navElemens                    : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
+};
+
+const evaluations = {                                                  // Mappage des valeurs aux descriptions complètes        
     '5': `N'en rajoutez plus (5/5)`,
     '4': `C'est super (4/5)`,
     '3': 'Ça va (3/5)',
@@ -70,23 +160,19 @@ const evaluations = {                                                  // Mappag
     '1': `C'est pas top (1/5)`,
     '0': `On ne recommande pas (0/5)`,
 };
-/** GLOBAL - Variables de navigation ----------------------------------------------------------- */
-let curPgID           = null;                                         // ID Page affichée                       <= showPage()
+/** -- GLOBAL - Variables de navigation ------------------------------------------------------- */
+let curPgID           = null;                                         // ID Page affichée         
+/** == DOM Element ---------------------------------------------------------------------------- */
 let conteneurSPA      = null;                                         // DOMElement                             <= initializeDOMElements()
 let guideModeBTN      = null;
-let menuElements = {                                                  //                                        <= initializeDOMElements()
-    burgerElement       : null,
-    burgerIconElements  : null, 
-    navElement          : null 
-};
 let isInit = {                                                        // FLAGS
-    updateStatus        : false,                                      //                                        <= loadPage()
-    eval                : false,                                      //                                        <= initPageEval() voir si suppime
-    modeGuide           : false,                                      //                                        <= initModeGuide()voir si supp
-    navGlobale          : false,                                      // Listeners sur <body>                   <= initNavigationListeners()  
-    allDOMLoaded        : false,                                      //                                        <= initializeDOMElements()
-    mapsScriptLoaded    : false 
-};
+        updateStatus        : false,                                      //                                        <= loadPage()
+        eval                : false,                                      //                                        <= initPageEval() voir si suppime
+        modeGuide           : false,                                      //                                        <= initModeGuide()voir si supp
+        navGlobale          : false,                                      // Listeners sur <body>                   <= initNavigationListeners()  
+        allDOMLoaded        : false,                                      //                                        <= initializeDOMElements()
+        mapsScriptLoaded    : false 
+    };
 let isTrnstng         = false;                                        // Flag de transition en cours
 /** GLOBAL - Variables du loader unique => évite les querySelector répétés --------------------- */
 let snglLgElmnt       = null;                                         // LOADER                                 <= init_updateStatus()
