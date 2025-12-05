@@ -568,7 +568,6 @@ function checkSectionCompletion(sectionId) {
     return true; // Placeholder pour le moment
 }
 
-
 /* == FONCTIONS D'INITIALISATION GLOBALE ====================================================== */
 /** ------------------------------------------------------------------------------------------- //
  * @instanceIn      {loadPage}                        ../
@@ -635,42 +634,35 @@ function handlePageData(data) {
  *                  Crée des listeners au clic, au  sur l'ensemble du <body> en ciblant un '[data-action="navigate"]'
  * -------------------------------------------------------------------------------------------- */
 function initNavigationListeners() {
-    updateStatus({ refCSS: 'intro', type: 'loading',   isLdng: true,  log: `🎙️.Init initNavigationListeners... `, logoType:'blanc',
-        msg: `🎙️ Mise sur écoute de l'app... Des boutons... Pas de vous. `
-    });
-    
+    console.debug( `🎙️.Init initNavigationListeners...` );
+    updateStatus({ refCSS: 'intro', type: 'loading',   isLdng: true, logoType:'blanc', msg: `🎙️ Mise sur écoute de l'app... Des boutons... Pas de vous.`});   
     try {
-        document.body.addEventListener('click', actionDispatcher);    // Clavier / actions [data-action]
-        document.body.addEventListener('change', actionDispatcher);     // Ajoutez l'écouteur 'change' pour les radios de notation
-        //document.body.addEventListener('change', handleFieldUpdate);  // Changement de valeur (select, checkbox, fin de saisie)
-        
-        document.body.addEventListener('mouseover', actionDispatcher); // Ajoutez les écouteurs pour le rollover/survol
+        document.body.addEventListener('click', actionDispatcher);                              // Clavier / actions [data-action]
+        document.body.addEventListener('change', actionDispatcher);                             // Ajoutez l'écouteur 'change' pour les radios de notation
+        //document.body.addEventListener('change', handleFieldUpdate);                          // Changement de valeur (select, checkbox, fin de saisie)
+        // NOTE: Le 'change' est préférable au 'click' pour les radios,
+        // mais votre architecture actuelle semble utiliser 'change' via 'handleFieldUpdate'.
+        // Pour la notation, je vous recommande d'utiliser 'change' et de le dispatcher
+        // dans actionDispatcher pour séparer la logique 'rating' des autres champs.
+        document.body.addEventListener('mouseover', actionDispatcher);                          // Ajoutez les écouteurs pour le rollover/survol
         document.body.addEventListener('mouseout', actionDispatcher);
         
-        document.body.addEventListener('submit', handleFormSubmit);   // Soumissions de formulaires (avec preventDefault)
-        document.body.addEventListener('input', handleFieldUpdate);   // Saisie en temps réel (validation)
+        document.body.addEventListener('submit', handleFormSubmit);                             // Soumissions de formulaires (avec preventDefault)
+        document.body.addEventListener('input', handleFieldUpdate);                             // Saisie en temps réel (validation)
         document.body.addEventListener('keydown', handleKeyEvents);
         
-        const debouncedHandleResize = debounce_(updateSPA_Height_, 200);  // version anti-rebond de 200ms
-        window.addEventListener('resize', debouncedHandleResize);     // MàJ la hauteur au resize de la fenêtre avec anti-rebond
+        const debouncedHandleResize = debounce_(updateSPA_Height_, 200);                        // version anti-rebond de 200ms
+        window.addEventListener('resize', debouncedHandleResize);                               // MàJ la hauteur au resize de la fenêtre avec anti-rebond
 
-        // autocomplete.addListener('place_changed'                       // <= gestion dans la function dédiée 
-        
-        updateStatus({ refCSS: 'intro', type: 'success', isLdng: true, log: `.../🎙️✅.--End |initNavigationListeners OK. `,imgType: 'blanc',
-            msg: `🎙️ 1. 2. 1. 2. Les micros sont en place. `
-        });
+        // autocomplete.addListener('place_changed'                                             // <= gestion dans la function dédiée 
+        console.warn( `.../🎙️✅.--End |initNavigationListeners OK. ` );
+        updateStatus({ refCSS: 'intro', type: 'success', isLdng: true, imgType: 'blanc', msg: `🎙️ 1. 2. 1. 2. Les micros sont en place.` });
     
     } catch (error) {
-        updateStatus({ refCSS: 'intro', type: 'error', isLdng: true, log: `🚫.Catched |initNavigationListeners [error] : ${error}. `, logoType: 'blanc',
-            msg: `🎙️ Houston? Whitney Houston? We avons un problème... `
-        });
+        console.error( `🚫.Catched |initNavigationListeners [error] : ${error}.` );
+        updateStatus({ refCSS: 'intro', type: 'error', isLdng: true, logoType: 'blanc', msg: `🎙️ Houston? Whitney Houston? We avons un problème...` });
     }
 }
-
-// NOTE: Le 'change' est préférable au 'click' pour les radios,
-// mais votre architecture actuelle semble utiliser 'change' via 'handleFieldUpdate'.
-// Pour la notation, je vous recommande d'utiliser 'change' et de le dispatcher
-// dans actionDispatcher pour séparer la logique 'rating' des autres champs.
 
 /** ------------------------------------------------------------------------------------------- //
  * @instanceIn      {handlePageData}
@@ -851,21 +843,28 @@ function synchroniserModeGuide_(nwVal) {
  * @description     INITIALISE LE LOADER UNIFIÉ
  * -------------------------------------------------------------------------------------------- */
 function init_updateStatus() {
-    console.debug(`Init init_updateStatus...`)
-    loader.logoURLs                     = getLogoUrlsFromCSS_();
-    console.log(loader.logoURLs);
-    loader.element                      = document.getElementById('status_layer');
-    console.log(loader.element);
-    if (loader.element) {
-        loader.statusMessage            = loader.element.querySelector('.status-message');
-        loader.animImgElmnt             = loader.element.querySelector('.spinner-image');
-        loader.animSpinnerElmnt         = loader.element.querySelector('.spinner');
-        loader.progressContainerElmnt   = loader.element.querySelector('.progress-container'); 
-        loader.progressBarElmnt         = loader.element.querySelector('.progress-bar');
-        loader.progressTextElmnt        = loader.element.querySelector('.progress-text');
+    try {
+        console.debug(`Init init_updateStatus...`)
+        loader.logoURLs                     = getLogoUrlsFromCSS_();
+        loader.element                      = document.getElementById('status-module');
+        const parentElement                 = loader.element; 
+        if (loader.element) {
+            loader.statusMessage            = parentElement.querySelector('.status-message.trmdvsr-sstexte');
+            loader.animImgElmnt             = parentElement.querySelector('.spinner-image');
+            loader.animSpinnerElmnt         = parentElement.querySelector('.spinner');
+            loader.progressContainerElmnt   = parentElement.querySelector('.progress-container'); 
+            loader.progressBarElmnt         = parentElement.querySelector('.progress-bar');
+            loader.progressTextElmnt        = parentElement.querySelector('.progress-text');
+        }
+        if (!loader.logoURLs.bleu || !loader.logoURLs.blanc) { console.warn(`Les variables CSS --url-logo-actif ou --url-logo-blanc n'ont pas pu être lues.`) };
+        
+        parentElement.display = 'block';
+        parentElement.style.border = '10px solid red';
+
+    } catch (error) {
+        console.error (`init_updateStatus a rencontré un problème`);
     }
-    if (!loader.logoURLs.bleu || !loader.logoURLs.blanc) { console.warn(`Les variables CSS --url-logo-actif ou --url-logo-blanc n'ont pas pu être lues.`) };
-    console.warn(`init_updateStatus OK`)
+    
 }
 
 /**------------------------------------------------------------------ //
@@ -1004,8 +1003,8 @@ function getLogoUrlsFromCSS_() {
     const rootStyles    = getComputedStyle(document.documentElement);                           // document.documentElement => Cible l'élément racine
     const actifUrlCSS   = rootStyles.getPropertyValue('--url-logo-actif').trim();
     const blancUrlCSS   = rootStyles.getPropertyValue('--url-logo-blanc').trim();
-    console.log(`getLogoUrlsFromCSS_ => actifUrlCSS:${actifUrlCSS} && blancUrlCSS:${blancUrlCSS}`)
-    const extractUrl = (cssValue) => {                                                          // Fonction locale interne
+    
+    const extractUrl = (cssValue) => {                                                          // FONCTION INTERNE
     if ( !cssValue || !cssValue.startsWith('url(') ) return '';
         return cssValue.slice(4, -1).replace(/["']/g, '');                                      // Retire 'url(', ')', et les guillemets/apostrophes éventuels.
     };
@@ -1059,19 +1058,19 @@ function getCallStack_() {
  *                  Lance l'appel unique à google.script.run et spécifie les clés de données (calledKeys).
  *                  Placement après son appel pour un souci de lisibilité, le hoisting se charge de remonter la fonction.
  * -------------------------------------------------------------------------------------------- */
-function loadPage() {
+function initAPP() {
     console.log (` \n\n🚀=====🚀 ${DATE} 🚀=====🚀\n\n🏁=====🏁 C'est parti.🏁=====🏁` );
     try {
         if (!isInit.updateStatus) {
             init_updateStatus();                                                                // Initialise le composant de loading
             isInit.updateStatus = true;                                                         // 🏁 Active le flag
         }
-
+        /*
         const result = { submissionID: 'test' }
         const calledKeys = ['submissionID', 'dropdown_lieux', 'dropdown_types'];                // Clés d'appel pour fetch côté serveur 
         console.log (`loadPage =>  ${result.submissionID} && ${calledKeys}`)
         updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', msg: `Réveil de l'IA...` });
-        /*
+        
         google.script.run                                                                       // ☎️ APPEL SERVEUR
             .withSuccessHandler( (result) => {                                                  //SI SUCCESS CALLBACK
                 console.dir(`.../📡✅.Ended |loadPage : ${result} `); */
@@ -1083,17 +1082,17 @@ function loadPage() {
                 updateStatus({ refCSS: 'intro', type: 'fail', msg: `Erreur lors du chargement des données. Veuillez réessayer.` });
             })
             .getInitialPageData(calledKeys);                                                    // FN serveur
-        */
+        
         console.log( `./📡⚙️.Run-ng |loadPage : Server Request => getInitialPageData for [${calledKeys}]` );
         updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', message: `Allo l'IA?` });
-        
+        */
     } catch (error) {
         isInit.updateStatus = false;
         console.error( `📡🚫.Catched |loadPage : Big error: ${error}` );
     }
 }
 /* ** APP LAUNCHER ******************************************************************** (🚀) ** */
-window.addEventListener('load', loadPage);
+window.addEventListener('load', initAPP);
 
 /** =========================================================================================== //
  * @description 'Fin du fichier. with care.'
