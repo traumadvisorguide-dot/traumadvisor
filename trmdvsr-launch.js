@@ -156,7 +156,6 @@ function showPage(nwPgID = '', nwSecIndx = null) {
  * @param           {string}        pgID            - L'ID de la page parente.
  * @param           {boolean}       isFrwrd         - Si Vrai, glissement de Droit à Gauche (Suivant). Si Faux, glissement de Gauche à Droite (Précédent).
  * --------------------------------------------------------------------------------------------- */
-
 function showSection(nwSecID, pgID) {
     console.debug( `⚓.Init showSection... [param]newSectionID: ${nwSecID} / pageID: ${pgID} ` );
     try {
@@ -505,19 +504,83 @@ function handleKeyEvents(event) {
     }
 }
 
+/**
+ * // --- NOUVEAUX CAS POUR LA NOTATION ---
+            case 'handleRatingRollover':
+                // La logique de survol est très simple, on peut la traiter directement ou appeler une fonction
+                if (eventType === 'mouseover') {
+                    trgtElmnt.classList.add('is-hovering');
+                } else if (eventType === 'mouseout') {
+                    trgtElmnt.classList.remove('is-hovering');
+                }
+                break;
+                
+            case 'handleRatingChange':
+                // Assurez-vous que c'est bien un événement 'change' sur un input radio de notation
+                if (eventType === 'change' && trgtElmnt.name.startsWith('eval-q')) {
+                    handleRatingChange(trgtElmnt); // Appel de la fonction de logique métier (voir point 3)
+                }
+                break;
+
+
+
+ * Gère le changement de note (logique métier).
+ * @param {HTMLElement} radioElement - L'input radio qui a déclenché l'événement.
+ */
+function handleRatingChange(radioElement) {
+    const radioName = radioElement.name; // Ex: 'eval-q1'
+    const score = radioElement.value;    // Ex: '5'
+    
+    // Extrait l'identifiant de la question (ex: q1)
+    const questionId = radioName.split('-')[1]; // 'q1'
+    const sectionId = `section_${questionId}`;   // 'section_q1'
+
+    // 1. Mise à jour de l'affichage numérique de la note
+    const scoreDisplay = document.getElementById(`result-${radioName}_accueil`);
+    if (scoreDisplay) {
+        scoreDisplay.value = `${score} /5`;
+    }
+
+    // 2. Vérification de la complétion pour activer le bouton de navigation
+    checkSectionCompletion(sectionId);
+
+    // 3. Enregistrement des données de notation (à faire dans appData)
+    // Ex: appData.evaluations[questionId] = score;
+    updateStatus({ log: `✅.End-ng |handleRatingChange : Note ${score}/5 enregistrée pour ${questionId}.` });
+}
+
+/**
+ * Vérifie si une section d'évaluation est complétée et gère le bouton Suivant.
+ * Cette fonction est réutilisée par actionDispatcher (via handleRatingChange) et navigateSection.
+ * @param {string} sectionId - L'ID de la section (e.g., 'section_q1').
+ * @returns {boolean} Vrai si la section est complétée.
+ */
+function checkSectionCompletion(sectionId) {
+    // Détermine le nom du groupe radio à partir de l'ID de section (ex: section_q1 -> eval-q1)
+    const radioGroupName = `eval-${sectionId.replace('section_', '')}`;
+    // Si la radio a un 'name' différent, ajuster ici. Assumons 'q1' si section est 'section_q1'
+    
+    // Logique de validation... (à implémenter en utilisant votre structure DOM)
+    // const isCompleted = document.querySelector(`input[name="${radioGroupName}"]:checked`) !== null;
+    
+    // ... (Logique d'activation du bouton) ...
+    // return isCompleted;
+    return true; // Placeholder pour le moment
+}
+
+
 /* == FONCTIONS D'INITIALISATION GLOBALE ====================================================== */
 /** ------------------------------------------------------------------------------------------- //
-* @instanceIn      {loadPage}                        ../
-* @instanceCount   1 - unique
-* ---------------- --------------- --------------- - ------------------------------------------ //
-
-* @function        handlePageData
-* @description     DISTRIBUTEUR
-*                  Reçoit l'objet de données complètes et distribue les valeurs aux éléments HTML ciblés (h1, p, select).
-* ---------------- --------------- --------------- - ------------------------------------------ //
-* @param           {Object}      data              - L'objet contenant toutes les briques de données 
-* @example                                           {lieux: [...], types: [...], page_title: "..."}
-* --------------------------------------------------------------------------------------------- */
+ * @instanceIn      {loadPage}                        ../
+ * @instanceCount   1 - unique
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @function        handlePageData
+ * @description     DISTRIBUTEUR
+ *                  Reçoit l'objet de données complètes et distribue les valeurs aux éléments HTML ciblés (h1, p, select).
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @param           {Object}        data            - L'objet contenant toutes les briques de données 
+ * @example                                           {lieux: [...], types: [...], page_title: "..."}
+ * -------------------------------------------------------------------------------------------- */
 function handlePageData(data) {
     updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', msg: `Traitement des datas...`, log: `📝.Init handlePageData...[param]data: ${data} `});
     
@@ -563,16 +626,51 @@ function handlePageData(data) {
 }
 
 /** ------------------------------------------------------------------------------------------- //
-* @version         25.10.09 (23:16)
-* @instanceIn      {handlePageData}                  ../
-* @instanceCount   1 - unique
-* ---------------- --------------- --------------- - ------------------------------------------ //
-* @function        initNavigationListeners
-* @description     ATTACHE LES LISTENERS
-*                  Crée des listeners au clic, au  sur l'ensemble du <body> en ciblant un '[data-action="navigate"]'
-* --------------------------------------------------------------------------------------------- */
+ * @version         25.12.02 (13:30) -> with Gemini
+ * @instanceIn      {handlePageData}                  ../
+ * @instanceCount   1 - unique
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @function        initNavigationListeners
+ * @description     ATTACHE LES LISTENERS
+ *                  Crée des listeners au clic, au  sur l'ensemble du <body> en ciblant un '[data-action="navigate"]'
+ * -------------------------------------------------------------------------------------------- */
 function initNavigationListeners() {
+    updateStatus({ refCSS: 'intro', type: 'loading',   isLdng: true,  log: `🎙️.Init initNavigationListeners... `, logoType:'blanc',
+        msg: `🎙️ Mise sur écoute de l'app... Des boutons... Pas de vous. `
+    });
+    
+    try {
+        document.body.addEventListener('click', actionDispatcher);    // Clavier / actions [data-action]
+        document.body.addEventListener('change', actionDispatcher);     // Ajoutez l'écouteur 'change' pour les radios de notation
+        //document.body.addEventListener('change', handleFieldUpdate);  // Changement de valeur (select, checkbox, fin de saisie)
+        
+        document.body.addEventListener('mouseover', actionDispatcher); // Ajoutez les écouteurs pour le rollover/survol
+        document.body.addEventListener('mouseout', actionDispatcher);
+        
+        document.body.addEventListener('submit', handleFormSubmit);   // Soumissions de formulaires (avec preventDefault)
+        document.body.addEventListener('input', handleFieldUpdate);   // Saisie en temps réel (validation)
+        document.body.addEventListener('keydown', handleKeyEvents);
+        
+        const debouncedHandleResize = debounce_(updateSPA_Height_, 200);  // version anti-rebond de 200ms
+        window.addEventListener('resize', debouncedHandleResize);     // MàJ la hauteur au resize de la fenêtre avec anti-rebond
+
+        // autocomplete.addListener('place_changed'                       // <= gestion dans la function dédiée 
+        
+        updateStatus({ refCSS: 'intro', type: 'success', isLdng: true, log: `.../🎙️✅.--End |initNavigationListeners OK. `,imgType: 'blanc',
+            msg: `🎙️ 1. 2. 1. 2. Les micros sont en place. `
+        });
+    
+    } catch (error) {
+        updateStatus({ refCSS: 'intro', type: 'error', isLdng: true, log: `🚫.Catched |initNavigationListeners [error] : ${error}. `, logoType: 'blanc',
+            msg: `🎙️ Houston? Whitney Houston? We avons un problème... `
+        });
+    }
 }
+
+// NOTE: Le 'change' est préférable au 'click' pour les radios,
+// mais votre architecture actuelle semble utiliser 'change' via 'handleFieldUpdate'.
+// Pour la notation, je vous recommande d'utiliser 'change' et de le dispatcher
+// dans actionDispatcher pour séparer la logique 'rating' des autres champs.
 
 /** ------------------------------------------------------------------------------------------- //
  * @instanceIn      {handlePageData}
@@ -582,10 +680,10 @@ function initNavigationListeners() {
  * @description     INITIALISE LES RÉFÉRENCES DOM ET LES AJOUTE À L'OBJET 'PAGES'
  *                  Appelée après que le DOM soit chargé pour que document.getElementById() fonctionne
  *                  Intérêt pour éviter d'interroger le DOM à chaque resize.
- *                  Important pour gain de performance en enregistrant une fois les <HTMLElements> 
- *                  et ne plus faire de ref getElementById ou querySelector. La fonction initializeDOMElements 
- *                  n'a pas besoin d'enregistrer les éléments de notation car ils sont gérés par délégation d'événements 
- *                  et n'ont pas de besoin d'accès direct après le chargement, SAUF pour l'initialisation de leur état (score, bouton).
+ *                  Important pour gain de performance en enregistrant une fois les <HTMLElements> et ne plus faire de 
+ *                  ref getElementById ou querySelector. La fonction initializeDOMElements n'a pas besoin d'enregistrer 
+ *                  les éléments de notation car ils sont gérés par délégation d'événements et n'ont pas de besoin d'accès 
+ *                  direct après le chargement, SAUF pour l'initialisation de leur état (score, bouton).
  * -------------------------------------------------------------------------------------------- */
 function initializeDOMElements() {
     console.debug( `⚙️.Init initializeDOMElements...` );
@@ -692,18 +790,18 @@ function initializeDOMElements() {
         console.error( `🚫.Catched |initializeDOMElements : ${error}` );
     }
 }
-/* == GUIDEMODE ====================================== (COMPOSANT) == */
-/**------------------------------------------------------------------ //
-* @version         25.10.09 (23:16)
-* @instanceIn      {handlePageData}
-* @instanceCount   1 - unique
-* ---------------- --------------- --------------- - ---------------- //
-* @function        initModeGuide
-* @description     LIT ET MET À JOUR LE MODE GUIDÉ/EXPERT
-*                  Trouve tous les éléments avec .composant-aide (crochet fonctionnel), lit l'état actuel (appData.guideORexpert) et coche la bonne option.
-* ---------------- --------------- --------------- - ---------------- //
-* @param           {string}        initValue       - ['guided' || 'expert']
-* ------------------------------------------------------------------- */
+/* == GUIDEMODE ================================================================ (COMPOSANT) == */
+/** ------------------------------------------------------------------------------------------- //
+ * @version         25.10.09 (23:16)
+ * @instanceIn      {handlePageData}
+ * @instanceCount   1 - unique
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @function        initModeGuide
+ * @description     LIT ET MET À JOUR LE MODE GUIDÉ/EXPERT
+ *                  Trouve tous les éléments avec .composant-aide (crochet fonctionnel), lit l'état actuel (appData.guideORexpert) et coche la bonne option.
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @param           {string}        initValue       - ['guided' || 'expert']
+ * -------------------------------------------------------------------------------------------- */
 function initModeGuide(initValue) {
     updateStatus({ refCSS: 'intro', isLdng: true, msg: `🔌.Init initModeGuide | Initialisation du mode guidé... `, logoType: 'blanc' });
     
@@ -730,8 +828,7 @@ function initModeGuide(initValue) {
  *                  Parcourt toutes les instances et ajuste les btn-radios sur appData.guideORexpert
  * ---------------- --------------- --------------- - ---------------- ------------------------ //
  * @param           {string}        nwVal           - ['guided' || 'expert']
-* --------------------------------------------------------------------------------------------- */
-
+ * -------------------------------------------------------------------------------------------- */
 function synchroniserModeGuide_(nwVal) {
     console.log( `🔌.Init synchroniserModeGuide_ ...[param]nwVal:${nwVal} ` );
     updateStatus({ refCSS: 'intro', isLdng: true, imgType:'blanc' });
@@ -754,9 +851,11 @@ function synchroniserModeGuide_(nwVal) {
  * @description     INITIALISE LE LOADER UNIFIÉ
  * -------------------------------------------------------------------------------------------- */
 function init_updateStatus() {
-    console.log(`Hello World`)
+    console.debug(`Init init_updateStatus...`)
     loader.logoURLs                     = getLogoUrlsFromCSS_();
-    loader.element                      = document.getElementById('status_layer_single');        
+    console.log(loader.logoURLs);
+    loader.element                      = document.getElementById('status_layer');
+    console.log(loader.element);
     if (loader.element) {
         loader.statusMessage            = loader.element.querySelector('.status-message');
         loader.animImgElmnt             = loader.element.querySelector('.spinner-image');
@@ -766,6 +865,7 @@ function init_updateStatus() {
         loader.progressTextElmnt        = loader.element.querySelector('.progress-text');
     }
     if (!loader.logoURLs.bleu || !loader.logoURLs.blanc) { console.warn(`Les variables CSS --url-logo-actif ou --url-logo-blanc n'ont pas pu être lues.`) };
+    console.warn(`init_updateStatus OK`)
 }
 
 /**------------------------------------------------------------------ //
@@ -904,7 +1004,7 @@ function getLogoUrlsFromCSS_() {
     const rootStyles    = getComputedStyle(document.documentElement);                           // document.documentElement => Cible l'élément racine
     const actifUrlCSS   = rootStyles.getPropertyValue('--url-logo-actif').trim();
     const blancUrlCSS   = rootStyles.getPropertyValue('--url-logo-blanc').trim();
-    
+    console.log(`getLogoUrlsFromCSS_ => actifUrlCSS:${actifUrlCSS} && blancUrlCSS:${blancUrlCSS}`)
     const extractUrl = (cssValue) => {                                                          // Fonction locale interne
     if ( !cssValue || !cssValue.startsWith('url(') ) return '';
         return cssValue.slice(4, -1).replace(/["']/g, '');                                      // Retire 'url(', ')', et les guillemets/apostrophes éventuels.
@@ -949,22 +1049,6 @@ function getCallStack_() {
     stack = stack.split('\n').slice(2).join('\n').trim();                                       // Garde les appels importants, retire la 1e ligne "Error" / appel à getCallStack lui-même. split('\n') => sépare les lignes, slice(2) => saute les 2 premières lignes inutiles.
     return `\n--- DÉBUT PILE D'APPELS ---\n${stack}\n--- FIN PILE D'APPELS ---`;                // Retourne un formatage plus clair
 }
-/** ------------------------------------------------------------------------------------------- //
-/* == APP LAUNCHER ========================================== (🚀) == */
-//window.addEventListener('load', loadPage);                          // ✅ À RÉACTIVER POUR LAUNCH
-loadTemp();                                                           // ‼️ À SUPPRIMER POUR LAUNCH
-
-function loadTemp() {                                                 // ‼️ À SUPPRIMER POUR LAUNCH
-    console.log (` \n\n🚀=====🚀 ${DATE} 🚀=====🚀\n\n🏁=====🏁 C'est parti.🏁=====🏁` );
-    try {
-        if (!isInit.updateStatus) {
-            init_updateStatus();                                      // Initialise le composant de loading
-            isInit.updateStatus = true;                               // 🏁 Active le flag
-        }
-        handlePageData({ submissionID: 'text' });
-        
-    } catch (error) { console.error( `📡🚫.Catched |loadTemp : Big error: ${error}` )} ;
-}
 
 /** ------------------------------------------------------------------------------------------- //
  * @instanceIn      {window.onLoad}                   ../
@@ -976,27 +1060,30 @@ function loadTemp() {                                                 // ‼️ 
  *                  Placement après son appel pour un souci de lisibilité, le hoisting se charge de remonter la fonction.
  * -------------------------------------------------------------------------------------------- */
 function loadPage() {
+    console.log (` \n\n🚀=====🚀 ${DATE} 🚀=====🚀\n\n🏁=====🏁 C'est parti.🏁=====🏁` );
     try {
         if (!isInit.updateStatus) {
             init_updateStatus();                                                                // Initialise le composant de loading
             isInit.updateStatus = true;                                                         // 🏁 Active le flag
         }
-        
+
+        const result = { submissionID: 'test' }
         const calledKeys = ['submissionID', 'dropdown_lieux', 'dropdown_types'];                // Clés d'appel pour fetch côté serveur 
+        console.log (`loadPage =>  ${result.submissionID} && ${calledKeys}`)
         updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', msg: `Réveil de l'IA...` });
-        
+        /*
         google.script.run                                                                       // ☎️ APPEL SERVEUR
             .withSuccessHandler( (result) => {                                                  //SI SUCCESS CALLBACK
-                console.dir(`.../📡✅.Ended |loadPage : ${result} `);
+                console.dir(`.../📡✅.Ended |loadPage : ${result} `); */
                 updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'bleu', msg: `IA réveillée, arrivée dans votre navigateur...` });
-                handlePageData(result);                                                         // => FN client si succès : traite toutes les données reçues
+                handlePageData(result);  /*                                                       // => FN client si succès : traite toutes les données reçues
             })
             .withFailureHandler((error) => {                                                    // SI FAILURE CALLBACK
                 console.error( `📡❌.Failed |loadPage : Échec critique : ${error}` );
                 updateStatus({ refCSS: 'intro', type: 'fail', msg: `Erreur lors du chargement des données. Veuillez réessayer.` });
             })
             .getInitialPageData(calledKeys);                                                    // FN serveur
-        
+        */
         console.log( `./📡⚙️.Run-ng |loadPage : Server Request => getInitialPageData for [${calledKeys}]` );
         updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', message: `Allo l'IA?` });
         
@@ -1005,6 +1092,9 @@ function loadPage() {
         console.error( `📡🚫.Catched |loadPage : Big error: ${error}` );
     }
 }
+/* ** APP LAUNCHER ******************************************************************** (🚀) ** */
+window.addEventListener('load', loadPage);
+
 /** =========================================================================================== //
  * @description 'Fin du fichier. with care.'
  * @author 'trmdvsr'

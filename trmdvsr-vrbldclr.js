@@ -137,7 +137,7 @@ let loader = {
     type                          : 'status',               // {string}
     element                       : null,                   // {element} 🛟 Ref DOM -> ./status-layer
     // ------------------------------------------------------------------------------------ //
-    LOGO_URLS                     : null,                   // {element} <= getLogoUrlsFromCSS_() pour init_updateStatus()
+    logoURLs                      : null,                   // {element} <= getLogoUrlsFromCSS_() pour init_updateStatus()
     // ------------------------------------------------------------------------------------ //
     animContainerElmnt            : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box
     animImgElmnt                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/spinner-image
