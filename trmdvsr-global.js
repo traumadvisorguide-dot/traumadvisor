@@ -53,7 +53,8 @@ let pages                       = {                                             
         currntSctnIndx:             null,                   // {integer} - Index de la section active
         sectionCount:               null,                   //
         hasSub:                     true,                   // {boolean} 
-        sub: [ {   ID:                 'section_q1',           // {string}                                             /section/page <= initializeDOMElements()
+        sub: [ 
+            {   ID:                 'section_q1',           // {string}                                             /section/page <= initializeDOMElements()
                 type:               'notation',             // {string}
                 element:            null,                   // {element} 🛟 Ref DOM SECTION                         /section/page <= initializeDOMElements()
                 noteModuleElmnt:    null,                   // {element} 🛟 Ref DOM module de notation              /section/page <= initializeDOMElements()
@@ -122,30 +123,32 @@ let pages                       = {                                             
                     key:            null,                   // {string} 📘 combo[xN,yO,zP]                          /section/page <= ???
                     texte:          null                    // {string} 📘 finalText peut-être modifié              /section/page <= ???
                 }
-            }, // ============================================================================= // q5
+            },
             {   ID:                 'section_photo',        // {string}
                 type:               'fileupload',           // {string}
                 element:            null,                   // {element} 🛟 Ref DOM SECTION                         /section/page <= initializeDOMElements()
-            }
+
+            } 
         ]    
     }
 };
-let loader                      = {
+let loader = {
     ID                            : 'loader',               // {string}
     type                          : 'status',               // {string}
     element                       : null,                   // {element} 🛟 Ref DOM -> ./status-layer
+    // ------------------------------------------------------------------------------------ //
+    LOGO_URLS                     : null,                   // {element} <= getLogoUrlsFromCSS_() pour init_updateStatus()
     // ------------------------------------------------------------------------------------ //
     animContainerElmnt            : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box
     animImgElmnt                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/spinner-image
     animSpinnerElmnt              : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/spinner
     // ------------------------------------------------------------------------------------ //
-    progressContainer             : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container
-    progressBar                   : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container/progress-bar
-    progressText                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container/progress-text
+    progressContainerElmnt        : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container
+    progressBarElmnt              : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container/progress-bar
+    progressTextElmnt             : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container/progress-text
     // ------------------------------------------------------------------------------------ //
     statusMessage                 : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-message (trmdvsr-sstexte)        
 };
-
 let menu                        = {
     toggleElmnt                   : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
     iconElements                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
@@ -174,16 +177,12 @@ let isInit = {                                                        // FLAGS
         mapsScriptLoaded    : false 
     };
 let isTrnstng         = false;                                        // Flag de transition en cours
-/** GLOBAL - Variables du loader unique => évite les querySelector répétés --------------------- */
-let snglLgElmnt       = null;                                         // LOADER                                 <= init_updateStatus()
-let curLgElmnt        = null;                                         //                                        <= updateStatus()
-let lggrElmnt         = null;                                         //                                        <= init_updateStatus()
-let imgLgElmnt        = null;                                         //                                        <= init_updateStatus()
-let spnrLgElmnt       = null;                                         //                                        <= init_updateStatus()
-let prgrssGrpLgElmnt  = null;                                         //                                        <= init_updateStatus()
-let prgrssBrLgElmnt   = null;                                         //                                        <= init_updateStatus()
-let prgrssTxtLgElmnt  = null;                                         //                                        <= init_updateStatus()
 
+
+/**--------------------------------------------------------------------------------------------- //
+ * @description   PAGE CREATION LIEU 
+ * @var           {Element}    creaPgElmnts.adressElmnt   - Element du DOM pour l'adresse du nouveau lieu
+ * --------------------------------------------------------------------------------------------- */
 let selectLieuxElmnt  = null;           
 let tstmnlCrslElmnt   = null;                                         // Témoignage Carousel                    <= initializeDOMElements()
 let tstmnlCrtElmnt    = null;                                         // Témoignage Carte                       <= initializeDOMElements()
@@ -211,7 +210,7 @@ let cropperInstance   = null;
 let currentFile       = null; 
 const MAX_FILES       = 10;                                           // Nb max de fichiers à uploader
 const EXPORT_SIZE     = 1080;                                         // => 1080x1080px
-let   LOGO_URLS       = null;                                         //                                        <= getLogoUrlsFromCSS_()
+
 const DATE            = new Date();                                   //                                        <= Logger
 /** =========================================================================================== //
  * @description 'Fin du fichier. with care.'

@@ -267,7 +267,6 @@ footer .trmdvsr-sstexte { text-align: right; color: var(--blanc-trmdvsr); } /* A
 	background-color:         #FFF;
 	/*border:                   1px dashed red; */                        /* POUR DEBUG */
 }
-
 .conteneur-lame.flex-col {                                            /* => COMMUN COL-FIRST/COL-MIDDLE/COL-LAST */
 	display:                  flex;
 	flex-direction:           column;
@@ -522,7 +521,6 @@ img.hero-image-container {
 	padding:                  0;
 	margin:                   0;
 }
-
 .module-overlap::before {                                             /* Pseudo-élément => effet lumière/texture */
 	content:                  '';
 	z-index:                  0;
@@ -534,7 +532,6 @@ img.hero-image-container {
 	background:               radial-gradient(circle at 10% 10%, rgba(var(--bleu-trmdvsr-clair-RGB), 0.18), transparent 50%);
 	pointer-events:           none;                                   /* Permet clic à travers */
 }
-
 .module-overlap .flot-droite .trmdvsr-texte,
 .module-overlap .flot-droite .trmdvsr-texte-h3,
 .module-overlap .flot-droite .trmdvsr-texte-h4 { text-align: right; }
@@ -834,7 +831,6 @@ img.hero-image-container {
 .menu-icon.active {
 	background-color:         var(--bleu-trmdvsr-pur);
 }
-
 /*------------------------------------------------------------------- */ 
 .nav-globale {                                                        /* Mise en forme du menu déployé sur mobile */
 	display:                  flex;                                   /* Mobile first => Affichage du bouton Burger */
@@ -865,7 +861,6 @@ img.hero-image-container {
 		height 0.1s ease-out, box-shadow 0.4s ease,
 		transform 0.4s ease-out, box-shadow 0.4s ease;
 }
-
 .nav-globale.trmdvsr-texte-h4 {
 	list-style:               none;
 	text-align:               center;
@@ -1752,7 +1747,6 @@ align-items:                center;
 justify-content:            center; 
 z-index:                    1000;
 }
-
 .crop-module-content {
 position:                   relative;
 max-width:                  90vw;
@@ -1762,7 +1756,6 @@ background-color:           white;
 border-radius:              12px;
 overflow:                   hidden;                                         /* Important pour Cropper */
 }
-
 .crop-module-conteneur {
 min-height:                 300px;
 min-width:                  300px;
@@ -1770,7 +1763,6 @@ max-height:                 70vh;
 max-width:                  70vw;
 margin-bottom:              20px;
 }
-
 .crop-module-actions {
 margin-top:                 20px;
 display:                    flex;
@@ -1798,7 +1790,6 @@ background-color: #F9FAFB;
 list-style: none;
 margin: 0;
 }
-
 .photo-item {                                                                 /* Styles d'un élément de prévisualisation appelé dans updateImageDisplay() */
 position:                   relative; 
 width:                      100px; 
@@ -1812,7 +1803,6 @@ list-style:                 none;                                           /* I
 border:                     2px solid transparent; 
 background-color:           white;                                          /*cursor: move; */
 }
-
 .photo-item:hover { 
 border-color:               #4F46E5;
 transform:                  scale(1.03);
@@ -1834,7 +1824,6 @@ width:                      100%;
 height:                     100%;
 object-fit:                 cover;
 }
-
 .photo-info {                                                                 /* appelé dans updateImageDisplay() */
 	position:						absolute;
 	bottom:							0;
