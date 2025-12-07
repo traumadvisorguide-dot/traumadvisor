@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Débogage du Status Loader</title>
+    <style>
+        /* --- VARIABLES CSS (Placeholders pour la compilation) --- */
+        :root {
+            --bleu-trmdvsr-pur: #007bff;
+            --bleu-trmdvsr-moyen: #0056b3;
+            --bleu-trmdvsr-clair: #64b5f6;
+            --blanc-trmdvsr: #ffffff;
+            --gris-trmdvsr-clair: #f0f0f0;
+            --rouge-trmdvsr-clair: #e57373;
+            --vert-trmdvsr-clair: #81c784;
+            --graisse-h2: bold;
+            --largeur-loader: 150px;
+            --espacement-court: 10px;
+            --taille-sstexte: 16px;
+            --taille-label: 14px;
+        }
+
+        /* --- VOS CSS INTÉGRÉS --- */
+        .status-layer {
+            display: none; /* Remplacé par flex au runtime */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            width: auto;
+            height: auto;
+            margin: 0px;
+            padding: 0px;
+        }
+        .status-layer.attached {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px dotted green;
+        }
+        .status-layer.attached.fullBlue {
+            background-color: var(--bleu-trmdvsr-pur);
+            opacity: 1;
+        }
+        .status-layer.attached.lightWhite {
+            background-color: var(--blanc-trmdvsr);
+            opacity: 0.5;
+        }
+        .status-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: var(--largeur-loader);
+            aspect-ratio: 1 / 1;
+            margin: 0px;
+            padding: 0px;
+        }
+        .status-box .spinner-image {
+            position: absolute;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            margin: 0px;
+            padding: 0px;
+        }
+        .status-box .spinner {
+            position: absolute;
+            width: 140%;
+            aspect-ratio: 1 / 1;
+            border: calc(var(--taille-sstexte) / 5) solid var(--bleu-trmdvsr-moyen);
+            border-top: calc(var(--taille-sstexte) / 4) solid var(--bleu-trmdvsr-clair);
+            border-radius: 50%;
+            animation: spin 0.4s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .status-quo {
+            width: auto;
+            height: auto;
+            padding-top: var(--espacement-court);
+            border: 1px solid purple;
+        }
+        .status-layer .status-message {
+            visibility: 1;
+            opacity: 1;
+            display: flex;
+            width: 100%;
+            /*
+            * NOTE DE DÉBOGAGE:
+            * height: 100% est DANGEREUX si le parent (status-quo) est height: auto;
+            * Mettre height: auto ou min-height: 1em pour assurer l'affichage.
+            */
+            height: auto; /* Changé pour DEBOGAGE */
+            min-height: 1.5em; /* Ajouté pour DEBOGAGE */
+            margin-top: calc(var(--largeur-loader) * 0.2);
+            text-align: center;
+            color: white;
+            border: 1px solid black;
+        }
+        /* Classes de type de message */
+        .status-layer .status-message.info    { color: var(--gris-trmdvsr-clair); }
+        .status-layer .status-message.loading { color: var(--bleu-trmdvsr-clair); font-style: italic; }
+        .status-layer .status-message.success { color: var(--vert-trmdvsr-clair); }
+        .status-layer .status-message.error   { color: var(--rouge-trmdvsr-clair); font-weight: var(--graisse-h2); }
+        .status-layer .status-message.warn    { color: orange; font-weight: var(--graisse-h2); }
+        .status-layer .status-message.debug   { color: purple; font-weight: var(--graisse-h2); }
+
+        /* Classes d'animation (à compléter si nécessaire) */
+        .logo-loading { animation: loading 1s infinite; }
+        @keyframes loading { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+
+        .progress-container {
+            display: flex;
+            width: 100%;
+            height: 0.75rem;
+            margin-top: var(--espacement-court);
+            border-radius: 0;
+        }
+        .progress-bar {
+            display: flex;
+            height: 5px;
+        }
+        .progress-text {
+            display: flex;
+            width: 100%;
+            margin-top: 1rem;
+            font-size: calc(var(--taille-label) * 0.66);
+            justify-content: center;
+        }
+        .progress-container.fullBlue { background-color: var(--bleu-trmdvsr-moyen); }
+        .progress-bar.fullBlue { background-color: var(--bleu-trmdvsr-clair); }
+        .progress-text.fullBlue { color: var(--bleu-trmdvsr-clair); }
+        .loading-target { position: relative; } /* Classe pour le conteneur cible */
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VOTRE STRUCTURE HTML -->
+    <div id="status-module" class="status-layer">
+        <div class="status-box">
+            <div class="spinner"></div>
+            <img class="spinner-image" src="https://placehold.co/100x100/007bff/ffffff?text=LOGO" alt="Logo de chargement"/>
+        </div>
+        <div class="status-quo">
+            <span class="status-message trmdvsr-sstexte"></span>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+                <p class="progress-text trmdvsr-label">00%</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Zone de test pour l'attachement -->
+    <div id="test-container" style="width: 300px; height: 300px; border: 2px dashed red;">
+        Zone de Conteneur Cible (Loader sera attaché ici)
+    </div>
+
+    <script>
+        // --- VARIABLES GLOBALES SIMULÉES ---
+        const DATE = new Date().toLocaleTimeString();
+        const conteneurBODY = document.body;
+        const isInit = { updateStatus: false };
+        const loader = {
+            logoURLs: {
+                white: "https://placehold.co/100x100/ffffff/000000?text=WHITE",
+                blue: "https://placehold.co/100x100/007bff/ffffff?text=BLUE"
+            },
+            element: null,
+            animImgElmnt: null,
+            animSpnElmnt: null,
+            statusMessage: null,
+            progressContainerElmnt: null,
+            progressBarElmnt: null,
+            progressTextElmnt: null,
+        };
+
+        // --- FONCTION MANQUANTE : INITIALISATION DES RÉFÉRENCES DOM ---
+        function initUpdateStatusDOM() {
+            console.log("-> initUpdateStatusDOM: Initialisation des références DOM...");
+
+            // 1. Référence au conteneur principal
+            loader.element = document.getElementById('status-module');
+
+            // 2. Références aux enfants pour les mises à jour
+            if (loader.element) {
+                // S'assurer que le sélecteur pointe EXACTEMENT vers le SPAN
+                loader.statusMessage = loader.element.querySelector('.status-message');
+                
+                // Récupération des autres éléments
+                loader.animImgElmnt = loader.element.querySelector('.spinner-image');
+                loader.animSpnElmnt = loader.element.querySelector('.spinner');
+                loader.progressContainerElmnt = loader.element.querySelector('.progress-container');
+                loader.progressBarElmnt = loader.element.querySelector('.progress-bar');
+                loader.progressTextElmnt = loader.element.querySelector('.progress-text');
+
+                // VÉRIFICATION CRITIQUE POUR LE DÉBOGAGE
+                if (!loader.statusMessage) {
+                    console.error("Échec: loader.statusMessage est null. Vérifiez la classe '.status-message' dans le HTML.");
+                } else {
+                    console.log("Succès: loader.statusMessage est correctement référencé.");
+                }
+            } else {
+                console.error("Échec: Element #status-module non trouvé.");
+            }
+        }
+
+        // --- VOTRE FONCTION UPDATESTATUS RÉVISÉE ---
+        // J'ai mis 'info' entre guillemets car vous l'utilisez comme variable, pas comme type de variable.
+        function updateStatus( { trgtElmnt=null, imgType=null, type='info', isLdng=false, msg=null, current=null, total=null} ) {
+            console.log(`updateStatus [param]trgtElmnt:${trgtElmnt} & imgType:${imgType} & type:${type} & msg:${msg} & isLdng:${isLdng} & current:${current} & total:${total}`)
+            
+            // ---------------------------------------------------------------------------------------- // RESET
+            if (!loader.element) { console.error( `Initialisez avant d'appeler (loader.element manquant).` ); return; }
+            loader.element.className = 'status-layer'; // Cleane de toutes classes
+            
+            if (!loader.animImgElmnt) { console.error( `loader.animImgElmnt manquant.` ); return; }
+            loader.animImgElmnt.className = 'spinner-image'; // Cleane de toutes classes
+            if (!loader.progressContainerElmnt) { console.error( `loader.progressContainerElmnt manquant.` ); return; }
+            loader.progressContainerElmnt.className = 'progress-container';
+            if (!loader.progressBarElmnt) { console.error( `loader.progressBarElmnt manquant.` ); return; }
+            loader.progressBarElmnt.className = 'progress-bar';
+            if (!loader.progressTextElmnt) { console.error( `loader.progressTextElmnt manquant.` ); return; }
+            loader.progressTextElmnt.className = 'progress-text trmdvsr-label';    
+            
+            const className = 'loading-target'; // Set classe position relative
+            const elmntsWithClass = document.querySelectorAll(`.${className}`); // Sélect TOUS les éléments avec cette classe
+            if (elmntsWithClass.length <= 0) {
+                console.log(`elmntsWithClass semble vide.`);
+            } else {
+                elmntsWithClass.forEach( e => { e.classList.remove(className); } ); // Supp la classe de chaque élément
+                console.log(`${className} a été supprimée de ${elmntsWithClass.length} élément(s).`);
+            }
+            
+            loader.element.style.display = isLdng ? 'flex' : 'none'; // Affiche
+            if (!isLdng) return;
+            
+            // ---------------------------------------------------------------------------------------- // CONTENEUR
+            // Utilisation d'un sélecteur CSS si trgtElmnt est une chaîne, sinon conteneurBODY
+            trgtElmnt = (typeof trgtElmnt === 'string' ? document.querySelector(trgtElmnt) : trgtElmnt) ?? conteneurBODY;
+            trgtElmnt.classList.add(className); 
+            
+            // ---------------------------------------------------------------------------------------- // OBJET 
+            let refCSS = (imgType === 'white') ? 'lightWhite' : 'fullBlue'; // Définit CSS
+            if (loader.element.parentNode !== trgtElmnt) trgtElmnt.appendChild(loader.element); // Attache DOM => parent différent
+            loader.element.classList.add('attached', refCSS); // Attache CSS
+            loader.progressContainerElmnt.classList.add(refCSS); // Attache CSS
+            loader.progressBarElmnt.classList.add(refCSS); // Attache CSS
+            loader.progressTextElmnt.classList.add(refCSS); // Attache CSS
+
+            // ---------------------------------------------------------------------------------------- // SPINNER ANIMÉ
+            if (loader.animSpnElmnt) loader.animSpnElmnt.style.display = 'flex'; 
+            if (loader.animImgElmnt && imgType) { // loader.element ANIMÉ
+                const url = loader.logoURLs[imgType];
+                if(url) loader.animImgElmnt.src = url;
+                else console.warn(`Type de logo inconnu ou URL non trouvée pour ${imgType}.`);
+                // Note: la classe logo-${type} est ajoutée, assurez-vous qu'elle déclenche une animation valide.
+                loader.animImgElmnt.classList.add( `logo-${type}` ); // info / loading / error
+            }
+
+            // ---------------------------------------------------------------------------------------- // MESSAGE
+            if (loader.statusMessage && msg !== null) {
+                // VÉRIFICATION D'EXISTENCE
+                console.log(`Référence statusMessage existante: ${!!loader.statusMessage}`);
+                
+                // 1. MISE À JOUR CRITIQUE DU TEXTE
+                loader.statusMessage.textContent = msg; 
+                console.log(`textContent APRES assignation: ${loader.statusMessage.textContent}`);
+
+                // 2. CORRECTION/NETTOYAGE DE CLASSE : 
+                // Pour éviter d'effacer la classe 'trmdvsr-sstexte' nécessaire pour les styles.
+                // Au lieu de 'className = ...', on s'assure que les classes de base sont là.
+                loader.statusMessage.classList.add('trmdvsr-sstexte', 'status-message');
+                
+                // On efface l'ancienne classe de type et on ajoute la nouvelle.
+                const statusTypes = ['info', 'loading', 'success', 'error', 'warn', 'debug'];
+                statusTypes.forEach(t => {
+                    if (t !== type) loader.statusMessage.classList.remove(t);
+                });
+                loader.statusMessage.classList.add(type);
+            }
+
+            // ---------------------------------------------------------------------------------------- // PROGRESS BAR
+            if (current && total && loader.progressContainerElmnt && loader.progressBarElmnt && loader.progressTextElmnt) {
+                loader.progressContainerElmnt.style.display = (total > 0) ? 'flex' : 'none'; // Affiche barre progression si en charge et total sup à zéro
+                if (total > 0 && current <= total) {
+                    const percent = Math.round((current / total) * 100);
+                    loader.progressBarElmnt.style.width = `${percent}%`;
+                    loader.progressTextElmnt.textContent = `${percent}% (${current}/${total} images enregistrées)`;
+                } else {
+                    loader.progressBarElmnt.style.width = '0%';
+                    loader.progressTextElmnt.textContent = '0% (0/0 images enregistrées)';
+                }
+            }
+            console.log('updateStatus OK');
+        };
+
+
+        // --- DÉMARRAGE DE L'APPLICATION ET TEST AUTOMATIQUE ---
+        function initAPP() {
+            console.log (`🚀=====🚀 ${DATE} 🚀=====🚀\n\n🏁=====🏁 C'est parti.🏁=====🏁` );
+            try {
+                if (!isInit.updateStatus) {
+                    initUpdateStatusDOM(); // Initialise le composant de loading
+                    isInit.updateStatus = true; // 🏁 Active le flag
+                }
+                
+                // TEST 1: Affichage initial du message de chargement (cible #test-container)
+                console.log("\n--- TEST 1 : Message de chargement ---");
+                updateStatus( { 
+                    trgtElmnt: '#test-container', 
+                    imgType: 'blue', 
+                    type: 'loading', 
+                    isLdng: true, 
+                    msg: `Réveil de l'IA...`
+                } );
+
+                // TEST 2: Mise à jour de la progression et changement de type de message
+                setTimeout(() => {
+                    console.log("\n--- TEST 2 : Mise à jour de la progression ---");
+                    updateStatus( { 
+                        trgtElmnt: '#test-container', 
+                        imgType: 'blue', 
+                        type: 'loading', 
+                        isLdng: true, 
+                        msg: `Chargement des assets (1/10)...`, 
+                        current: 1, 
+                        total: 10
+                    } );
+                }, 2000);
+
+                 // TEST 3: Succès
+                setTimeout(() => {
+                    console.log("\n--- TEST 3 : Message de Succès et Arrêt ---");
+                    updateStatus( { 
+                        imgType: 'white', 
+                        type: 'success', 
+                        isLdng: false, 
+                        msg: `Opération réussie !`
+                    } );
+                }, 4000);
+
+
+            } catch(e) {
+                console.error("Erreur dans initAPP:", e);
+            }
+        }
+
+        // Démarrage
+        window.onload = initAPP;
+
+    </script>
+
+</body>
+</html>

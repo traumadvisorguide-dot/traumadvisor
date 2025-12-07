@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Traumadvisor - Et l'attente sera plus douce. Votre santé commence ici, alors donnez votre avis.</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
     <link rel="stylesheet" href="trmdvsr.css" />
@@ -31,13 +33,15 @@
       </div>
     </header>
     <div class="conteneur-spa-global">
+
+
       <main id="accueil_page" class="page">
         <section id="heroContent" class="hero-section">
           <img src="https://i.imgur.com/uuI1vIK.png" class="hero-image-container"/>
           <hgroup class="conteneur-lame hero-content">
             <h1 class="trmdvsr-texte-h1">Notez les salles d'attente pour leur bien <em>et le vôtre</em></h1>
           </hgroup>
-          <div class="conteneur-lame flex-into-row trmdvsr-superselect">
+          <div class="conteneur-lame flex-into-row trmdvsr-suprslct">
             <div class="trmdvsr-select">
               <select id="selectLieux" name="listeSalle" class="form-select trmdvsr-sstexte" data-type="control_dropdown" required aria-describedby="aide_selectLieux" aria-details="Quoi? Votre salle d'attente n’est pas dans cette liste? Pas de panique. Sélectionnez Nouveau Lieu et enregistrons-la ensemble."> 
                 <option value="" disabled selected>Sélectionnez la salle d'attente dans cette liste</option>
@@ -308,6 +312,8 @@
           </div>
         </section>
       </main>
+
+
       <main id="creation-lieu_page" class="page">
         <section class="hero-section">
           <img src="https://i.imgur.com/tvWEmNU.png" class="hero-image-container"/>
@@ -1290,14 +1296,16 @@
     </footer>
     <div id="status-module" class="status-layer">
       <div class="status-box">
-        <img class="spinner-image" src="https://i.imgur.com/KryCTLH.png" alt="Logo de chargement"/>
         <div class="spinner"></div>
+        <img class="spinner-image" alt="Logo de chargement"/>
+      </div>
+      <div class="status-quo">
+        <div class="status-message trmdvsr-sstexte"></div>
         <div class="progress-container">
           <div class="progress-bar"></div>
-          <p class="progress-text">0%</p>
+          <p class="progress-text trmdvsr-label">00%</p>
         </div>
       </div>
-      <p class="trmdvsr-sstexte status-message info">Chargement des données...</p>
     </div>
     <div id="crop-module" class="crop-module-overlay">  <!-- CROPPIN' POP-IN -->
       <div class="crop-module-content">

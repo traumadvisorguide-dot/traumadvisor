@@ -395,19 +395,19 @@ img.hero-image-container {
 	  0 4px 12px rgba(0, 0, 0, 0.08),                                 /* Ombre plus diffuse et éloignée (pour la profondeur) */
 	  0 10px 20px rgba(0, 0, 0, 0.2);                                 /* Ombre plus prononcée pour l'effet flottant */
 }
-.trmdvsr-superselect .form-select {
+.trmdvsr-suprslct .form-select {
 	box-shadow:               none;
 	border:                   none;
 	transition:               none;
 }
-.trmdvsr-superselect .form-select:focus {
+.trmdvsr-suprslct .form-select:focus {
 	outline:                  none;
 	border-color:             none;                                   /* var(--bleu-trmdvsr-clair); */
 	box-shadow:               none;                                   /* 0 0 4px 2px rgba(var(--bleu-trmdvsr-clair-RGB), 0.4); */
 }
-.trmdvsr-superselect .trmdvsr-button { box-shadow: none; }
-.trmdvsr-superselect .trmdvsr-button:hover { box-shadow: none; }
-.trmdvsr-superselect .trmdvsr-button:active { box-shadow: none; }
+.trmdvsr-suprslct .trmdvsr-button { box-shadow: none; }
+.trmdvsr-suprslct .trmdvsr-button:hover { box-shadow: none; }
+.trmdvsr-suprslct .trmdvsr-button:active { box-shadow: none; }
 
 .conteneur-lame.flex-into-row.intro       { background-color: var(--gris-trmdvsr-tres-clair); }
 .intro .conteneur-lame.flex-col.col-first  { background-color: #FFF; padding-top: calc(2 * var(--espacement-large)); }
@@ -961,70 +961,82 @@ img.hero-image-container {
 .existing-radio:checked + .trmdvsr-radio-label {
 	background-image:         var(--url-logo-actif);                  /* Image pour l'état COCHÉ */
 }
- 
-/* updateStatus                                          (UTILITAIRE) */
-.loading-target {
-	position:                 relative;                               /* !important */
-}
-.status-layer {                                                       /* LAYER surchargé pour W/H, background-color */
-	display:                  none;									  /* flex; */
-	flex-direction:           column;
-	justify-content:          center;
-	align-items:              center;
-	position:                 fixed;                                  /* Défaut, pour le cas où il chargerait L'APPLICATION ENTIÈRE */
-	top:                      0;
-	left:                     0;
-	z-index:                  1000;                                   /* Devant tout */
-	/* width:                    100vw; */
-	/* height:                   100vh; */
-	margin:                   0px;
-	padding:                  0px;
-	background-color:         var(--bleu-trmdvsr-pur);
-}
 
-.status-layer.is-attached {                                           /* Nouvelles règles pour le loader => attaché à un conteneur spécifique */
-	position:                 absolute;                               /* Écrase fixed par absolute */
-	top:                      0;                                      /* Couvre son parent (qui doit être .loading-target) */
-	left:                     0;
-	width:                    100%; 
-	height:                   100%;
-	background-color:         var(--bleu-trmdvsr-pur);                /* Assure que l'opacité et le background-color fonctionnent */
+/* == updateStatus ============================================================= (UTILITAIRE) == */
+.status-target { position: relative; }
+.status-layer {                                                       							/* LAYER surchargé pour W/H, background-color */
+	display:                  		none;									  					/* flex; */
+	flex-direction:           		column;
+	justify-content:          		center;
+	align-items:              		center;
+	z-index:                  		1000;                                   					/* Devant tout */
+	width:							auto;
+	height:							auto;
+	margin:                   		0px;
+	padding:                  		0px;
 }
-
-.status-box {                                                         /* Conteneur pour le Centrage */
-	display:                  flex;
-	justify-content:          center;                                 /* Princi:↔ */
-	align-items:              center;                                 /* Transv:↕ */
-	position:                 relative;                               /* CRUCIAL => enfants 'absolute' se positionnent par rapport à lui */
-	width:                    var(--largeur-loader);                  /* fluide: min:2rem | ideal:50% | max:20vw */
-	aspect-ratio:             1 / 1;
-	margin:                   0px;
-	padding:                  0px;
+.status-layer.attached {                                           								/* Nouvelles règles pour le loader => attaché à un conteneur spécifique */
+	position:                 		absolute;                               					/* Écrase fixed par absolute */
+	top:                      		0;                                      					/* Couvre son parent (qui doit être .loading-target) */
+	left:                     		0;
+	width:                    		100%;
+	height:                   		100%;
+	border:							1px dotted green;
 }
-
-.spinner-image,                                                       /* spinner-image = logo */
-.spinner {                                                            /* Positionne pour superposition & centrage */
-	position:                 absolute;                               /* Les superpose l'un sur l'autre */
-	width:                    100%; 
-	height:                   100%;
-	margin:                   0px;
-	padding:                  0px; 
+.status-layer.attached.fullBlue {
+	background-color:         		var(--bleu-trmdvsr-pur);                					/* Assure que l'opacité et le background-color fonctionnent */
+	opacity: 						1;
 }
-.spinner {
-	width:                    140%;
-	height:                   140%;
-	border:                   calc(var(--taille-sstexte) / 5) solid var(--bleu-trmdvsr-moyen);
-	border-top:               calc(var(--taille-sstexte) / 4) solid var(--bleu-trmdvsr-clair);/* Bleu pour le bord en mouvement */
-	border-radius:            50%;                                    /* => Forme ronde */
-	animation:                spin 0.4s linear infinite;                          
+.status-layer.attached.lightWhite {
+	background-color:				var(--blanc-trmdvsr);
+	opacity: 						0.5;                										/* Assure que l'opacité et le background-color fonctionnent */
 }
-/*------------------------------------------------- CLASSES DE TEXTES */
+.status-box {                                                         							/* Conteneur pour le Centrage */
+	display:                  		flex;
+	justify-content:          		center;                                 					/* Princi:↔ */
+	align-items:              		center;                                 					/* Transv:↕ */
+	position:                 		relative;                               					/* CRUCIAL => enfants 'absolute' se positionnent par rapport à lui */
+	width:                    		var(--largeur-loader);                  					/* fluide: min:2rem | ideal:50% | max:20vw */
+	aspect-ratio:             		1 / 1;
+	margin:                   		0px;
+	padding:                  		0px;
+}
+.status-box .spinner-image {                                                            							/* Positionne pour superposition & centrage */
+	position:                 		absolute;                               					/* Les superpose l'un sur l'autre */
+	width:                    		100%; 
+	aspect-ratio: 					1 / 1;
+	margin:                   		0px;
+	padding:                  		0px; 
+}
+.status-box .spinner {
+	position:						absolute;
+	width:                    		140%;
+	aspect-ratio: 					1 / 1;
+	border:                   		calc(var(--taille-sstexte) / 5) solid var(--bleu-trmdvsr-moyen);
+	border-top:               		calc(var(--taille-sstexte) / 4) solid var(--bleu-trmdvsr-clair);	/* Bleu pour le bord en mouvement */
+	border-radius:            		50%;                                    					/* => Forme ronde */
+	animation:                		spin 0.4s linear infinite;                          
+}
+/* -- updateStatus -------------------------------------------------------- CLASSES DE TEXTES -- */
+.status-quo {
+	display: 						block;
+	min-width: 						var(--largeur-loader);
+	width:							auto;
+	height:							auto;
+	margin-top: 					var(--espacement-court);
+	color:                    		#FFF;
+}
 .status-layer .status-message {
-	appearance:       		  none;
-	-webkit-appearance:       none;                                   /* Pour Chrome/Safari */
-	margin-top:               calc(var(--largeur-loader) * 0.2);
-	text-align:               center;                                 /* Assure que le texte est centré dans sa propre boîte */
-	color:                    white;
+	/*appearance:       		  		none;
+	-webkit-appearance:       		none;  */                                 					/* Pour Chrome/Safari */
+	display: 						block;
+	width: 							auto;
+	min-height:						var(--taille-sstexte);	
+	height:							auto;					
+	margin-top:               		calc(var(--largeur-loader) * 0.2);
+	text-align:               		center;                                 					/* Assure que le texte est centré dans sa propre boîte */
+	color:                    		#FFF;
+	
 }
 .status-layer .status-message.info    { color: var(--gris-trmdvsr-clair);                                   }
 .status-layer .status-message.loading { color: var(--bleu-trmdvsr-clair);               font-style: italic; }
@@ -1038,14 +1050,40 @@ img.hero-image-container {
 .logo-error   { animation: wobble   2s ease infinite; }
 
 .progress-container {
-	display:                  none;                                   /* Masqué par défaut */
-	/* styles */
+	display:                  		flex;                                   /* Masqué par défaut */
+	width: 							100%;
+	height:							0.75rem;
+	margin-top: 					var(--espacement-court);
+	border-radius: 					0;
 }
 .progress-bar {
-	display: 				  block;
+	display: 				  		flex;
+	height:							5px;
 }
 .progress-text {
-	display: 				  block;
+	display: 				  		flex;
+	width: 							100%;
+	margin-top: 					1rem;
+	font-size: 						calc(var(--taille-label) * 0.66);
+	justify-content: 				center;
+}
+.progress-container.fullBlue {
+	background-color: 				var(--bleu-trmdvsr-moyen);
+}
+.progress-bar.fullBlue {
+	background-color: 				var(--bleu-trmdvsr-clair);
+}
+.progress-text.fullBlue {
+	color:							var(--bleu-trmdvsr-clair);
+}
+.progress-container.lightWhite {
+	background-color: 				var(--gris-trmdvsr-clair);
+}
+.progress-bar.lightWhite {
+	background-color: 				var(--blanc-trmdvsr);
+}
+.progress-text.lightWhite {
+	color:							var(--blanc-trmdvsr);
 }
 /* MODULE NAV                              (MOBILE FIRST- Evaluation) */
 nav .conteneur-lame { padding-bottom: var(--espacement-court); }
@@ -1097,7 +1135,6 @@ box-shadow:
 cursor:                   pointer;
 transition:               all 0.3s ease; 
 }
-
 .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button:hover:not([disabled]) {       /* hover/active => les boutons */
 color:                    var(--bleu-trmdvsr-moyen);
 background-color:         #F0F8FF;                                            /* Léger fond bleu au survol */
@@ -1107,7 +1144,6 @@ box-shadow:
 0 1px 4px rgba(0, 122, 255, 0.2);
 transform:                translateY(-1px);
 }
-
 .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button:active:not([disabled]) {
 color:                    #FFF;
 background-color:         var(--bleu-trmdvsr-pur);
@@ -1116,7 +1152,6 @@ box-shadow:
 0 1px 4px rgba(0, 122, 255, 0.2);
 transform:                translateY(1px);
 }
-
 .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed {                   /* EFFET: Étape COMPLETED (Vert) */
 font-weight:              bold;
 color:                    var(--vert-trmdvsr-clair);                          /* Texte vert pour les étapes passées */
@@ -1125,13 +1160,11 @@ background-color:         var(--gris-trmdvsr-tres-clair);
 cursor:                   pointer;
 pointer-events:           auto;
 }
-
 .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed:hover:not([disabled]) {
 color:                    var(--vert-trmdvsr-moyen);
 background-color:         #A7F3D0;
 border-color:             var(--vert-trmdvsr-moyen);
 }
-
 .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.completed:after {             /* Indicateur visuel "V" pour COMPLETED */
 content:                  '✓';                                                /* Indicateur visuel pour les étapes complétées */
 position:                 absolute;
@@ -1151,7 +1184,6 @@ border-radius:            var(--bordure-radius);
 transform:                translateX(-50%);
 box-shadow:               0 1px 3px rgba(0,0,0,0.2);
 }
-
 .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.active {                      /* ÉTAPE ACTUELLE (Bleu foncé) */
 color:                    #FFF;
 border-color:             var(--bleu-trmdvsr-pur);                            /* Couleur principale pour l'étape en cours */
@@ -1161,7 +1193,6 @@ box-shadow:
 0 2px 4px -1px rgba(37, 99, 235, 0.1);
 pointer-events:           none; 
 }
-
 .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button.disabled {                    /* EFFET: Étape FUTURE <= remplace  [disabled] sur un <li> */
 opacity:                  0.7;
 color:                    var(--gris-trmdvsr-clair);
@@ -1706,7 +1737,6 @@ text-align:                 right;
 }
 
 /* STATUS_LAYER_EXPORT (LOCALISÉS) */
-
 .overlay-photo {                                                              /* Conteneur pour le statut local dans la zone d'export */
 margin-top:                 16px;                                           /* surcharge m:0 */
 padding:                    12px;                                           /* surcharge p:0 */
@@ -1721,18 +1751,18 @@ background-color:           #f7f9fb;                                        /* s
 
 /*<!-- MODULE DE RECADRAGE   (GLOBAL)                                   --> */
 /**
-<div id="crop-module" class="crop-module-overlay">  <!-- CROPPIN' POP-IN -->
-<div class="crop-module-content">
-<h3 class="trmdvsr-texte-h3">Recadrer l'image (ratio 1:1)</h3>
-<div class="crop-module-conteneur">
-<img id="image-to-crop" alt="Image à recadrer pour le produit" style="max-width: 100%; display: block;">
-</div>
-<div class="crop-module-actions">
-<button id="crop-btn-cancel" class="trmdvsr-sstexte traum-shape reset-button">Annuler</button>
-<button id="crop-btn-add" class="trmdvsr-sstexte traum-shape submit-button">Rogner et Ajouter</button>
-</div>
-</div>
-</div>
+	<div id="crop-module" class="crop-module-overlay">  <!-- CROPPIN' POP-IN -->
+	<div class="crop-module-content">
+	<h3 class="trmdvsr-texte-h3">Recadrer l'image (ratio 1:1)</h3>
+	<div class="crop-module-conteneur">
+	<img id="image-to-crop" alt="Image à recadrer pour le produit" style="max-width: 100%; display: block;">
+	</div>
+	<div class="crop-module-actions">
+	<button id="crop-btn-cancel" class="trmdvsr-sstexte traum-shape reset-button">Annuler</button>
+	<button id="crop-btn-add" class="trmdvsr-sstexte traum-shape submit-button">Rogner et Ajouter</button>
+	</div>
+	</div>
+	</div>
 */
 
 .crop-module-overlay {
@@ -1975,7 +2005,7 @@ justify-content:          space-between;
 		padding-bottom:				var(--espacement-tres-large);
 	}
 	/* ----------------------------------------------------------------------------------- Hero */
-	.conteneur-lame.flex-into-row.trmdvsr-superselect {
+	.conteneur-lame.flex-into-row.trmdvsr-suprslct {
 		flex-direction:				row;
 	}
 	/* ---------------------------------------------------------------------------- Testimonial */

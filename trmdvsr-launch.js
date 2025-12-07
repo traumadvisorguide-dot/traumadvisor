@@ -46,6 +46,7 @@ function saveAllSettings() {
  * @param           {string|null}   nwSecIndx             - L'ID de la section à afficher dans la nouvelle page (si applicable).         
  * -------------------------------------------------------------------------------------------- */
 function showPage(nwPgID = '', nwSecIndx = null) {
+    console.log (`showPage : nwPgID: ${nwPgID} & nwSecIndx: ${nwSecIndx} & isTrnstng: ${isTrnstng}`)
     if (!nwPgID) return;                                                                        // CAS DÉFENSIF: pas de pgID => kill
     if (isTrnstng) return;                                                                      // CAS ANTI-REBOND : transition en cours => kill
     isTrnstng = true;                                                                           // 🚩 Active le flag ANTI-REBOND
@@ -280,28 +281,28 @@ function actionDispatcher(event) {
         switch (action) {
             // -------------------------------------------------------------------------------- //
             case 'navBurger':
-                menu.iconElements.forEach( burgerIconElement => { burgerIconElement.classList.toggle('active'); } );
-                menu.navElemens.classList.toggle('active');                                     // Bascule la classe 'active' pour afficher/masquer le menu
-                const isExpanded = pages.menu.navElemens.classList.contains('active');          // Gère l'accessibilité (ARIA)
-                pages.loader.element.setAttribute('aria-expanded', isExpanded);
+                menu.iconElmnts.forEach( burgerIconElement => { burgerIconElement.classList.toggle('active'); } );
+                menu.navElmnts.classList.toggle('active');                                     // Bascule la classe 'active' pour afficher/masquer le menu
+                const isExpanded = menu.navElmnts.classList.contains('active');          // Gère l'accessibilité (ARIA)
+                loader.element.setAttribute('aria-expanded', isExpanded);
             break;
             // -------------------------------------------------------------------------------- //
             case 'navLinks':
-                pages.menu.navElemens.classList.remove('active');
-                pages.loader.element.setAttribute('aria-expanded', 'false');
+                menu.navElmnts.classList.remove('active');
+                loader.element.setAttribute('aria-expanded', 'false');
                 console.log( `⚙️.Tested |actionDispatcher : navLinks => ${param} ` );
             break;
             // -------------------------------------------------------------------------------- //
             case 'temoignageScroll':
                 if (param === 'next') {
-                    tstmnlCrslElmnt.scrollBy({ left: tstmnlScrllAmnt, behavior: 'smooth' });
+                    pages.accueil.tstmnlCrslElmnt.scrollBy({ left: pages.accueil.tstmnlScrllAmnt, behavior: 'smooth' });
                 } else {
-                    tstmnlCrslElmnt.scrollBy({ left: -tstmnlScrllAmnt, behavior: 'smooth' });
+                    pages.accueil.tstmnlCrslElmnt.scrollBy({ left: -pages.accueil.tstmnlScrllAmnt, behavior: 'smooth' });
                 }
             break;
             // -------------------------------------------------------------------------------- //
             case 'validateHomepageSelection':                                                   // genre superSelect pour séparer sélection et validation
-                const valueLieu = selectLieuxElmnt ? selectLieuxElmnt.value : null;             // La valeur est l'ID du lieu
+                const valueLieu = slctLxElmnt ? slctLxElmnt.value : null;                       // La valeur est l'ID du lieu
                 if (valueLieu === 'undefined') {
                     showPage('creation-lieu_page');                                             // Si l'utilisateur a sélectionné 'Nouveau Lieu'
                     console.log( `./⚙️.Run-ng |actionDispatcher -> Création Lieu` );
@@ -581,14 +582,13 @@ function checkSectionCompletion(sectionId) {
  * @example                                           {lieux: [...], types: [...], page_title: "..."}
  * -------------------------------------------------------------------------------------------- */
 function handlePageData(data) {
-    updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', msg: `Traitement des datas...`, log: `📝.Init handlePageData...[param]data: ${data} `});
+    console.debug( `📝.Init handlePageData...[param]data: ${data} ` );
+    updateStatus({ type: 'loading', isLdng: true, imgType: 'blanc', msg: `Traitement des datas...`});
     
     try {
         if (data.submissionID) {                                      // GLOBAL - ID
-            updateStatus({ conteneurID: 'intro', type: 'loading', isLdng: true, imgType: 'blanc',
-                log: `./⚙️.Run-ng |handlePageData | appData.submissionID:  ${data.submissionID} `, 
-                msg: `Récupération d'un numéro d'identification...` 
-            });
+            console.log( `📝⚙️.Run-ng |handlePageData | appData.submissionID:  ${data.submissionID} ` )
+            updateStatus({ type: 'loading', isLdng: true, imgType: 'blanc', msg: `Récupération d'un numéro d'identification...` });
             appData.submissionID = data.submissionID;                 // 📘✅ Engistrement de submissionID dans appData
         }
         
@@ -614,14 +614,111 @@ function handlePageData(data) {
             initNavigationListeners();
             isInit.navGlobale = true;
         }
-        
-        updateStatus({ refCSS: 'intro', type: 'success', isLdng: false, log: `.../🎙️✅.--End |handlePageData : Page entièrement chargée et peuplée. `,
-            imgType: 'blanc', msg:  `Affichage de l'app.`
-        });
+        console.log( `📝✅.--End |handlePageData : Page entièrement chargée et peuplée. ` );
+        updateStatus({ type: 'success', isLdng: false, imgType: 'blanc', msg:  `Affichage de l'app.` });
     
     } catch (error) {
-        updateStatus({ refCSS: 'intro', type: 'error', isLdng: false, log: `🚫.Catched |handlePageData [error] : ${error} `, imgType:'blanc' });
+        console.error(`📝🚫.Catched |handlePageData [error] : ${error} `);
     }
+}
+
+
+/* == FONCTIONS HELPERS - PRIVATE ============================================= (UTILITAIRE) == */
+/** ------------------------------------------------------------------------------------------- //
+ * @instanceIn      {debouncedHandleResize} & {synchroniserModeGuide_} & {showPage} & {showSection} 
+ * @instanceCount   4 (1 + 1+ 2  )
+ * ---------------- --------------------- --------------- - ----------------------------------- //
+ * @function        updateSPA_currentHeight
+ * @description     FONCTION UTILITAIRE POUR GÉRER LA HAUTEUR DU CONTENEUR SPA
+ * ---------------- --------------------- --------------- - ----------------------------------- //
+ * @param           {string||null}        trgtPgID        - L'ID de la page cible. On force la détection des strings, car est aussi appelé par onResize
+ * @param           {string||null}        trgtSecIndx     - L'Index de la section cible.
+ * -------------------------------------------------------------------------------------------- */
+function updateSPA_Height_(trgtPgID = null, trgtSecIndx = null) {
+    try {
+        let callStack = getCallStack_();                                                        // Enregistre la pile d'appels si erreur se produirait plus tard.
+        trgtPgID = (typeof trgtPgID === 'string') ? trgtPgID : (curPgID ?? 'accueil_page');     // <= Certitude : trgtPgID est une string
+        const trgtPg = Object.values(pages).find(p => p.ID === trgtPgID);                       // => Enregistre l'objet Page
+        console.debug( `⚙️⬜️Init updateSPA_Height_${trgtPg.id} [param]trgtPgID: ${trgtPgID}${trgtSecIndx != null ? ` / trgtSecIndx:${trgtSecIndx}` : ''}` ); 
+        
+        if (!conteneurSPA || !trgtPg) return;                                                   // != Sécurité initiale (conteneur et page cible doivent exister)
+        let trgtHght = trgtPg.element.offsetHeight;                                             // ?= Logique minimale => Page simple sans gestion relative/absolute
+        if (trgtPg.hasSub) {                                                                    // <= Ajoute hauteur section active
+            trgtSecIndx ??= trgtPg.curSecIndx;                                                  // ?= Gère récup par défaut de l'index en cours
+            trgtHght += trgtPg.sub[trgtSecIndx].element?.offsetHeight ?? 0;                     // <= Ajoute hauteur section active à hauteur page simple
+        }
+        
+        if (trgtHght <= 0) {                                                                    // => Réinitialise le style si hauteur invalide ou nulle 
+            conteneurSPA.style.removeProperty('--hauteur-content');
+            console.log( `⚙️.Run-ng |updateSPA_Height_ : Variable --hauteur-content supprimée (passage à hauteur auto).` );
+            return;
+        }
+        conteneurSPA.style.setProperty('--hauteur-content', `${trgtHght}px`);                   // => Définit le CSS si hauteur valide
+        console.log( `⚙️✅.--End |updateSPA_Height_ : Variable CSS --hauteur-content ajustée à: ${trgtHght}px` );
+    
+    } catch (error) { console.error( `🚫.Catched |updateSPA_Height_ : ${error} \n ${callStack}` ) };
+}
+
+/** ------------------------------------------------------------------------------------------- //
+ * @version         25.11.03 (15:59)
+ * @instanceIn      {initUpdateStatusDOM}
+ * @instanceCount   1 - unique
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @function        getLogoUrlsFromCSS_
+ * @description     FONCTION UTILITAIRE POUR RÉCUPÉRER LES VALEURS CSS
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @returns         {function}      bleu/blanc      > Les URLs pour le logo bleu et le logo blanc.
+ * -------------------------------------------------------------------------------------------- */
+function getLogoUrlsFromCSS_() {
+    try {
+        const rootStyles    = getComputedStyle(document.documentElement);                           // document.documentElement => Cible l'élément racine
+        const actifUrlCSS   = rootStyles.getPropertyValue('--url-logo-actif').trim();               // bleu
+        const blancUrlCSS   = rootStyles.getPropertyValue('--url-logo-blanc').trim();
+        
+        const extractUrl = (cssValue) => {                                                          // FONCTION INTERNE
+        if ( !cssValue || !cssValue.startsWith('url(') ) return '';
+            return cssValue.slice(4, -1).replace(/["']/g, '');                                      // Retire 'url(', ')', et les guillemets/apostrophes éventuels.
+        };
+        return { bleu: extractUrl(actifUrlCSS), blanc: extractUrl(blancUrlCSS) };
+
+    } catch (error) { console.error ( `📃🚫.Catched |getLogoUrlsFromCSS_ => error: ${error}` ); }
+}
+
+/** ------------------------------------------------------------------------------------------- //
+ * @instanceIn      {initNavigationListeners}                  ../
+ * @instanceCount   1 - unique
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @function        debounce_
+ * @description     FONCTION UTILITAIRE DE DEBOUNCING (ANTI-REBOND)
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @param           {function}      func            - La fonction à encapsuler.
+ * @param           {number}        delay           - Le délai en millisecondes après lequel la fonction sera exécutée.
+ * @returns         {function}                      > La nouvelle fonction "débouncée".
+ * -------------------------------------------------------------------------------------------- */
+function debounce_(func, delay) {
+    let timeoutId;
+    return function(...args) { 
+        const context = this;
+        clearTimeout(timeoutId);                                                                // Fn glob: Annule le timer précédent
+        timeoutId = setTimeout( () => { func.apply(context, args); }, delay );                  // Exécute SEULEMENT après fin du délai
+    };
+}
+
+/** ------------------------------------------------------------------------------------------- //
+ * @instanceIn      {handlePageData} & {updateSPA_Height_}               ../
+ * @instanceCount   1 - unique
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @function        getCallStack_
+ * @description     FONCTION UTILITAIRE POUR OBTENIR LA PILE D'APPELS
+ *                  Récupère et formate la pile d'appels d'où la fonction a été appelée.
+ * ---------------- --------------- --------------- - ----------------------------------------- //
+ * @returns         {string}                        > La pile d'appels, formatée pour être lisible.
+ * -------------------------------------------------------------------------------------------- */
+function getCallStack_() {
+    const error = new Error();                                                                  // Créer une nouvelle erreur. L'objet Error contient la propriété 'stack'.
+    let stack = error.stack || `Pile d'appels non disponible.`;                                // Le 'new Error()' est créé au moment où cette fonction est appelée.
+    stack = stack.split('\n').slice(2).join('\n').trim();                                       // Garde les appels importants, retire la 1e ligne "Error" / appel à getCallStack lui-même. split('\n') => sépare les lignes, slice(2) => saute les 2 premières lignes inutiles.
+    return `\n--- DÉBUT PILE D'APPELS ---\n${stack}\n--- FIN PILE D'APPELS ---`;                // Retourne un formatage plus clair
 }
 
 /** ------------------------------------------------------------------------------------------- //
@@ -634,7 +731,7 @@ function handlePageData(data) {
  *                  Crée des listeners au clic, au  sur l'ensemble du <body> en ciblant un '[data-action="navigate"]'
  * -------------------------------------------------------------------------------------------- */
 function initNavigationListeners() {
-    console.debug( `🎙️.Init initNavigationListeners...` );
+    console.debug( `🎙️⬜️.Init initNavigationListeners...` );
     updateStatus({ refCSS: 'intro', type: 'loading',   isLdng: true, logoType:'blanc', msg: `🎙️ Mise sur écoute de l'app... Des boutons... Pas de vous.`});   
     try {
         document.body.addEventListener('click', actionDispatcher);                              // Clavier / actions [data-action]
@@ -655,11 +752,11 @@ function initNavigationListeners() {
         window.addEventListener('resize', debouncedHandleResize);                               // MàJ la hauteur au resize de la fenêtre avec anti-rebond
 
         // autocomplete.addListener('place_changed'                                             // <= gestion dans la function dédiée 
-        console.warn( `.../🎙️✅.--End |initNavigationListeners OK. ` );
+        console.warn( `🎙️✅.--End |initNavigationListeners OK. ` );
         updateStatus({ refCSS: 'intro', type: 'success', isLdng: true, imgType: 'blanc', msg: `🎙️ 1. 2. 1. 2. Les micros sont en place.` });
     
     } catch (error) {
-        console.error( `🚫.Catched |initNavigationListeners [error] : ${error}.` );
+        console.error( `🎙️🚫.Catched |initNavigationListeners [error] : ${error}.` );
         updateStatus({ refCSS: 'intro', type: 'error', isLdng: true, logoType: 'blanc', msg: `🎙️ Houston? Whitney Houston? We avons un problème...` });
     }
 }
@@ -678,44 +775,47 @@ function initNavigationListeners() {
  *                  direct après le chargement, SAUF pour l'initialisation de leur état (score, bouton).
  * -------------------------------------------------------------------------------------------- */
 function initializeDOMElements() {
-    console.debug( `⚙️.Init initializeDOMElements...` );
-    updateStatus({ conteneurID: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', msg: `Initialisation des pages...` });
+    console.debug( `⚙️⬜️.Init initializeDOMElements...` );
+    updateStatus({ type: 'loading', isLdng: true, imgType: 'blanc', msg: `Initialisation des pages...` });
+    updateStatus({isLdng:false});
     
     try {
         //===================================================================================== // SPA
         conteneurSPA = document.querySelector('.conteneur-spa-global');                         // 🛟 Enregistre le conteneur
         if (!conteneurSPA) {
-            console.error( `❌.Elsed |.initializeDOMElements : Erreur fatale. L'app est indisponible...` );
+            console.error( `❌.Elsed |initializeDOMElements : Erreur fatale. L'app est indisponible...` );
             return;
         }
         //===================================================================================== // MENU GÉNÉRAL
         const burgerElmntTmp        = document.querySelector('.menu-toggle');                   // <= bouton
-        const burgerIconElmntTmp    = document.querySelectorAll('.menu-icon');            // Lignes x3
+        const burgerIconElmntTmp    = document.querySelectorAll('.menu-icon');                  // Lignes x3
         const navElmntTmp           = document.querySelector('.nav-globale');                   // <= <ul> conteneur des <li>
         if (burgerElmntTmp)         menu.toggleElmnt  = burgerElmntTmp;                         // 🛟 Enregistre le bouton de nav burger
-        if (burgerIconElmntTmp)     menu.iconElements = burgerIconElmntTmp;                     // 🛟 Enregistre le bouton de nav burger
-        if (navElmntTmp)            menu.navElemens   = navElmntTmp;                            // 🛟 Enregistre la nav
+        if (burgerIconElmntTmp)     menu.iconElmnts = burgerIconElmntTmp;                       // 🛟 Enregistre le bouton de nav burger
+        if (navElmntTmp)            menu.navElmnts   = navElmntTmp;                             // 🛟 Enregistre la nav
         
-        if (!pages.loader.element || !pages.menu.navElemens) console.error( `❌.Elsed |.initializeDOMElements : Erreur. Le menu n'est pas initialisé correctement...` );
-        
+        if (!menu.navElmnts && !menu.iconElmnts && menu.toggleElmnt) console.error( `❌.Elsed |.initializeDOMElements : Erreur. Le menu n'est pas initialisé correctement...` );
+        console.dirxml(menu);
         //===================================================================================== // PAGES
         Object.values(pages)?.forEach( p => {
-            const pageElmntTmp = document.getElementById(p.ID);                           // Récupération de l'élément du DOM avec cet id        
+            const pageElmntTmp = document.getElementById(p.ID);                                 // Récupération de l'élément du DOM avec cet id        
             
             if (pageElmntTmp) {
-                p.element = pageElmntTmp;                                                 // 🛟 Enregistre DOM element <= Agit comme parent des sous-elements 
-
+                p.element = pageElmntTmp;                                                       // 🛟 Enregistre DOM element <= Agit comme parent des sous-elements 
                 //----------------------------------------------------------------------------- // ACCUEIL
                 if (p.ID === "accueil_page") {
-                    selectLieuxElmnt= p.element.querySelector('.trmdvsr-superselect #selectLieux');                  // 🛟 Enregistre le champ input principal
-                    tstmnlCrslElmnt = p.element.querySelector('.carousel-temoignage');           // 🛟 Enregistre le carousel témoignage <= page accueil
-                    tstmnlCrtElmnt  = tstmnlCrslElmnt.querySelector('.carte-temoignage');        // 🛟 Enregistre une carte témoignage <= page accueil
-                    tstmnlScrllAmnt = tstmnlCrtElmnt.offsetWidth + 24;                          // 🛟 Enregistre le scroll amount <= page accueil
+                    p.slctLxElmnt = p.element.querySelector('.trmdvsr-suprslct #selectLieux');  // 🛟 Enregistre le champ input principal
+                    // Penser à parser les <option> => ne charger les nouvelles que s'il y a modification du nb
+                    p.tstmnlCrslElmnt = p.element.querySelector('.carousel-temoignage');        // 🛟 Enregistre le carousel témoignage <= page accueil
+                    p.tstmnlCrtElmnt  = p.tstmnlCrslElmnt.querySelectorAll('.carte-temoignage');// 🛟 Enregistre une carte témoignage <= page accueil
+                    p.tstmnlScrllAmnt = p.tstmnlCrtElmnt[0].offsetWidth + 24;                   // 🛟 Enregistre le scroll amount <= page accueil
+                    console.dirxml (p);
                 }
                 
                 //----------------------------------------------------------------------------- // CREATION LIEU
                 if (p.ID === "creation-lieu_page") {
-                    creaPgElmnts.adressElmnt = document.getElementById('adresseSalle');         // 🛟📘 Enregistre le champ adresse <= page création
+                    p.adressElmnt = document.getElementById('adresseSalle');         // 🛟📘 Enregistre le champ adresse <= page création
+                    console.dirxml (p);
                 }
 
                 //----------------------------------------------------------------------------- // EVALUATIONS
@@ -776,7 +876,7 @@ function initializeDOMElements() {
         } );
         isInit.allDOMLoaded = true;                                                             // 🛟 Enregistre FLAG => DOM prêt, activation drapeau
         tryToInitAutocomplete();                                                                // Tentative d'initialisation (si Maps est déjà chargé)
-        console.warn( `.../⚙️✅.--End |initializeDOMElements : Réfs DOM initialisées et attachées à {pages}.` );
+        console.warn( `⚙️✅.--End |initializeDOMElements : Réfs DOM initialisées et attachées à {pages}.` );
     
     } catch (error) {
         console.error( `🚫.Catched |initializeDOMElements : ${error}` );
@@ -795,8 +895,7 @@ function initializeDOMElements() {
  * @param           {string}        initValue       - ['guided' || 'expert']
  * -------------------------------------------------------------------------------------------- */
 function initModeGuide(initValue) {
-    updateStatus({ refCSS: 'intro', isLdng: true, msg: `🔌.Init initModeGuide | Initialisation du mode guidé... `, logoType: 'blanc' });
-    
+    updateStatus({ isLdng: true, msg: `🔌.Init initModeGuide | Initialisation du mode guidé... `, logoType: 'blanc' });
     try {
         guideModeBTN = document.querySelectorAll('.composant-aide input[type="radio"]'); // 🛟 Enregistre les boutons radios
         if (!guideModeBTN) {
@@ -804,15 +903,13 @@ function initModeGuide(initValue) {
             return;
         }
         synchroniserModeGuide_(initValue);                            // Lance synchronisation
-        updateStatus({ refCSS: 'intro', type: 'success', isLdng: true, imgType: 'blanc', msg: `.../🔌✅.--End |initModeGuide : Mode guidé mis en place`});
+        updateStatus({ type: 'success', imgType: 'blanc', msg: `🔌✅.--End |initModeGuide : Mode guidé mis en place`});
     
-    } catch (error) {  
-        console.error(`🚫.Catched |initModeGuide : [error] : ${error}` );
-    }
+    } catch (error) { console.error(`🔌🚫.Catched |initModeGuide : [error] : ${error}` ); }
 }
 
 /** ------------------------------------------------------------------------------------------- //
- * @instanceIn      {actionDispatcher} & {updateSPA_Height_}
+ * @instanceIn      {actionDispatcher} & {initModeGuide}
  * @instanceCount   1 + 1
  * ---------------- --------------- --------------- - ---------------- ------------------------ //
  * @function        synchroniserModeGuide_
@@ -822,15 +919,14 @@ function initModeGuide(initValue) {
  * @param           {string}        nwVal           - ['guided' || 'expert']
  * -------------------------------------------------------------------------------------------- */
 function synchroniserModeGuide_(nwVal) {
-    console.log( `🔌.Init synchroniserModeGuide_ ...[param]nwVal:${nwVal} ` );
-    updateStatus({ refCSS: 'intro', isLdng: true, imgType:'blanc' });
+    console.log( `🔌⬜️.Init synchroniserModeGuide_ ...[param]nwVal:${nwVal} ` );
     try {
         guideModeBTN.forEach ( rdio => { rdio.checked = (rdio.value === nwVal); });             // Update les btns => checked ou pas
         document.body.classList.toggle('guidedMode', nwVal === 'guided');                       // Ajoute/Retire la classe
         updateSPA_Height_();                                                                    // si déjà initialisé => UpdateSPA_Height_ 
-        console.log( `.../⚙️✅.--End |synchroniserModeGuide` );
-        
-    } catch (error) { console.log( `🚫.Catched |synchroniserModeGuide_ [error] : ${error} `) };
+        console.log( `🔌✅.--End |synchroniserModeGuide` );
+
+    } catch (error) { console.log( `🔌🚫.Catched |synchroniserModeGuide_ [error] : ${error} `); }
 }
 
 /* == APP HELPER - UPDATESTATUS =============================================== (UTILITAIRE) == */
@@ -842,253 +938,149 @@ function synchroniserModeGuide_(nwVal) {
  * @function        init_updateStatus
  * @description     INITIALISE LE LOADER UNIFIÉ
  * -------------------------------------------------------------------------------------------- */
-function init_updateStatus() {
+function initUpdateStatusDOM() {
     try {
-        console.debug(`Init init_updateStatus...`)
+        console.log('🚥⬜️.initUpdateStatusDOM...');
+        conteneurBODY                       = document.querySelector('.trmdvsr-app-structure');
         loader.logoURLs                     = getLogoUrlsFromCSS_();
-        loader.element                      = document.getElementById('status-module');
-        const parentElement                 = loader.element; 
+        loader.element                      = document.querySelector('.status-layer');
         if (loader.element) {
-            loader.statusMessage            = parentElement.querySelector('.status-message.trmdvsr-sstexte');
-            loader.animImgElmnt             = parentElement.querySelector('.spinner-image');
-            loader.animSpinnerElmnt         = parentElement.querySelector('.spinner');
-            loader.progressContainerElmnt   = parentElement.querySelector('.progress-container'); 
-            loader.progressBarElmnt         = parentElement.querySelector('.progress-bar');
-            loader.progressTextElmnt        = parentElement.querySelector('.progress-text');
+            loader.statusMessage            = document.querySelector('.status-message');
+            loader.animImgElmnt             = document.querySelector('.spinner-image');
+            loader.animSpnElmnt             = document.querySelector('.spinner');
+            loader.progressContainerElmnt   = document.querySelector('.progress-container'); 
+            loader.progressBarElmnt         = document.querySelector('.progress-bar');
+            loader.progressTextElmnt        = document.querySelector('.progress-text');
         }
-        if (!loader.logoURLs.bleu || !loader.logoURLs.blanc) { console.warn(`Les variables CSS --url-logo-actif ou --url-logo-blanc n'ont pas pu être lues.`) };
-        
-        parentElement.display = 'block';
-        parentElement.style.border = '10px solid red';
+        if (!loader.logoURLs.bleu || !loader.logoURLs.blanc) console.warn(`Les variables CSS --url-logo-actif ou --url-logo-blanc n'ont pas pu être lues.`);
+        console.log('🚥✅.--End |initUpdateStatusDOM...');
 
-    } catch (error) {
-        console.error (`init_updateStatus a rencontré un problème`);
-    }
-    
+    } catch (error) { console.error (`🚥🚫.Catched |initUpdateStatusDOM => error: ${error}`); }
 }
 
-/**------------------------------------------------------------------ //
+/** ------------------------------------------------------------------------------------------- //
  * @version         25.10.09 (23:16)
  * @instanceIn      partout
- * ---------------- --------------- ------------------------- - ------ //
+ * ---------------- --------------- ------------------- - ------------------------------------- //
  * @description     GERE LE LOADING
  *                  Gère l'affichage du statut, du spinner et de la barre de progression 
  *                  pour l'export et attache/détache le loader unique à un conteneur. 
  *                  Accepte un objet de configuration pour plus de flexibilité.
  *                  NÉCESSITE UNE INITIALISATION AVEC init_updateStatus()
- * ---------------- --------------- ----------------- - --------------- //
- * @param           {string}        refCSS]           - ID du conteneur cible
- * @param           {string}        msg]              - Le texte à afficher.
- * @param           {string}        type='log']       - Type de message ('info', 'loading', 'success', 'error', 'warn', 'debug').
- * @param           {boolean}       isLdng=false]     - Pour activer/désactiver les spinners et le bouton.
- * @param           {number}        current=0]        - V2-SPÉCIFIQUE : Numérateur pour la progression.
- * @param           {number}        total=0]          - V2-SPÉCIFIQUE : Dénominateur pour la progression.
- * @param           {string}        imgType            - V3-UNIQUE Type de logo à afficher ('blue' ou 'white'). Si null, le logo actuel est conservé.
- * ------------------------------------------------------------------- */
-function updateStatus({ refCSS=null, log=null, msg=null, isLdng=false, current=null, total=null, imgType=null}) {
-    if (!loader.element) {                                             // Défensif si init_updateStatus() a merdé qq part
-        console.error( `Initialisez la fonction avant de pouvoir l'appeler. \nPour cela, lancez la fonction ini_updateStatus()` );
-        return;
-    }
-    const lgElmnt = refCSS ? pages.loader.element.querySelector(refCSS) : null;// CAS 1. => nouveau conteneur cible ✅
-                                                                                                                
-    if (lgElmnt) {                                                    
-        console.log(`updateStatus > lgElmnt => ${lgElmnt}`);
-        if (curLgElmnt && curLgElmnt !== lgElmnt) curLgElmnt.classList.remove('loading-target');  // new conteneur différent de current => Détache CSS
-        lgElmnt.classList.add('loading-target');                       // Attache CSS    
-        if (loader.element.parentNode !== lgElmnt) {                   // => DOM parent différent
-            lgElmnt.appendChild(loader.element);                       // Attache DOM
-            loader.element.classList.add('is-attached');               // Attache CSS
-        }
-        curLgElmnt = lgElmnt;                                          // 🛟 Enregistre new => current
-    
-    } else if (refCSS === null) {                                      // CAS 2. => nouveau conteneur cible ❌
-    
-        loader.element.classList.remove('is-attached');                // Détache CSS
-        curLgElmnt = null;                                             // Mode FIXED global
-    }
+ * ---------------- --------------- ------------------- - ------------------------------------- //
+ * @param           {string}        [trgtElmntByClss]   - Classe du conteneur cible pour porter le loader
+ * @param           {string}        [imgType]           - Type de logo à afficher ('blue' ou 'white'). Si null, le logo actuel est conservé.
+ * @param           {string}        type=info           - Le type de message & anim (info / loading / success / error / warn / debug)
+ * @param           {boolean}       isLdng=false        - Pour activer/désactiver les spinners et le bouton.
+ * @param           {string}        [msg]               - Le texte à afficher.
+ * @param           {number}        [current=0]         - Numérateur pour la progression.
+ * @param           {number}        [total=0]           - Dénominateur pour la progression.
+ * -------------------------------------------------------------------------------------------- */
+function updateStatus( { trgtElmntByClss=null, imgType=null, type='info', isLdng=false, msg=null, current=null, total=null} ) {
+    console.debug( `📃⬜️.init updateStatus[param] ${ trgtElmntByClss !== null ? `trgtElmntByClss:${trgtElmntByClss} --|&&|-- ` : '' } imgType:${imgType} -|&|- type:${type} -|&|- msg:${msg} -|&|- isLdng:${isLdng} ${ current !== null ? ` --|&&|-- current:${current}` : '' } ${ total !== null ? `-|&|- total:${total}` : '' }` );
+    try {
+        // ------------------------------------------------------------------------------------ // DÉFENSIF
+        if (!loader.element)                { console.error( `Initialisez avant d'appeler.`             ); return; }
+        if (!loader.progressContainerElmnt) { console.error( `loader.progressContainerElmnt manquant.`  ); return; }
+        if (!loader.progressBarElmnt)       { console.error( `loader.progressBarElmnt manquant.`        ); return; }
+        if (!loader.progressTextElmnt)      { console.error( `loader.progressTextElmnt manquant.`       ); return; }
+        if (!loader.animImgElmnt)           { console.error( `loader.animImgElmnt manquant.`            ); return; }
+        if (!loader.animSpnElmnt)           { console.error( `loader.animSpnElmnt manquant.`            ); return; }
+        if (!loader.statusMessage)          { console.error( `loader.statusMessage manquant.`           ); return; }
+        // ------------------------------------------------------------------------------------ // RESET CSS
+        loader.element.className = 'status-layer';
+        loader.progressContainerElmnt.className = 'progress-container';
+        loader.progressBarElmnt.className = 'progress-bar';
+        loader.progressTextElmnt.className = 'progress-text trmdvsr-label';
+        loader.animImgElmnt.className = 'spinner-image';
+        // ------------------------------------------------------------------------------------ // NETTOIE LES RÉCEPTEURS
+        const clssNm = '.status-target';
+        const elmnts2Cln = document.querySelectorAll(`${clssNm}`);                                  // Récup TOUS les éléments avec cette classe
+        if (elmnts2Cln.length > 0) { 
+            elmnts2Cln.forEach( e => {e.classList.remove(clssNm);} );                               // Si des éléments existent, retire classe pour chacun
+            console.log(`${clssNm} supprimée de ${elmnts2Cln.length} élément(s).`); 
+        } 
+        trgtElmntByClss = document.querySelector(trgtElmntByClss) ?? conteneurBODY;                 // Si non spécifié => cible body
+        trgtElmntByClss.classList.add(clssNm);                                                      // Prépare récepteur (assurance d'unicité)
+        // ------------------------------------------------------------------------------------ // DÉFINIT CSS & ATTACHE DOM
+        let refCSS = (imgType === 'blanc') ? 'fullBlue' : 'lightWhite';                             // Définit CSS si logo blanc fond bleu
+        if (loader.element.parentNode !== trgtElmntByClss) trgtElmntByClss.appendChild(loader.element);  // Attache Element au récepteur (s'il a changé)
+        loader.element.classList.add('attached', refCSS);
+        // ------------------------------------------------------------------------------------ // LAUNCH
+        loader.element.style.display = isLdng ? 'flex' : 'none';
+        if (!isLdng) return;
 
-    if (!isLdng) {                                                     // LOADER => isLdng = FALSE
-        loader.element.style.display = 'none';                         // Fin de Chargement : Masque et DÉTACHE le loader
-        if (curLgElmnt) {                                              // Si conteneur
-            curLgElmnt.classList.remove('loading-target');             // Détache CSS
-            curLgElmnt = null;                                         // 🛟 Enregistre DOM Element
+        // ------------------------------------------------------------------------------------ // SPINNER IMAGE
+        if (imgType) {
+            const url = loader.logoURLs[imgType];
+            if(url) loader.animImgElmnt.src = url;
+            else console.warn(`Type de logo inconnu ou URL non trouvée pour ${imgType}.`);
+            loader.animImgElmnt.classList.add( `logo-${type}` );                                    // info / loading / error
         }
-        loader.element.classList.remove('is-attached');                // Détache CSS
-        return;
-    }
-    
-    
-    loader.element.style.display = 'flex';                               // Avec/Sans conteneur => Affiche
-    if (loader.animImgElmnt && imgType) {                             // loader.element ANIMÉ
-        const url = LOGO_URLS[imgType];
-        if(url)    loader.animImgElmnt.src = url;
-        else        console.warn(`Type de logo inconnu ou URL non trouvée pour ${imgType}.`);
-        
-        loader.animImgElmnt.className = 'spinner-image';              // Reset CSS (évite remove et de lister tous les cas de fig.)
-        loader.animImgElmnt.classList.add( `logo-${type}` );
-    }
-    
-    if (loader.statusMessage) {                                       // MESSAGE TEXTE
+        // ------------------------------------------------------------------------------------ // MESSAGE
+        loader.statusMessage.classList.remove('info', 'loading', 'success', 'error', 'warn', 'debug');
         loader.statusMessage.textContent = msg; 
-        loader.statusMessage.className = 'trmdvsr-sstexte status-message';       // Reset CSS (évite remove et de lister tous les cas de fig.)
-        loader.statusMessage.classList.add(type);
-    }
-    
-    if (loader.animSpinnerElmnt) loader.animSpinnerElmnt.style.display = isLdng ? 'flex' : 'none'; // SPINNER ANIMÉ
-    
-    if (current && total) {                                           // BARRE DE PROGRESSION
-        if (loader.progressContainerElmnt && loader.progressBarElmnt && loader.progressTextElmnt) {
-            loader.progressContainerElmnt.style.display = (isLdng && total > 0) ? 'block' : 'none';
-        
+        loader.statusMessage.classList.add(type); 
+        // ------------------------------------------------------------------------------------ // PROGRESS BAR
+        if (current && total) {
+            loader.progressContainerElmnt.classList.add(refCSS);
+            loader.progressContainerElmnt.style.display = (total > 0) ? 'block' : 'none'; // Affiche barre progression si en charge et total sup à zéro
+            loader.progressBarElmnt.classList.add(refCSS);
+            loader.progressTextElmnt.classList.add(refCSS);
             if (total > 0 && current <= total) {
                 const percent = Math.round((current / total) * 100);
                 loader.progressBarElmnt.style.width = `${percent}%`;
                 loader.progressTextElmnt.textContent = `${percent}% (${current}/${total} images enregistrées)`;
-            
             } else {
                 loader.progressBarElmnt.style.width = '0%';
                 loader.progressTextElmnt.textContent = '0% (0/0 images enregistrées)';
             }
         }
-    }
+        console.log( `📃✅.--End |updateStatus` );
+
+    } catch (error) { console.error ( `📃🚫.Catched |updateStatus => error: ${error}` ); }
 };
-/* == FONCTIONS HELPERS - PRIVATE ============================================= (UTILITAIRE) == */
-/** ------------------------------------------------------------------------------------------- //
- * @instanceIn      {debouncedHandleResize} & {synchroniserModeGuide_} & {showPage} & {showSection} 
- * @instanceCount   4 (1 + 1+ 2 / )
- * ---------------- --------------------- --------------- - ----------------------------------- //
- * @function        updateSPA_currentHeight
- * @description     FONCTION UTILITAIRE POUR GÉRER LA HAUTEUR DU CONTENEUR SPA
- * ---------------- --------------------- --------------- - ----------------------------------- //
- * @param           {string||null}        trgtPgID        - L'ID de la page cible. On force la détection des strings, car est aussi appelé par onResize
- * @param           {string||null}        trgtSecIndx     - L'Index de la section cible.
- * -------------------------------------------------------------------------------------------- */
-function updateSPA_Height_(trgtPgID = null, trgtSecIndx = null) {
-    try {
-        let callStack = getCallStack_();                                                        // Enregistre la pile d'appels si erreur se produirait plus tard.
-        trgtPgID = (typeof trgtPgID === 'string') ? trgtPgID : (curPgID ?? 'accueil_page');     // <= Certitude : trgtPgID est une string
-        const trgtPg = Object.values(pages).find(p => p.ID === trgtPgID);                       // => Enregistre l'objet Page
-        console.info( `Init updateSPA_Height_ pour ${trgtPg.id} [param]trgtPgID: ${trgtPgID}${trgtSecIndx != null ? ` / trgtSecIndx:${trgtSecIndx}` : ''}` ); 
-        
-        if (!conteneurSPA || !trgtPg) return;                                                   // != Sécurité initiale (conteneur et page cible doivent exister)
-        let trgtHght = trgtPg.element.offsetHeight;                                             // ?= Logique minimale => Page simple sans gestion relative/absolute
-        if (trgtPg.hasSub) {                                                                    // <= Ajoute hauteur section active
-            trgtSecIndx ??= trgtPg.curSecIndx;                                                  // ?= Gère récup par défaut de l'index en cours
-            trgtHght += trgtPg.sub[trgtSecIndx].element?.offsetHeight ?? 0;                     // <= Ajoute hauteur section active à hauteur page simple
-        }
-        
-        if (trgtHght <= 0) {                                                                    // => Réinitialise le style si hauteur invalide ou nulle 
-            conteneurSPA.style.removeProperty('--hauteur-content');
-            console.log( `./⚙️.Run-ng |updateSPA_Height_ : Variable --hauteur-content supprimée (passage à hauteur auto).` );
-            return;
-        }
-        conteneurSPA.style.setProperty('--hauteur-content', `${trgtHght}px`);                   // => Définit le CSS si hauteur valide
-        console.log( `./⚙️.Run-ng |updateSPA_Height_ : Variable CSS --hauteur-content ajustée à: ${trgtHght}px` );
-    
-    } catch (error) { console.error( `🚫.Catched |updateSPA_Height_ : ${error} \n ${callStack}` ) };
-}
-
-/** ------------------------------------------------------------------------------------------- //
- * @version         25.11.03 (15:59)
- * @instanceIn      {init_updateStatus}
- * @instanceCount   1 - unique
- * ---------------- --------------- --------------- - ----------------------------------------- //
- * @function        getLogoUrlsFromCSS_
- * @description     FONCTION UTILITAIRE POUR RÉCUPÉRER LES VALEURS CSS
- * ---------------- --------------- --------------- - ----------------------------------------- //
- * @returns         {function}      bleu/blanc      > Les URLs pour le logo bleu et le logo blanc.
- * -------------------------------------------------------------------------------------------- */
-function getLogoUrlsFromCSS_() {
-    const rootStyles    = getComputedStyle(document.documentElement);                           // document.documentElement => Cible l'élément racine
-    const actifUrlCSS   = rootStyles.getPropertyValue('--url-logo-actif').trim();
-    const blancUrlCSS   = rootStyles.getPropertyValue('--url-logo-blanc').trim();
-    
-    const extractUrl = (cssValue) => {                                                          // FONCTION INTERNE
-    if ( !cssValue || !cssValue.startsWith('url(') ) return '';
-        return cssValue.slice(4, -1).replace(/["']/g, '');                                      // Retire 'url(', ')', et les guillemets/apostrophes éventuels.
-    };
-    
-    return { bleu: extractUrl(actifUrlCSS), blanc: extractUrl(blancUrlCSS) };
-}
-
-/** ------------------------------------------------------------------------------------------- //
- * @instanceIn      {initNavigationListeners}                  ../
- * @instanceCount   1 - unique
- * ---------------- --------------- --------------- - ----------------------------------------- //
- * @function        debounce_
- * @description     FONCTION UTILITAIRE DE DEBOUNCING (ANTI-REBOND)
- * ---------------- --------------- --------------- - ----------------------------------------- //
- * @param           {function}      func            - La fonction à encapsuler.
- * @param           {number}        delay           - Le délai en millisecondes après lequel la fonction sera exécutée.
- * @returns         {function}                      > La nouvelle fonction "débouncée".
- * -------------------------------------------------------------------------------------------- */
-function debounce_(func, delay) {
-    let timeoutId;
-    return function(...args) {
-                const context = this;
-                clearTimeout(timeoutId);                                                        // Fn glob: Annule le timer précédent
-                timeoutId = setTimeout( () => { func.apply(context, args); }, delay );          // Exécute SEULEMENT après fin du délai
-    };
-}
-
-/** ------------------------------------------------------------------------------------------- //
- * @instanceIn      {handlePageData} & {updateSPA_Height_}               ../
- * @instanceCount   1 - unique
- * ---------------- --------------- --------------- - ----------------------------------------- //
- * @function        getCallStack_
- * @description     FONCTION UTILITAIRE POUR OBTENIR LA PILE D'APPELS
- *                  Récupère et formate la pile d'appels d'où la fonction a été appelée.
- * ---------------- --------------- --------------- - ----------------------------------------- //
- * @returns         {string}                        > La pile d'appels, formatée pour être lisible.
- * -------------------------------------------------------------------------------------------- */
-function getCallStack_() {
-    const error = new Error();                                                                  // Créer une nouvelle erreur. L'objet Error contient la propriété 'stack'.
-    let stack = error.stack || `Pile d'appels non disponible.`;                                // Le 'new Error()' est créé au moment où cette fonction est appelée.
-    stack = stack.split('\n').slice(2).join('\n').trim();                                       // Garde les appels importants, retire la 1e ligne "Error" / appel à getCallStack lui-même. split('\n') => sépare les lignes, slice(2) => saute les 2 premières lignes inutiles.
-    return `\n--- DÉBUT PILE D'APPELS ---\n${stack}\n--- FIN PILE D'APPELS ---`;                // Retourne un formatage plus clair
-}
 
 /** ------------------------------------------------------------------------------------------- //
  * @instanceIn      {window.onLoad}                   ../
  * @instanceCount   1 - unique     
  * ---------------- --------------- --------------- - ----------------------------------------- //
- * @function        loadPage
- * @description     L'INITIALISEUR DE LA PAGE
+ * @function        initAPP
+ * @description     INITIALISEUR DE L'APPLICATION
  *                  Lance l'appel unique à google.script.run et spécifie les clés de données (calledKeys).
  *                  Placement après son appel pour un souci de lisibilité, le hoisting se charge de remonter la fonction.
  * -------------------------------------------------------------------------------------------- */
 function initAPP() {
-    console.log (` \n\n🚀=====🚀 ${DATE} 🚀=====🚀\n\n🏁=====🏁 C'est parti.🏁=====🏁` );
+    console.log (`🚀=====🚀 ${DATE} 🚀=====🚀\n`);
     try {
         if (!isInit.updateStatus) {
-            init_updateStatus();                                                                // Initialise le composant de loading
+            initUpdateStatusDOM();                                                              // Initialise le composant de loading
             isInit.updateStatus = true;                                                         // 🏁 Active le flag
         }
-        /*
+        
         const result = { submissionID: 'test' }
         const calledKeys = ['submissionID', 'dropdown_lieux', 'dropdown_types'];                // Clés d'appel pour fetch côté serveur 
-        console.log (`loadPage =>  ${result.submissionID} && ${calledKeys}`)
-        updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', msg: `Réveil de l'IA...` });
-        
-        google.script.run                                                                       // ☎️ APPEL SERVEUR
+        console.debug ( `🚥⬜️.initAPP... [param]result.submissionID: ${result.submissionID} && calledKeys: ${calledKeys}` )
+        updateStatus( { imgType: 'bleu', type: 'loading', isLdng: true, msg: `Réveil de l'IA...`, current: 0, total: 1000} );
+ 
+        /*google.script.run                                                                       // ☎️ APPEL SERVEUR
             .withSuccessHandler( (result) => {                                                  //SI SUCCESS CALLBACK
-                console.dir(`.../📡✅.Ended |loadPage : ${result} `); */
-                updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'bleu', msg: `IA réveillée, arrivée dans votre navigateur...` });
-                handlePageData(result);  /*                                                       // => FN client si succès : traite toutes les données reçues
+                */console.log(`🚥✅.--End |initAPP : ${result} `); 
+                updateStatus({ imgType: 'bleu', type: 'loading', isLdng: true, msg: `IA réveillée, arrivée dans votre navigateur...` });
+                handlePageData(result);/*                                                       // => FN client si succès : traite toutes les données reçues
             })
             .withFailureHandler((error) => {                                                    // SI FAILURE CALLBACK
-                console.error( `📡❌.Failed |loadPage : Échec critique : ${error}` );
+                console.error( `🚥❌.Failed |initAPP : Échec critique : ${error}` );
                 updateStatus({ refCSS: 'intro', type: 'fail', msg: `Erreur lors du chargement des données. Veuillez réessayer.` });
             })
             .getInitialPageData(calledKeys);                                                    // FN serveur
         
-        console.log( `./📡⚙️.Run-ng |loadPage : Server Request => getInitialPageData for [${calledKeys}]` );
+        console.log( `./🚥⚙️.Run-ng |initAPP : Server Request => getInitialPageData for [${calledKeys}]` );
         updateStatus({ refCSS: 'intro', type: 'loading', isLdng: true, imgType: 'blanc', message: `Allo l'IA?` });
         */
     } catch (error) {
         isInit.updateStatus = false;
-        console.error( `📡🚫.Catched |loadPage : Big error: ${error}` );
+        console.error( `🚥🚫.Catched |initAPP => Big error: ${error}` );
     }
 }
 /* ** APP LAUNCHER ******************************************************************** (🚀) ** */

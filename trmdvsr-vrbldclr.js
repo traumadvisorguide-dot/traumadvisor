@@ -34,22 +34,31 @@ let pages                       = {                                             
         index                     : 0,                      //
         ID                        : 'accueil_page',         //
         element:                    null,                   // {element} 🛟 Ref DOM                                             /page <= initializeDOMElements()
-        height:                     null,                   // {nomber} - Hauteur de la page de base (hors absolute)            /page <= initializeDOMElements()
-        totalHeight:                null,                   // {nomber} - Hauteur de la page avec les sélections                /page <= calculatePageHeights()
+        height:                     null,                   // {number} - Hauteur de la page de base (hors absolute)            /page <= initializeDOMElements()
+        totalHeight:                null,                   // {number} - Hauteur de la page avec les sélections                /page <= calculatePageHeights()
         hasSub:                     false,                  // {boolean}
-        sub:                        null                    // {array}
+        sub:                        null,                   // {array}
+        slctLxElmnt:                null,                   // {element} 🛟 Ref DOM                                             /page <= initializeDOMElements()
+        tstmnlCrslElmnt:            null,                   // {element} 🛟 Ref DOM - Témoignage Carousel                       /page <= initializeDOMElements()
+        tstmnlCrtElmnt:             null,                   // {element} 🛟 Ref DOM - Témoignage Carte                          /page <= initializeDOMElements()
+        tstmnlScrllAmnt:            null                    // {number} - Valeur du scroll                                      /page <= initializeDOMElements()
     },
     'creation': { 
         index:                      1,                      //
         ID:                         'creation-lieu_page',   //
         element:                    null,                   //                                                                  /page <= initializeDOMElements()
+        height:                     null,                   // {number} - Hauteur de la page de base (hors absolute)            /page <= initializeDOMElements()
+        totalHeight:                null,                   // {number} - Hauteur de la page avec les sélections                /page <= calculatePageHeights()
         hasSub:                     false,                  // {boolean}
-        sub:                        null                    // {array}
+        sub:                        null,                   // {array}
+        adressElmnt:                null                    // {string}                
     },
     'eval': {
         index: 2,                                           //
         ID:                         'evaluations_page',     //
         element:                    null,                   // {element} 🛟 Ref DOM                                             /page <= initializeDOMElements()
+        height:                     null,                   // {number} - Hauteur de la page de base (hors absolute)            /page <= initializeDOMElements()
+        totalHeight:                null,                   // {number} - Hauteur de la page avec les sélections                /page <= calculatePageHeights()
         currntSctnIndx:             null,                   // {integer} - Index de la section active
         sectionCount:               null,                   //
         hasSub:                     true,                   // {boolean} 
@@ -139,9 +148,8 @@ let loader = {
     // ------------------------------------------------------------------------------------ //
     logoURLs                      : null,                   // {element} <= getLogoUrlsFromCSS_() pour init_updateStatus()
     // ------------------------------------------------------------------------------------ //
-    animContainerElmnt            : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box
     animImgElmnt                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/spinner-image
-    animSpinnerElmnt              : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/spinner
+    animSpnElmnt                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/spinner
     // ------------------------------------------------------------------------------------ //
     progressContainerElmnt        : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container
     progressBarElmnt              : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-box/progress-container/progress-bar
@@ -150,9 +158,9 @@ let loader = {
     statusMessage                 : null,                   // {element} 🛟 Ref DOM -> ./status-layer/status-message (trmdvsr-sstexte)        
 };
 let menu                        = {
-    toggleElmnt                   : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
-    iconElements                  : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
-    navElemens                    : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
+    toggleElmnt                     : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
+    iconElmnts                      : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
+    navElmnts                       : null,                   // {element} 🛟 Ref DOM -> ./status-layer                        /page <= initializeDOMElements()
 };
 
 const evaluations = {                                                  // Mappage des valeurs aux descriptions complètes        
@@ -166,6 +174,7 @@ const evaluations = {                                                  // Mappag
 /** -- GLOBAL - Variables de navigation ------------------------------------------------------- */
 let curPgID           = null;                                         // ID Page affichée         
 /** == DOM Element ---------------------------------------------------------------------------- */
+let conteneurBODY     = null;                                                         // {element} 🛟 Ref DOM
 let conteneurSPA      = null;                                         // DOMElement                             <= initializeDOMElements()
 let guideModeBTN      = null;
 let isInit = {                                                        // FLAGS
@@ -177,16 +186,6 @@ let isInit = {                                                        // FLAGS
         mapsScriptLoaded    : false 
     };
 let isTrnstng         = false;                                        // Flag de transition en cours
-
-
-/**--------------------------------------------------------------------------------------------- //
- * @description   PAGE CREATION LIEU 
- * @var           {Element}    creaPgElmnts.adressElmnt   - Element du DOM pour l'adresse du nouveau lieu
- * --------------------------------------------------------------------------------------------- */
-let selectLieuxElmnt  = null;           
-let tstmnlCrslElmnt   = null;                                         // Témoignage Carousel                    <= initializeDOMElements()
-let tstmnlCrtElmnt    = null;                                         // Témoignage Carte                       <= initializeDOMElements()
-let tstmnlScrllAmnt   = null;                                         // Valeur du scroll                       <= initializeDOMElements()
 
 /**--------------------------------------------------------------------------------------------- //
  * @description   PAGE CREATION LIEU 
