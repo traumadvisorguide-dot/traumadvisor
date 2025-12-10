@@ -1,39 +1,56 @@
 /** ------------------------------------------------------------------------------------------- //
- * @instanceIn      {window.onLoad}                   ../
+ * @instanceIn      {..}                   ../
  * @instanceCount   1 - unique     
- * ---------------- --------------- --------------- - ----------------------------------------- //
- * @function        populateDropdown       
- * @description     PEUPLE UN DROPDOWN.
- * ---------------- --------------- --------------- - ----------------------------------------- //
- * @param           {HTMLElement}   selectElement   - L'élément <select> du DOM.
- * @param           {Array}         data            - Le jeu de données.
- * @param           {string}        [textKey='']    - La clé pour le texte affiché (si data est un array d'objets).
- * @param           {string}        [valueKey='']   - La clé pour la valeur soumise (si data est un array d'objets). 
+ * ---------------- ----------------------- --------------- - --------------------------------- //
+ * @function        populateDropdownOptimized       
+ * @description     MET À JOUR UN DROPDOWN
+ *                  En ajoutant uniquement au <select>les nouvelles options <option> qui n'existent pas encore.
+ * ---------------- ----------------------- --------------- - --------------------------------- //
+ * @param           {HTMLSelectElement}     selectElement   - L'élément DOM <select> à mettre à jour.
+ * @param           {Array<Object|string>}  data            - Le nouvel array de données (objets ou strings) à ajouter.
+ * @param           {string}                textKey         - Clé pour le texte affiché (textContent), vide si array de strings.
+ * @param           {string}                valueKey        - Clé pour la valeur de l'option (value), vide si array de strings.
  * -------------------------------------------------------------------------------------------- */
-function populateDropdown(selectElement, data, textKey = '', valueKey = '') {
-    console.log( `Init populateDropdown...[param]selectElement:${selectElement} | data:${data} | textKey:${textKey} | valueKey:${valueKey}` );
-    updateStatus({  etapeID: 'intro', type: 'loading', isLoading: true, message: "Initialisation du système de notation AAAAA terminée.", });
+function populateDropdownOpt (selectElement, data, textKey = '', valueKey = '') {
+    console.log(`Démarrage populateDropdownOptimized pour ${selectElement.id}...`);
+    updateStatus({ type: 'loading', isLdng: true, msg: "Mise à jour des salles d'attente." });
+
+    const existingValues = new Set();                                                           // 1. Crée un Set (ensemble) des valeurs existantes => recherche rapide O(1). Utilisation de 'value' de <option> comme clé d'unicité.    
+    for (const option of selectElement.options) existingValues.add(option.value);               // Parcourt les options existantes et ajouter leur valeur au Set
     
-    selectElement.innerHTML = '';                                                               // Vider avant de remplir <= à changer, il faudrait juste rajouter
-    /**
-     * Il faudrait vérifier s'il y a des changements, 
-     * nb d'items total. Et si ça a changé, update uniquement les nouveaux? versioning?
-     * 
-     */
+    let optionsAddedCount = 0;
+    const fragment = document.createDocumentFragment();                                         // 2. Traite les nouvelles données en utilisant un DocumentFragment pour optimiser l'insertion dans le DOM
+    
     data.forEach( item => {
-        const option = document.createElement('option');                                        // Écrit du html <option value=''>textContent</option
-         
-        if (textKey === '') {                                                                   // Si data est un array de strings (ex: ['Type A', 'Type B'])
-            option.value = item;
-            option.textContent = item;
-    
-        } else {                                                                                // Si data est un array d'objets (ex: [{id: 1, nom: 'Lieu'}])
-            option.value = item[valueKey];
-            option.textContent = item[textKey];
+        let value, text;
+
+        if (textKey === '' || typeof item === 'string') {                                       // Cas => array de strings (ex: ['Type A', 'Type B'])
+            value = item;
+            text = item;
+
+        } else {                                                                                // Cas => array d'objets (ex: [{id: 1, nom: 'Lieu'}])
+            value = item[valueKey];
+            text = item[textKey];
         }
-        selectElement.appendChild(option);
+
+        if ( !existingValues.has(String(value)) ) {                                             // 3. Vérifie l'existence : n'ajoute que si la valeur n'est pas déjà présente <= conversion en string essentielle car Set stocke la valeur de l'option qui est toujours une chaîne.
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = text;
+            fragment.appendChild(option);
+            optionsAddedCount++;
+        }
     } );
+    
+    if (optionsAddedCount > 0) {                                                                // 4. Insertion finale dans le DOM
+        selectElement.appendChild(fragment);
+        console.log(`Dropdown mis à jour : ${optionsAddedCount} nouvelles options ajoutées.`);
+    
+    } else {
+        console.log("Dropdown inchangé : aucune nouvelle option à ajouter.");
+    }
 }
+
 /** =========================================================================================== //
  * @description 'Fin du fichier. with care.'
  * @author 'trmdvsr'

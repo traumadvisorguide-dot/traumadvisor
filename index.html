@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Traumadvisor - Et l'attente sera plus douce. Votre santé commence ici, alors donnez votre avis.</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <script src="trmdvsr-favicon-fix.js"></script>
+    <link rel="icon" type="image/x-icon" href="dts/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="dts/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
     <link rel="stylesheet" href="trmdvsr.css" />
@@ -33,8 +34,6 @@
       </div>
     </header>
     <div class="conteneur-spa-global">
-
-
       <main id="accueil_page" class="page">
         <section id="heroContent" class="hero-section">
           <img src="https://i.imgur.com/uuI1vIK.png" class="hero-image-container"/>
@@ -115,26 +114,11 @@
             <label class="trmdvsr-sstexte" for="toggle-guided-oui-instance-1">Avez-vous besoin d'un guide?</label>  
             <div class="groupe-boutons-radio"> <!--  id="mode-toggle-group-1" -->
               <div class="overridden-radio">
-                <input 
-                    type="radio"
-                    data-action="guided_mode_toggle"
-                    value="guided"
-                    class="existing-radio"
-                    id="toggle-guided-oui-instance-1"
-                    name="guided_mode_toggle_instance_1"
-                    checked 
-                    required >
+                <input type="radio" class="existing-radio" id="toggle-guided-oui-instance-1" name="guided_mode_toggle_instance_1" value="guided" data-action="guided_mode_toggle" checked required >
                 <label for="toggle-guided-oui-instance-1" class="trmdvsr-sstexte trmdvsr-radio-label">Oui</label>
               </div>
               <div class="overridden-radio">
-                <input 
-                    type="radio"
-                    data-action="guided_mode_toggle"
-                    value="expert"
-                    class="existing-radio" 
-                    id="toggle-guided-non-instance-1" 
-                    name="guided_mode_toggle_instance_1" 
-                    required >
+                <input type="radio" class="existing-radio" id="toggle-guided-non-instance-1" name="guided_mode_toggle_instance_1" value="expert" data-action="guided_mode_toggle" required >
                 <label for="toggle-guided-non-instance-1" class="trmdvsr-sstexte trmdvsr-radio-label">Non</label>
               </div>
             </div>
@@ -247,16 +231,13 @@
               <p><strong>Laissez-vous guider.</strong></p><p>Choisissez les notes qui vous semblent appropriées. Jouez de votre plus belle plume pour trouver le titre de votre avis qui a accrocher l’attention de la communauté. Demandez à l’IA de rédiger l’avis, Modifiez ce que vous voulez. À la fin, cela donnera un post comme celui en exemple juste là. Tout va bien se passer, nous sommes avec vous.</p><br>
             </div>
             <div class="trmdvsr-texte" aria-label="Progression du formulaire">
-              <button 
-                  type="button"
-                  data-action="navigateAnchor"
-                  data-sectiontarget="heroContent" 
-                  class="eval-btn trmdvsr-texte-btn trmdvsr-button primary" > <!-- A VOIR eval-btn -->
+              <button type="button" class="eval-btn trmdvsr-texte-btn trmdvsr-button primary" data-action="navigateAnchor" data-sectiontarget="heroContent" > <!-- A VOIR eval-btn -->
                 C'est parti
               </button>
             </div>
           </div>
           <div class="conteneur-lame flex-col col-last">
+            <!--
             <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DOsNqq3Dajw/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
               <div style="padding:16px;">
                 <a href="https://www.instagram.com/p/DOsNqq3Dajw/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank">
@@ -309,11 +290,10 @@
               </div>
             </blockquote>
             <script async src="https://www.instagram.com/embed.js"></script>
+            -->
           </div>
         </section>
       </main>
-
-
       <main id="creation-lieu_page" class="page">
         <section class="hero-section">
           <img src="https://i.imgur.com/tvWEmNU.png" class="hero-image-container"/>
@@ -341,26 +321,11 @@
             <label class="trmdvsr-sstexte" for="toggle-guided-oui-instance-2">Avez-vous besoin d'un guide?</label>  
             <div class="groupe-boutons-radio" id="mode-toggle-group-2">
               <div class="overridden-radio">
-                <input 
-                    type="radio"
-                    data-action="guided_mode_toggle"
-                    value="guided"
-                    class="existing-radio" 
-                    id="toggle-guided-oui-instance-2" 
-                    name="guided_mode_toggle_instance_2" 
-                    checked 
-                    required >
+                <input type="radio" class="existing-radio" id="toggle-guided-oui-instance-2" name="guided_mode_toggle_instance_2" value="guided" data-action="guided_mode_toggle" checked required >
                 <label for="toggle-guided-oui-instance-2" class="trmdvsr-sstexte trmdvsr-radio-label">Oui</label>
               </div>
               <div class="overridden-radio">
-                <input 
-                    type="radio" 
-                    data-action="guided_mode_toggle"
-                    value="expert" 
-                    class="existing-radio" 
-                    id="toggle-guided-non-instance-2" 
-                    name="guided_mode_toggle_instance_2" 
-                    required>
+                <input type="radio" class="existing-radio" id="toggle-guided-non-instance-2" name="guided_mode_toggle_instance_2" value="expert" data-action="guided_mode_toggle" required>
                 <label for="toggle-guided-non-instance-2" class="trmdvsr-sstexte trmdvsr-radio-label">Non</label>
               </div>
             </div>
@@ -371,12 +336,8 @@
           <hgroup class="conteneur-lame">
             <h4 class="trmdvsr-texte-h4">Le lieu</h4>
             <h3 class="trmdvsr-texte-h3">Où est cette salle d'attente?</h3>
-            <input type="text"
-                  id="adresseSalle"
-                  class="form-input trmdvsr-texte"  autocorrect="on"
-                  placeholder="Saisissez l'adresse, rue, ville, ou code postal..." 
-                  data-type="control_textbox"
-                  required>  
+            <input type="text" id="adresseSalle" class="form-input trmdvsr-texte" autocorrect="on" placeholder="Saisissez l'adresse, rue, ville, ou code postal..." data-type="control_textbox" required>
+            <input type="text" id="adresseError" class="form-input trmdvsr-texte" readonly>  
           </hgroup>
         </form>
         <hr class="traum-divider" />
@@ -384,27 +345,15 @@
           <hgroup class="conteneur-lame">
             <h4 class="trmdvsr-texte-h4">Le nom</h4>
             <h3 class="trmdvsr-texte-h3">Baptisez cette salle d'attente.</h3>
-            <input type="text" 
-                    id="nomSalle" 
-                    class="form-input trmdvsr-texte"  autocorrect="on"
-                    aria-describedby="aide_nomSalle"
-                    placeholder="Ex : Chez Doc Gynéco"
-                    data-type="control_textbox"
-                    required>
-              <p id="aide_nomSalle" class="form-sub trmdvsr-sstexte">
-                On a le droit d’être créatif, sans être méchant. Parce que c'est pas gentil.
-              </p>  
+            <input type="text" id="nomSalle" class="form-input trmdvsr-texte" autocorrect="on" aria-describedby="aide_nomSalle" placeholder="Ex : Chez Doc Gynéco" data-type="control_textbox" required>
+            <p id="aide_nomSalle" class="form-sub trmdvsr-sstexte">On a le droit d’être créatif, sans être méchant. Parce que c'est pas gentil.</p>
           </hgroup>
           <hr class="traum-divider" />
           <hgroup class="conteneur-lame">
             <h4 class="trmdvsr-texte-h4">Le tyope d'établissement</h4>
             <h3 class="trmdvsr-texte-h3">Quel genre de salle d'attente est-ce?</h3>
             <div class="trmdvsr-select">
-              <select id="typeEtablissement"
-                      class="form-select trmdvsr-sstexte"
-                      placeholder="Définir le type d'établissement"
-                      required
-                      aria-describedby="aide_selectType">
+              <select id="typeEtablissement" class="form-select trmdvsr-sstexte" placeholder="Définir le type d'établissement" aria-describedby="aide_selectType" required>
                 <option value="" disabled selected>Choisissez le type dans cette liste</option>
                 <option value="Cabinet Libéral">Cabinet Libéral</option>
                 <option value="Centre">Centre</option>
@@ -413,9 +362,7 @@
                 <option value="autre">autre</option>
                 <option value="libéral">libéral</option>
               </select>
-              <p id="aide_selectType" class="form-sub trmdvsr-sstexte">
-                Est-ce un cabinet libéral ou un hôpital? Il n'y a pas de piège.
-              </p>
+              <p id="aide_selectType" class="form-sub trmdvsr-sstexte">Est-ce un cabinet libéral ou un hôpital? Il n'y a pas de piège.</p>
               <div class="select-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="form-select-icon-style trmdvsr-button-picto">
                   <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z"/>
@@ -425,23 +372,14 @@
           </hgroup>
           <div class="traum-divider-big"></div>
           <div class="conteneur-lame flex-into-row button-multi trmdvsr-texte">
-            <button 
-                type="button" 
-                data-action="navigateMain" 
-                data-maintarget='accueil_page'
-                class="trmdvsr-texte-btn trmdvsr-button" >
+            <button type="button" class="trmdvsr-texte-btn trmdvsr-button" data-action="navigateMain" data-maintarget='accueil_page'>
               <span>Précédent</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="trmdvsr-button-picto"> 
                 <path d="m12 19-7-7 7-7"/>
                 <path d="M19 12H5"/>
               </svg>
             </button>
-            <button 
-                type="button" 
-                data-action="navigateMain" 
-                data-maintarget='evaluations_page'
-                data-sectiontarget='section_q1'
-                class="trmdvsr-texte-btn trmdvsr-button primary" >
+            <button type="button" class="trmdvsr-texte-btn trmdvsr-button primary" data-action="navigateMain" data-maintarget='evaluations_page' data-sectiontarget='section_q1'>
               <span>Créer le lieu</span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="trmdvsr-button-picto"> 
                 <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
@@ -451,6 +389,8 @@
           </div>   
         </form>
       </main>
+
+
       <main id="evaluations_page" class="page">
         <section class="hero-section">
           <img src="https://i.imgur.com/RKK39vy.png" class="hero-image-container"/>
@@ -472,32 +412,19 @@
             <label class="trmdvsr-sstexte" for="toggle-guided-oui-instance-3">Avez-vous besoin d'un guide?</label>  
             <div class="groupe-boutons-radio" id="mode-toggle-group-3">
               <div class="overridden-radio">
-                <input 
-                    type="radio"
-                    data-action="guided_mode_toggle"
-                    value="guided"
-                    class="existing-radio"
-                    id="toggle-guided-oui-instance-3"
-                    name="guided_mode_toggle_instance_3"
-                    checked 
-                    required >
+                <input type="radio" class="existing-radio" id="toggle-guided-oui-instance-3" name="guided_mode_toggle_instance_3" value="guided" data-action="guided_mode_toggle" checked required >
                 <label for="toggle-guided-oui-instance-3" class="trmdvsr-sstexte trmdvsr-radio-label">Oui</label>
               </div>
               <div class="overridden-radio">
-                <input 
-                    type="radio"
-                    data-action="guided_mode_toggle"
-                    value="expert"
-                    class="existing-radio"
-                    id="toggle-guided-non-instance-3"
-                    name="guided_mode_toggle_instance_3"
-                    required >
+                <input type="radio" class="existing-radio" id="toggle-guided-non-instance-3" name="guided_mode_toggle_instance_3" value="expert" data-action="guided_mode_toggle" required >
                 <label for="toggle-guided-non-instance-3" class="trmdvsr-sstexte trmdvsr-radio-label">Non</label>
               </div>
             </div>
           </div>
         </section>
         <hr class="traum-divider" />
+
+
         <nav aria-label="Progression du formulaire">
           <hgroup class="conteneur-lame">
             <h2 class="trmdvsr-texte-h2">L'évaluation <em>step by step</em></h2>
@@ -574,6 +501,7 @@
             </li> 
           </ul>
         </nav>
+
         <div class="eval-carousel-viewport">
           <form class="eval-carousel-track" id="evaluationForm">
 
@@ -596,8 +524,7 @@
                 <div class="conteneur-lame flex-col col-middle">
                   <h4 class="trmdvsr-texte-h4">La note</h4>
                   <label class="module-note trmdvsr-texte" for="eval-q1">♿<br/><em><b>Sélectionnez une note</b></em></label>
-
-                  <div class="module-note " data-action="handleRatingChange" data-handler-group="rating-selection">
+                  <div class="module-note" data-action="handleRatingChange" data-handler-group="rating-selection">
                     <input type="radio" name="eval-q1" id="q1-r5" value="5" required />
                     <label class="trmdvsr-radio-label" for="q1-r5" title="Excellent (5/5)"></label>
                     <input type="radio" name="eval-q1" id="q1-r4" value="4" />
@@ -618,8 +545,8 @@
                   <div class="trmdvsr-sstexte"><p>...Si c'est <i>the place to</i> attendre sans problème d’accès.</p></div>
                 </div>
               </div>
-              
               <hr class="traum-divider-small" />
+
 
               <div class="composant-avis conteneur-lame flex-into-row">
                 <hgroup class="avis-zone-edito conteneur-lame flex-col col-first trmdvsr-texte">
@@ -661,7 +588,7 @@
               </div>
               <hr class="traum-divider-big" />
               <nav class="conteneur-lame button-solo trmdvsr-texte" aria-label="Progression du formulaire">
-                <button type="button" data-action="navigateSection" data-maintarget="evaluations_page" data-sectiontarget="section_q2" data-param="true" class="eval-btn trmdvsr-texte-btn trmdvsr-button primary" > <!-- A VOIR eval-btn -->Suivant</button>
+                <button type="button" data-action="navigateSection" data-maintarget="evaluations_page" data-sectiontarget="section_q2" data-param="true" class="eval-btn trmdvsr-texte-btn trmdvsr-button primary">Suivant</button>
               </nav>
             </section>
             <section class="eval-item" id="section_q2">
@@ -681,40 +608,24 @@
                   <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
                   <div class="trmdvsr-sstexte"><p>...genre ça ressemble à chez mamie, mais pas la mamie sympa. L’autre.</p></div>
                 </div>
-                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-                  <label class="module-note trmdvsr-texte" for="eval-q2"><em><b>🎨 Sélectionnez une note</b></em></label>
-                  <div 
-                      data-action="rating-selection"
-                      data-action-group="rating-selection"
-                      class="module-note" >
-                    <!---->
+                <div class="conteneur-lame flex-col col-middle">
+                  <h4 class="trmdvsr-texte-h4">La note</h4>
+                  <label class="module-note trmdvsr-texte" for="eval-q2">🎨<br/><em><b>Sélectionnez une note</b></em></label>
+                  <div class="module-note" data-action="handleRatingChange" data-handler-group="rating-selection">
                     <input type="radio" name="eval-q2" id="q2-r5" value="5" required />
                     <label class="trmdvsr-radio-label" for="q2-r5" title="Excellent (5/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q2" id="q2-r4" value="4" />
                     <label class="trmdvsr-radio-label" for="q2-r4" title="Très bien (4/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q2" id="q2-r3" value="3" />
                     <label class="trmdvsr-radio-label" for="q2-r3" title="Moyen (3/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q2" id="q2-r2" value="2" />
                     <label class="trmdvsr-radio-label" for="q2-r2" title="Peu satisfaisant (2/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q2" id="q2-r1" value="1" />
                     <label class="trmdvsr-radio-label" for="q2-r1" title="Mauvais (1/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q2" id="q2-r0" value="0" />
                     <label class="trmdvsr-radio-label" for="q2-r0" title="Très Mauvais (0/5)"></label>
-                    <!---->
                   </div>
-                  <div class="module-note trmdvsr-sstexte">
-                    <label for="q2-r5">5</label>
-                    <label for="q2-r4">4</label>
-                    <label for="q2-r3">3</label>
-                    <label for="q2-r2">2</label>
-                    <label for="q2-r1">1</label>
-                    <label for="q2-r0">0</label>
-                  </div>
+                  <input type="text" id="result-q2" class="module-note trmdvsr-texte-h2" value="⏳/ 5" readonly/>
                 </div>
                 <div class="conteneur-lame flex-col col-last">
                   <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
@@ -800,40 +711,24 @@
                   <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
                   <div class="trmdvsr-sstexte"><p>...c’est une chaise dure.</p></div>
                 </div>
-                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-                  <label class="module-note trmdvsr-texte" for="eval-q3"><em><b>🪑 Sélectionnez une note</b></em></label>
-                  <div 
-                      data-action="rating-selection"
-                      data-action-group="rating-selection"
-                      class="module-note" >
-                    <!---->
+                <div class="conteneur-lame flex-col col-middle">
+                  <h4 class="trmdvsr-texte-h4">La note</h4>
+                  <label class="module-note trmdvsr-texte" for="eval-q3">🪑<br/><em><b>Sélectionnez une note</b></em></label>
+                  <div class="module-note" data-action="rating-selection" data-handler-group="rating-selection">
                     <input type="radio" name="eval-q3" id="q3-r5" value="5" required />
                     <label class="trmdvsr-radio-label" for="q3-r5" title="Excellent (5/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q3" id="q3-r4" value="4" />
                     <label class="trmdvsr-radio-label" for="q3-r4" title="Très bien (4/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q3" id="q3-r3" value="3" />
                     <label class="trmdvsr-radio-label" for="q3-r3" title="Moyen (3/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q3" id="q3-r2" value="2" />
                     <label class="trmdvsr-radio-label" for="q3-r2" title="Peu satisfaisant (2/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q3" id="q3-r1" value="1" />
                     <label class="trmdvsr-radio-label" for="q3-r1" title="Mauvais (1/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q3" id="q3-r0" value="0" />
                     <label class="trmdvsr-radio-label" for="q3-r0" title="Très Mauvais (0/5)"></label>
-                    <!---->
                   </div>
-                  <div class="module-note trmdvsr-sstexte">
-                    <label for="q3-r5">5</label>
-                    <label for="q3-r4">4</label>
-                    <label for="q3-r3">3</label>
-                    <label for="q3-r2">2</label>
-                    <label for="q3-r1">1</label>
-                    <label for="q3-r0">0</label>
-                  </div>
+                  <input type="text" id="result-q3" class="module-note trmdvsr-texte-h2" value="⏳/ 5" readonly/>
                 </div>
                 <div class="conteneur-lame flex-col col-last">
                   <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
@@ -881,25 +776,9 @@
                   </div>
                 </div>
               </div>
-              <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">                                 <!-- NAVIGATION -->
-                <button 
-                    type="button"
-                    data-action="navigateSection"
-                    data-maintarget="evaluations_page"
-                    data-sectiontarget="section_q2"
-                    data-param="false" 
-                    class="trmdvsr-texte-btn trmdvsr-button" >
-                  Précédent
-                </button>
-                <button 
-                    type="button" 
-                    data-action="navigateSection"
-                    data-maintarget="evaluations_page"
-                    data-sectiontarget="section_q4"
-                    data-param="true" 
-                    class="trmdvsr-texte-btn trmdvsr-button primary" >
-                  Suivant
-                </button>
+              <nav class="conteneur-lame flex-into-row button-multi trmdvsr-texte" aria-label="Progression du formulaire">
+                <button type="button" data-action="navigateSection" data-maintarget="evaluations_page" data-sectiontarget="section_q2" data-param="false" class="trmdvsr-texte-btn trmdvsr-button">Précédent</button>
+                <button type="button" data-action="navigateSection" data-maintarget="evaluations_page" data-sectiontarget="section_q4" data-param="true" class="trmdvsr-texte-btn trmdvsr-button primary" >Suivant</button>
               </nav>
             </section>
             <section class="eval-item" id="section_q4">
@@ -919,40 +798,24 @@
                   <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
                   <div class="trmdvsr-sstexte"><p>...y a R, Nada, quedal. </p></div>
                 </div>
-                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
+                <div class="conteneur-lame flex-col col-middle">
+                  <h4 class="trmdvsr-texte-h4">La note</h4>
                   <label class="module-note trmdvsr-texte" for="eval-q3"><em><b>🎁 Sélectionnez une note</b></em></label>
-                  <div 
-                      data-action="rating-selection"
-                      data-action-group="rating-selection"
-                      class="module-note" >
-                    <!---->
+                  <div class="module-note" data-action="rating-selection" data-handler-group="rating-selection">
                     <input type="radio" name="eval-q4" id="q4-r5" value="5" required />
                     <label class="trmdvsr-radio-label" for="q4-r5" title="Excellent (5/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q4" id="q4-r4" value="4" />
                     <label class="trmdvsr-radio-label" for="q4-r4" title="Très bien (4/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q4" id="q4-r3" value="3" />
                     <label class="trmdvsr-radio-label" for="q4-r3" title="Moyen (3/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q4" id="q4-r2" value="2" />
                     <label class="trmdvsr-radio-label" for="q4-r2" title="Peu satisfaisant (2/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q4" id="q4-r1" value="1" />
                     <label class="trmdvsr-radio-label" for="q4-r1" title="Mauvais (1/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q4" id="q4-r0" value="0" />
                     <label class="trmdvsr-radio-label" for="q4-r0" title="Très Mauvais (0/5)"></label>
-                    <!---->
                   </div>
-                  <div class="module-note trmdvsr-sstexte">
-                    <label for="q4-r5">5</label>
-                    <label for="q4-r4">4</label>
-                    <label for="q4-r3">3</label>
-                    <label for="q4-r2">2</label>
-                    <label for="q4-r1">1</label>
-                    <label for="q4-r0">0</label>
-                  </div>
+                  <input type="text" id="result-q4" class="module-note trmdvsr-texte-h2" value="⏳/ 5" readonly/>
                 </div>
                 <div class="conteneur-lame flex-col col-last">
                   <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
@@ -1035,40 +898,24 @@
                   <img class="img-notede0" src="https://i.imgur.com/gy5B1Wg.png" alt="De O..."/>
                   <div class="trmdvsr-sstexte"><p>...pour le temps d'attente au guichet des impôts, 48h avant de devoir finir sa déclaration</p></div>
                 </div>
-                <div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-                  <label class="module-note trmdvsr-texte" for="eval-q3"><em><b>⏰ Sélectionnez une note</b></em></label>
-                  <div 
-                      data-action="rating-selection"
-                      data-action-group="rating-selection"
-                      class="module-note" >
-                    <!---->
+                <div class="conteneur-lame flex-col col-middle">
+                  <h4 class="trmdvsr-texte-h4">La note</h4>
+                  <label class="module-note trmdvsr-texte" for="eval-q3">⏰<br/><em><b>Sélectionnez une note</b></em></label>
+                  <div class="module-note" data-action="rating-selection" data-handler-group="rating-selection">
                     <input type="radio" name="eval-q5" id="q5-r5" value="5" required />
                     <label class="trmdvsr-radio-label" for="q5-r5" title="Excellent (5/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q5" id="q5-r4" value="4" />
                     <label class="trmdvsr-radio-label" for="q5-r4" title="Très bien (4/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q5" id="q5-r3" value="3" />
                     <label class="trmdvsr-radio-label" for="q5-r3" title="Moyen (3/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q5" id="q5-r2" value="2" />
                     <label class="trmdvsr-radio-label" for="q5-r2" title="Peu satisfaisant (2/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q5" id="q5-r1" value="1" />
                     <label class="trmdvsr-radio-label" for="q5-r1" title="Mauvais (1/5)"></label>
-                    <!---->
                     <input type="radio" name="eval-q5" id="q5-r0" value="0" />
                     <label class="trmdvsr-radio-label" for="q5-r0" title="Très Mauvais (0/5)"></label>
-                    <!---->
                   </div>
-                  <div class="module-note trmdvsr-sstexte">
-                    <label for="q5-r5">5</label>
-                    <label for="q5-r4">4</label>
-                    <label for="q5-r3">3</label>
-                    <label for="q5-r2">2</label>
-                    <label for="q5-r1">1</label>
-                    <label for="q5-r0">0</label>
-                  </div>
+                  <input type="text" id="result-q5" class="module-note trmdvsr-texte-h2" value="⏳/ 5" readonly/>
                 </div>
                 <div class="conteneur-lame flex-col col-last">
                   <img class="img-notea5" src="https://i.imgur.com/oGZf3eC.png" alt="À 5"/>
@@ -1285,6 +1132,21 @@
           </form>
         </div>
       </main> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
     <footer class="conteneur-lame flex-trmdvsr-id">
       <div class="insta-mobile">
@@ -1319,9 +1181,10 @@
         </div>
       </div>
     </div>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <script src="trmdvsr-vrbldclr.js"></script>
-    <script src="trmdvsr-pages.js"></script>
+    <script src="trmdvsr-gglmps.js"></script>
     <script src="trmdvsr-dropdown.js"></script>
     <script src="trmdvsr-launch.js"></script>
   </body>

@@ -191,11 +191,12 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 	box-sizing:						border-box;
 	width:							100%;
 	max-width:						var(--largeur-conteneur-max);								/* clamp => fluide */
+	min-height: 					1px;
 	height:							var(--hauteur-content);
 	margin:							0;
 	padding:						0;
 	background-color:				#FFF;
-	overflow:						hidden;														/* ‼️POUR DEBUG => A REACTIVER‼ */
+	/*overflow:						hidden;														/* ‼️POUR DEBUG => A REACTIVER‼ */
 	box-shadow:						0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 	transition:						height 1s ease-in-out, width 1s ease-out;
 }
@@ -208,13 +209,13 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 	z-index:						100;
 	box-sizing:						border-box;
 	width:							var(--largeur-conteneur-max);
-	height:							auto;
+	height:							auto%;
 	margin:							0;
 	padding:						0 0 var(--espacement-large);
 	background-color:				#FFF;
 	box-shadow:						-10px 0px 20px -5px rgba(var(--gris-trmdvsr-fonce-RGB), 0.4);
 	transform:						translateX(100%);											/* positionne la page à droite */
-	opacity:						0;
+	/*opacity:						0;*/
 	transition:						transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
 	will-change:					transform, opacity;											/* Optimise la perf */
 }
