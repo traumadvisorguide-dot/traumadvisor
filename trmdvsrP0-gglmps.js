@@ -7,30 +7,30 @@
  *                  Valider les données du formulaire, les collecter et naviguer.
  * -------------------------------------------------------------------------------------------- */
 function processLieuCreationSubmission() {
-    const adresseError = pages.creation.adressErrorElmnt;										// Récupère l'Element
+    const adresseError = pages.creation.$adressError;										// Récupère l'Element
     if (adresseError) {                                                                         // Réinitialise l'état d'erreur
         adresseError.classList.add('hidden');
         adresseError.textContent = '';
     }
 
-    const adresseValue = pages.creation.adressElmnt ? pages.creation.adressElmnt.value.trim() : '';
+    const adresseValue = pages.creation.$adress ? pages.creation.$adress.value.trim() : '';
     if (adresseValue === '') {                                                                  // 2. Validation : Le champ adresseSalle est-il vide ?
         console.error("Validation échouée : Le champ adresseSalle est vide.");
         if (adresseError) {                                                                     // Afficher le message d'erreur si l'élément existe                          
             adresseError.textContent = "Veuillez sélectionner une adresse valide (champ requis).";
             adresseError.classList.remove('hidden');
         }
-        if (pages.creation.adressElmnt) {
-            pages.creation.adressElmnt.focus();                                                 // Activer le focus sur le champ vide (Objectif du client)
-            pages.creation.adressElmnt.reportValidity();
+        if (pages.creation.$adress) {
+            pages.creation.$adress.focus();                                                 // Activer le focus sur le champ vide (Objectif du client)
+            pages.creation.$adress.reportValidity();
         }
         console.error( `❌.Form |submitLieuCreation : Validation échouée.` )
         return;   
     }
 
     appData.adresseSalle = adresseValue;                                                        // 📘✅ Collecte des données
-    appData.nomSalle = pages.creation.nomElmnt?.value || '';                                    // 📘✅ Collecte des données
-    appData.typeEtablissement = pages.creation.typeElmnt?.value || '';                          // 📘✅ Collecte des données
+    appData.nomSalle = pages.creation.$nomLieu?.value || '';                                    // 📘✅ Collecte des données
+    appData.typeEtablissement = pages.creation.$typeLieu?.value || '';                          // 📘✅ Collecte des données
     console.log( `✅.Form |submitLieuCreation : OK. Validation réussie. Données collectées: ${appData}` );
     showPage('evaluations_page');                                   							// Passer à la page d'évaluation
 }
@@ -56,7 +56,7 @@ function googleMapsCallback() {
  * ---------------- --------------- --------------- - ----------------------------------------- //
  * @function        tryToInitAutocomplete
  * @description     VÉRIFIE SI TOUT EST PRÊT POUR LANCER L'AUTOCOMPLETION
- *                  Permet de démembrer la fonction initialit initAutocomplete, lancé par initalizeDOMElements et googleMapsCallback
+ *                  Permet de démembrer la fonction initiale initAutocomplete, lancé par initalizeDOMElements et googleMapsCallback
  * -------------------------------------------------------------------------------------------- */
 function tryToInitAutocomplete() {
     if (isInit.allDOMLoaded && isInit.mapsScriptLoaded) {
@@ -75,12 +75,12 @@ function tryToInitAutocomplete() {
  * @description     INITIALISE L'AUTOCOMPLETION GOOGLE MAPS
  * -------------------------------------------------------------------------------------------- */
 function initAutocomplete() {
-    if (!pages.creation.adressElmnt) {
+    if (!pages.creation.$adress) {
         console.error("Erreur critique : Le champ d'adresse n'a pas été trouvé lors de l'initialisation Maps.");
         return;
     }
 
-    const autocomplete = new google.maps.places.Autocomplete(pages.creation.adressElmnt, {      // Initialiser service autocomplétion sur le champ d'entrée.
+    const autocomplete = new google.maps.places.Autocomplete(pages.creation.$adress, {      // Initialiser service autocomplétion sur le champ d'entrée.
         types: ['geocode'],                                                                     // Restreindre recherche > 'geocode' suffisant pour adresses
         componentRestrictions: { country: ["fr", "be", "ch"] },                                 // Restreindre les pays
     });

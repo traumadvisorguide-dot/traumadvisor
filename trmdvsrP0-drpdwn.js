@@ -2,7 +2,7 @@
  * @instanceIn      {..}                   ../
  * @instanceCount   1 - unique     
  * ---------------- ----------------------- --------------- - --------------------------------- //
- * @function        populateDropdownOptimized       
+ * @function        ppltDrpdwnimized       
  * @description     MET À JOUR UN DROPDOWN
  *                  En ajoutant uniquement au <select>les nouvelles options <option> qui n'existent pas encore.
  * ---------------- ----------------------- --------------- - --------------------------------- //
@@ -11,8 +11,8 @@
  * @param           {string}                textKey         - Clé pour le texte affiché (textContent), vide si array de strings.
  * @param           {string}                valueKey        - Clé pour la valeur de l'option (value), vide si array de strings.
  * -------------------------------------------------------------------------------------------- */
-function populateDropdownOpt (selectElement, data, textKey = '', valueKey = '') {
-    console.log(`Démarrage populateDropdownOptimized pour ${selectElement.id}...`);
+function ppltDrpdwn (selectElement, data, textKey = '', valueKey = '') {
+    console.log(`Démarrage ppltDrpdwnimized pour ${selectElement.id}...`);
     updateStatus({ type: 'loading', isLdng: true, msg: "Mise à jour des salles d'attente." });
 
     const existingValues = new Set();                                                           // 1. Crée un Set (ensemble) des valeurs existantes => recherche rapide O(1). Utilisation de 'value' de <option> comme clé d'unicité.    

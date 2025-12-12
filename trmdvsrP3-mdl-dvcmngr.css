@@ -1,0 +1,100 @@
+
+:root {                     /* Variables et Styles de Base */
+    
+}
+/** COMPOSANT AVIS EN MODE CHATWINDOW ===================================================== */
+.conteneur-avis {
+    display:                        flex;
+    justify-content:                center;
+    align-items:                    center;
+    margin:                         0;
+    padding:                        1rem;
+}
+
+.module-avis {                                                                              /* Conteneur Principal - Définit la taille maximale pour SPA */
+    display:                        flex;
+    flex-direction:                 column;
+    overflow:                       hidden;
+    width:                          100%;
+    max-width:                      var(--largeur-conteneur-max);
+    background-color:               white;
+    border-radius:                  0;
+    box-shadow:                     0 10px 30px var(--color-shadow);   
+
+}
+.conversation-log {                                                                         /* Zone de Conversation (Log) - MAINTENANT AVEC HAUTEUR FIXE ET SCROLL */
+    flex-grow:                      1;
+    overflow-y:                     auto;                                                   /* Active le scroll vertical */
+    scroll-behavior:                smooth;
+    height:                         var(--module-avis-height);                              /* Hauteur fixe appliquée ici */
+    padding:                        20px;
+    border-bottom:                  1px solid #eee;                                         /* Séparateur visuel */
+    
+}
+.conversation-log > div { margin-bottom: 20px; }
+/** Style Message par l'app --------------------------------------------------------------- */
+.message-app-wrapper { display: flex; justify-content: flex-start; }                        /* Message de l'Application (Proposition) */
+.message-app {
+    max-width:                      90%;
+    padding:                        15px;
+    color:                          var(--bleu-trmdvsr-pur);
+    line-height:                    1.5;
+    background-color:               var(--gris-trmdvsr-tres-clair);
+    border-radius:                  var(--bordure-radius);
+    box-shadow:                     0 2px 5px rgba(0, 0, 0, 0.05);
+}
+.message-app p { margin: 0; }
+/*. Style Message par l'user (Texte ÉDITÉ) ------------------------------------------------ */
+.message-user-wrapper { display: flex; justify-content: flex-end; margin-top: 20px; }
+.message-user {
+    max-width:                      90%;
+    padding:                        15px;
+    color:                          var(--blanc-pur);
+    line-height:                    1.5;
+    background-color:               var(--bleu-trmdvsr-moyen);
+    border-radius:                  var(--bordure-radius);
+    box-shadow:                     0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.message-user p { margin: 0; }
+/*. Pied de Page / Zone d'Action ---------------------------------------------------------- */
+.avis-zone-mode {
+    width:                          100%;
+    padding:                        1rem;
+    border-top:                     1px solid #eee;
+    background-color:               #fcfcfc;
+}
+.mode-action-container {
+    display:                        flex;
+    gap:                            0.5rem;
+    justify-content:                space-between;
+    width:                          100%;
+    border: 2px solid green;
+}
+/* Zone d'Édition (visible après clic sur Éditer) ----------------------------------------- */
+.mode-edit-container {
+    display:                        none;
+    flex-direction:                 column;
+    gap:                            0.5rem;
+    width:                          100%;
+    border:                         1px solid red;
+}
+.editArea {
+    width:                          60%;
+    height:                         auto;
+    padding:                        1rem;
+    font-size:                      1em;
+    line-height:                    1.4;
+    border:                         1px solid #ddd;
+    border-radius:                  1rem;
+    resize:                         vertical;
+}
+.edit-buttons-group {
+    display:                        flex;
+    justify-content:                flex-end;
+    border:                         1px solid red;
+}
+/** =========================================================================================== //
+ * @document 'Fin du fichier. with care.'
+ * @author 'trmdvsr'
+ * @version 25.12.11 (21:57)
+// ============================================================================================ */

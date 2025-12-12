@@ -14,6 +14,7 @@ menu, ol, ul                                                    { margin: 0; pad
 	--gris-trmdvsr-clair:			#a0aec0;													/* RGB: 160, 174, 192; */
 	--gris-trmdvsr-tres-clair:		#e9ecf3;
 	--blanc-trmdvsr:				#f4f5f9;													/* RGB :244, 245, 249; */
+	--blanc-pur:                    #FFF;
 	--vert-trmdvsr-clair:			#a0c0a0;
 	--vert-trmdvsr-moyen:			#4a684d;
 	--vert-trmdvsr-fonce:			#2a8520;
@@ -22,6 +23,8 @@ menu, ol, ul                                                    { margin: 0; pad
 	--couleur-fond-carte:			#2a2e3d;
 	--bordure-radius:				1rem;
 	--largeur-stroke:				2;
+
+	--color-shadow:                 rgba(0, 0, 0, 0.15);
 
 	--largeur-conteneur-max:		min(100%, 60rem);											/* 100% de l'écran jusqu'à 60rem de largeur */
 	--largeur-logo-bouton:			clamp(2.5rem, 4rem - 2vw, 4rem);							/* => +'vw' augmente, + valeur finale diminue */
@@ -63,14 +66,17 @@ menu, ol, ul                                                    { margin: 0; pad
 	--logo-tronksize-court:			calc(var(--logo-tronksize-med) * 0.66 );
 	--largeur-eval-item:			calc(var(--largeur-conteneur-max) - (var(--espacement-large) * 2)); /* Conteneur - les marges */
 	--largeur-composant-note:		calc(var(--largeur-eval-item) - var(--largeur-notede0) - var(--largeur-notea5) - (var(--espacement-large) *2) );
-
+	--module-avis-height:           400px;   													/* Nouvelle variable pour la hauteur fixe de la conversation */
 	--url-logo-inactif:				url('https://i.imgur.com/OIsQ6DL.png');
-	--url-logo-actif:				url('https://i.imgur.com/Hfhftm1.png');
+	--url-logo-charte:				url('https://i.imgur.com/Hfhftm1.png');
+	--url-logo-actif:				url('https://i.imgur.com/FZWC78D.png');
 	--url-logo-blanc:				url('https://i.imgur.com/KryCTLH.png');
 	--url-notede0:					url('https://i.imgur.com/gy5B1Wg.png');
 	--url-notea5:					url('https://i.imgur.com/oGZf3eC.png');
 	--url-visuel-fauteuil:			url('https://i.imgur.com/2xmmReX.png');
 	--url-visuel-accueil:			url('https://i.imgur.com/LILnWVO.png');						/* 1125px × 2436px | ratio:2,1653333333 */
+	--url-visuel-bulle1:			url('https://i.imgur.com/kbXpA00.png');
+	--url-visuel-bulle2:			url('https://i.imgur.com/aiR2TF3.png');
 }
 /* Textes =========================================================================== (GLOBAL)  */
 .trmdvsr-texte-h1 {
@@ -187,8 +193,7 @@ body.is-loading {																				/* => INTERACTION : Désactive l'interactio
 body.guidedMode [data-maskable].as-block  { display: block; }
 body.guidedMode [data-maskable].as-flex   { display: flex; }
 .conteneur-spa-global {																			/* div globale S. P. A. : 1 occ. (mention x2 ../trmdvsr-js) */
-	position:						relative;													/* reférentiel pour les 'pages' sur les <main> */
-	box-sizing:						border-box;
+	position:						relative;	
 	width:							100%;
 	max-width:						var(--largeur-conteneur-max);								/* clamp => fluide */
 	min-height: 					1px;
@@ -196,7 +201,7 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 	margin:							0;
 	padding:						0;
 	background-color:				#FFF;
-	/*overflow:						hidden;														/* ‼️POUR DEBUG => A REACTIVER‼ */
+	overflow:						hidden;														/* ‼️POUR DEBUG => A REACTIVER‼ */
 	box-shadow:						0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 	transition:						height 1s ease-in-out, width 1s ease-out;
 }
@@ -207,7 +212,6 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 	top:							0;
 	left:							0;
 	z-index:						100;
-	box-sizing:						border-box;
 	width:							var(--largeur-conteneur-max);
 	height:							auto%;
 	margin:							0;
@@ -215,7 +219,7 @@ body.guidedMode [data-maskable].as-flex   { display: flex; }
 	background-color:				#FFF;
 	box-shadow:						-10px 0px 20px -5px rgba(var(--gris-trmdvsr-fonce-RGB), 0.4);
 	transform:						translateX(100%);											/* positionne la page à droite */
-	/*opacity:						0;*/
+	opacity:						0;
 	transition:						transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
 	will-change:					transform, opacity;											/* Optimise la perf */
 }
@@ -259,7 +263,6 @@ footer.conteneur-lame.flex-trmdvsr-id {                               /* MOBILE 
 footer .trmdvsr-sstexte { text-align: right; color: var(--blanc-trmdvsr); } /* Alignement texte */
 .insta-desktop { display: none; }                                     /* Cache le bouton Desktop du header(mobile first) => @Media Query */
 .insta-mobile { display: block; }                                     /* Affiche le bouton Mobile dans le Footer => @Media Query */
-
 .conteneur-lame.flex-into-row {                                       /* MOBILE => DESKTOP bascule en row */
 	display:                  flex;
 	flex-direction:           column;                                   /* Princi:↕|Transv:↔ => desktop:row */
@@ -279,13 +282,11 @@ footer .trmdvsr-sstexte { text-align: right; color: var(--blanc-trmdvsr); } /* A
 .conteneur-lame.flex-col.col-last {                                   /* Mobile => toute largeur */
 	padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
 }
-
 /*--------------------------------------- LAMES SPÉCIFIQUES : BOUTONS */
 .button-solo {
 	display:                  flex;
 	justify-content:          flex-end;
 }
-
 .conteneur-lame.flex-into-row.button-multi {
 	flex-direction:           column-reverse;                           /* action principale en haut */
 	justify-content:          space-between;
@@ -293,7 +294,6 @@ footer .trmdvsr-sstexte { text-align: right; color: var(--blanc-trmdvsr); } /* A
 	gap:                      var(--espacement-button);
 	padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-tres-large); /* ↑ | ↔ | ↓ */
 }
-
 /* Input & Forms                                             (MODULE) */
 .trmdvsr-select { position: relative; width: 100%; height: 100%; }    /* <div> englobante ref pour icon enfant en position absolute */
 .composant-photo .form-input,
@@ -379,7 +379,7 @@ img.hero-image-container {
 	padding:                  0;
 }
 .conteneur-lame.hero-content { position: absolute; z-index: 2; }
-.conteneur-lame.flex-into-row.trmdvsr-superselect {                   /* Englobe le sélecteur pour ajouter btn action et positionner sur */
+.conteneur-lame.flex-into-row.trmdvsr-suprslct {                   /* Englobe le sélecteur pour ajouter btn action et positionner sur */
 	z-index:                  3;
 	position:                 absolute;
 	bottom:                   -1.5rem;                                /* Déplacer le conteneur de 50px vers le bas pour le chevauchement */
@@ -409,11 +409,9 @@ img.hero-image-container {
 .trmdvsr-suprslct .trmdvsr-button { box-shadow: none; }
 .trmdvsr-suprslct .trmdvsr-button:hover { box-shadow: none; }
 .trmdvsr-suprslct .trmdvsr-button:active { box-shadow: none; }
-
 .conteneur-lame.flex-into-row.intro       { background-color: var(--gris-trmdvsr-tres-clair); }
 .intro .conteneur-lame.flex-col.col-first  { background-color: #FFF; padding-top: calc(2 * var(--espacement-large)); }
 .intro .conteneur-lame.flex-col.col-last.composant-aide { padding-top: calc(2 * var(--espacement-large)); }
-
 /* Lame Testimonials                                         (MODULE) */
 .module-temoignages {
 	margin:                     0;
@@ -422,9 +420,8 @@ img.hero-image-container {
 	background-color:           var(--gris-trmdvsr-fonce);
 }
 .module-temoignages .logo-quote { height: 3rem; width: 3rem; }        /* 48px */
-.module-temoignages .trmdvsr-texte    { text-align: center; color: var(--gris-trmdvsr-clair); }
-.module-temoignages .trmdvsr-texte-h3 { text-align: center; color: var(--blanc-trmdvsr);      }
-.module-temoignages .trmdvsr-texte-h4 { text-align: center;                                   }
+.module-temoignages .trmdvsr-texte    { color: var(--gris-trmdvsr-clair); }
+.module-temoignages .trmdvsr-texte-h3 { color: var(--blanc-trmdvsr);      }
 /*------------------------------------------------------------------- */
 .conteneur-lame.carousel-temoignage {                                 /* Conteneur pour le défilement horizontal */
 	display:                  flex;
@@ -488,14 +485,12 @@ img.hero-image-container {
 .carte-temoignage .auteur-info .trmdvsr-label { color: var(--gris-trmdvsr-clair); }
 .carte-temoignage .trmdvsr-sstexte.statut-verifie { display: inline-block; color: var(--vert-trmdvsr-clair); }
 .carte-temoignage .trmdvsr-sstexte.statut-verifie::before { content: '✓'; margin-right: 0.5rem; }
-
 /* NAVIGATION CAROUSEL ---------------------------------------------- */
 .module-temoignages .carousel-navigation {
 	display:                  flex;
 	justify-content:          center;
 	align-items:              center;
 }
-
 .nav-fleche {
 	background:               none;
 	border:                   none;
@@ -509,7 +504,6 @@ img.hero-image-container {
 .nav-fleche:hover {
 	color:                    var(--bleu-trmdvsr-moyen);
 }
-
 /* Lame Expliq                                               (MODULE) */
 .module-overlap {                                                     /* Mobile First */
 	display:                  flex;
@@ -536,7 +530,6 @@ img.hero-image-container {
 .module-overlap .flot-droite .trmdvsr-texte,
 .module-overlap .flot-droite .trmdvsr-texte-h3,
 .module-overlap .flot-droite .trmdvsr-texte-h4 { text-align: right; }
-
 .module-overlap .flot-droite,
 .module-overlap .flot-gauche { flex: 1 0 35%; }                       /* grow shrink basis */
 .module-overlap .flot-centre {
@@ -550,13 +543,11 @@ img.hero-image-container {
 	transform:                translateX(-50%);                       /* Pour centrage parfait */
 	transition:               all 0.5s ease-in-out;
 }
-
 .module-overlap .bloc-media {                                         /* Séparé de flot-centre => gérer position abs/rel */
 	position:                 relative;
 	width:                    100%;
 	height:                   100%;
 }
-
 .module-overlap .bloc-media .visuel-ambition {
 	position:                 absolute;
 	top:                      0;
@@ -601,7 +592,6 @@ img.hero-image-container {
 	color:                    #FFF;
 	transition:               all 0.5s ease-in-out;
 }
-
 .module-overlap .bloc-media .bloc-badge .badge-icon {
 	width:                    1rem;
 	height:                   1rem;
@@ -624,56 +614,6 @@ img.hero-image-container {
 	z-index:                  3; 
 	transition:               all 0.5s ease-in-out;
 }
-
-/* Lame Vision                                               (MODULE) */
-	.module-bigpic {                                                  /* Module de Contenu Logistique */
-	padding:                  0;                                      /* Padding interne du module */
-	margin:                   0;                                      /* Marge externe et centrage */
-	position:                 relative;                               /* Ajoute un dégradé radial subtil pour la profondeur */
-}
-
-.module-bigpic::before {                                              /* Pseudo-élément => effet lumière/texture (coin haut gauche) */
-	content:                  '';
-	position:                 absolute;
-	top:                      0;
-	left:                     0;
-	width:                    100%;
-	height:                   100%;
-	background:               radial-gradient(circle at 10% 10%, rgba(108, 99, 255, 0.08), transparent 50%);
-	border-radius:            var(--bordure-radius);
-	z-index:                  0;                                      /* Assure qu'il est sous le contenu */
-	pointer-events:           none;                                   /* Permet le clic à travers */
-}
-.module-bigpic .conteneur-lame {
-	padding:                  var(--espacement-large) var(--espacement-large) calc( var(--espacement-moyen) / 2 );
-}
-.module-bigpic .conteneur-lame.flex-into-row {
-	padding:                  0;
-}
-.module-bigpic .conteneur-lame.flex-col.col-first,
-.module-bigpic .conteneur-lame.flex-col.col-last {
-	flex:                     1;
-	padding-top:              calc(var(--espacement-court) / 2);
-	padding-bottom:           0;
-}
-.media-container {
-	position:                 relative;
-	width:                    100%;
-	padding-bottom:           33%;                                    /* Ratio 16:9 (hauteur = 56.25% de la largeur)      */         
-	border-radius:            var(--bordure-radius);
-	overflow:                 hidden;                                 /* Assure que la vidéo/image respecte le border-radius */
-	box-shadow:               0 10px 30px rgba(0, 0, 0, 0.4);
-}
-.media-container img {
-	position:                 absolute;
-	top:                      0;
-	left:                     0;
-	width:                    100%;
-	height:                   100%;
-	object-fit:               cover;                                  /* Assure que l'image/vidéo couvre bien le conteneur */
-	display:                  block;
-}
-
 /* Elements : Logos, Dividers, TraumShape & Boutons          (GLOBAL) */
 .logo-trmdvsr {                                                       /* HEADER & FOOTER */
 	object-fit:               contain;
@@ -690,12 +630,10 @@ img.hero-image-container {
 	text-decoration:          none;                                   /* Neutralisation de l'alignement et des espacements */
 }      
 .neutre img { display: block; }                                       /* défensif, car on est sur un <a> */
-
 .insta-desktop .push-trmdvsr {                                        /* HEADER => TAILLE FLUIDE */
 	width:                    clamp(96.5px, -5.9vw + 107.83px, 166px);/* Wmax: 166px, Wmin: 96.5px old : 14% base{w:166px h:172px} */
 	max-height:               clamp(100px, -5.9vw + 111.33px, 172px);
 }
-
 .insta-mobile .push-trmdvsr {                                         /* FOOTER -> TAILLE FIXE */
 	max-height:               150px;                                  /* base{w:166px h:172px} */
 	padding:                  var(--espacement-court) 0;
@@ -708,7 +646,6 @@ img.hero-image-container {
 	padding:                  0;
 	background-color:         var(--gris-trmdvsr-clair);
 }
-
 .traum-divider {                                                      /* IDENTIQUE MOBILE & DESKTOP */
 	width:                    calc( 100% - var(--espacement-large) );
 	height:                   1px;
@@ -716,7 +653,6 @@ img.hero-image-container {
 	padding:                  0;
 	background-color:         var(--gris-trmdvsr-clair); 
 }
-
 .traum-divider-big {                                                  /* IDENTIQUE MOBILE & DESKTOP */
 	width:                    calc( 100% - 5px );
 	height:                   2px;
@@ -734,7 +670,6 @@ img.hero-image-container {
 	--cut-size:               var(--logo-tronksize-larg);
 	clip-path:                polygon( 0% 0%, 100% 0%, 100% calc(100% - var(--cut-size)), calc(100% - var(--cut-size)) 100%, 0% 100% );
 }
-
 /*=========================================================== BOUTONS */
 .trmdvsr-button {                                                     /* BASE */
 	display:                  inline-flex;
@@ -769,7 +704,6 @@ img.hero-image-container {
 		0 1px 4px rgba(0, 0, 0, 0.08);                                /* L'ombre se rapproche */
 	transform: translateY(1px);                                       /* L'élément "s'enfonce" */
 }
-
 .trmdvsr-button.primary {
 	font-weight:              var(--graisse-h3);
 	color:                    #FFF;
@@ -792,7 +726,6 @@ img.hero-image-container {
 		0 1px 4px rgba(0, 122, 255, 0.2);
 	transform:                translateY(1px);
 }
-
 .trmdvsr-button-picto {
 	width:                  var(--taille-texte-btn);
 	height:                 auto;
@@ -803,11 +736,10 @@ img.hero-image-container {
 	fill:                   none;
 	vertical-align:         middle;
 }
-
 .trmdvsr-button:hover .trmdvsr-button-picto {
 	animation:              info 0.4s linear 1;                       /* @keyframes duration | easing-function | delay | name */
 }
- 
+.trmdvsr-button.primary.large { flex-grow: 2; } /* Plus large pour l'action principale */
 /* Menu Classique & Burger                                   (GLOBAL) */
 .menu-toggle {                                                        /* MENU BURGER */
 	display:                  flex;                                   /* Mobile first => Affichage du bouton Burger */
@@ -868,20 +800,17 @@ img.hero-image-container {
 	font-size:                calc(var(--taille-sstexte) * 0.75);     /* var(--taille-h4); */
 	letter-spacing:           -0.0269rem;
 }
-
 .nav-globale.active {                                                 /* Le menu actif (déployé) */
 	height:                   auto;                                   /* Assez de place pour tous les liens */
 	opacity:                  1;
 	box-shadow:               0 5px 15px rgba(0,0,0,0.1);
 }
-
 .nav-globale li {
 	width:                    100%;
 	padding:                  8px;
 	border: 1px solid red;
 	/* background-color:         var(--gris-trmdvsr-clair); */
 }
-
 .nav-globale a {
 	display:                  block;                                  /* Prend toute la largeur du li */
 	text-decoration:          none;
@@ -891,7 +820,6 @@ img.hero-image-container {
 .nav-globale a:hover {
 	color:                    var(--bleu-trmdvsr-moyen);
 }
-
 .nav-globale .active a {
 	color:                    var(--bleu-trmdvsr-pur);
 	position:                 relative;
@@ -907,7 +835,6 @@ img.hero-image-container {
 	background-color:         var(--bleu-trmdvsr-pur);
 	border-radius:            2px;
 }
-
 /* GuidedMode                                             (COMPOSANT) */
 /* .composant-aide => classe sémantique et fonctionnelle. Associée à synchroniserToutesLesInstances() & initialiserModeGuide() et l'eventListener sur tous les groupe-boutons-radio des blocs contenant .composant-aide. C'est un Crochet (Hook) Fonctionnel. */
 .conteneur-lame.flex-col.col-last.composant-aide {                    /* Définition du conteneur réutilisable */
@@ -919,7 +846,6 @@ img.hero-image-container {
 	align-items:              center;
 	padding:                  var(--espacement-large) var(--espacement-large) var(--espacement-court);
 }
-
 .composant-aide .trmdvsr-sstexte{
 	display:                  block;
 	width:                    100%;
@@ -929,7 +855,6 @@ img.hero-image-container {
 	text-align:               center;
 	line-height:              calc(var(--taille-sstexte) * 1.33);
 }
-
 .groupe-boutons-radio {                                               /* <groupe-boutons-radio> <overridden-radio> <existing-radio> */
 	display:                  flex;                                   /* Assure que les options sont côte à côte */
 	gap:                      var(--espacement-button);               /* Espace entre les boutons Oui et Non */
@@ -938,7 +863,6 @@ img.hero-image-container {
 }
 .overridden-radio { display: flex; flex-direction: column; justify-content: flex-start; } /* Aligne l'input et le label VERTICALEMENT */
 .overridden-radio .trmdvsr-sstexte { padding-top: calc(var(--largeur-logo-bouton) * 1.1089); text-align: center; } /* Laisse la place au texte */
-
 .existing-radio {                                                     /* Élément radio natif gardé pour son comportement fonctionnel */
 	-webkit-appearance:       none;                                   /* Élimine l'apparence par défaut du navigateur */
 	-moz-appearance:          none;
@@ -947,7 +871,6 @@ img.hero-image-container {
 	flex-shrink:              0;                                      /* Empêche le shrinking dans un conteneur flex */
 	margin:                   0;                                      /* Réinitialisation des marges */
 }
-
 .trmdvsr-radio-label {                                                /* Porte texte + image */
 	display:                  block;                                  /* DEBUG: inline-block */
 	cursor:                   pointer;
@@ -958,11 +881,9 @@ img.hero-image-container {
 	background-position:      top;                      
 	background-size:          var(--largeur-logo-bouton) var(--largeur-logo-bouton);/* Taille image */
 }
-
 .existing-radio:checked + .trmdvsr-radio-label {
 	background-image:         var(--url-logo-actif);                  /* Image pour l'état COCHÉ */
 }
-
 /* == updateStatus ============================================================= (UTILITAIRE) == */
 .status-target { position: relative; }
 .status-layer {                                                       							/* LAYER surchargé pour W/H, background-color */
@@ -971,10 +892,10 @@ img.hero-image-container {
 	justify-content:          		center;
 	align-items:              		center;
 	z-index:                  		1000;                                   					/* Devant tout */
-	width:							auto;
+	/*width:							auto;
 	height:							auto;
 	margin:                   		0px;
-	padding:                  		0px;
+	padding:                  		0px;*/
 }
 .status-layer.attached {                                           								/* Nouvelles règles pour le loader => attaché à un conteneur spécifique */
 	position:                 		absolute;                               					/* Écrase fixed par absolute */
@@ -1018,7 +939,6 @@ img.hero-image-container {
 	border-radius:            		50%;                                    					/* => Forme ronde */
 	animation:                		spin 0.4s linear infinite;                          
 }
-/* -- updateStatus -------------------------------------------------------- CLASSES DE TEXTES -- */
 .status-quo {
 	display: 						block;
 	min-width: 						var(--largeur-loader);
@@ -1031,9 +951,9 @@ img.hero-image-container {
 	/*appearance:       		  		none;
 	-webkit-appearance:       		none;  */                                 					/* Pour Chrome/Safari */
 	display: 						block;
-	width: 							auto;
+	/*width: 							auto;*/
 	min-height:						var(--taille-sstexte);	
-	height:							auto;					
+	/*height:							auto;*/					
 	margin-top:               		calc(var(--largeur-loader) * 0.2);
 	text-align:               		center;                                 					/* Assure que le texte est centré dans sa propre boîte */
 	color:                    		#FFF;
@@ -1106,7 +1026,6 @@ nav .conteneur-lame { padding-bottom: var(--espacement-court); }
     width:                    var(--espacement-large); 
     height:                   1px;
 }
-
 .breadcrumb-separator {                                                         /* L'indicateur de séparation */
 margin:                   0 1rem;
 font-size:                1.5rem;
@@ -1114,7 +1033,6 @@ line-height:              2.5rem;
 color:                    rgba(var(--gris-trmdvsr-fonce-RGB), 0.6);           /* Utilisation de la variable RGB pour plus de contrôle */
 align-self:               center;                                             /* Pour l'aligner verticalement si les boutons sont hauts */
 }
-
 .breadcrumb-item.trmdvsr-texte-btn.trmdvsr-button {
 display:                  inline-flex;                                        /* Aligne texte et icône */
 justify-content:          space-between;                                      /* Distribue l'espace entre les éléments */
@@ -1219,7 +1137,6 @@ pointer-events:           none;
     background-color:		var(--gris-trmdvsr-tres-clair);
     border: 4px solid green;
 }
-
 .eval-carousel-track {
 	display:				flex;
 	flex-direction:			row;
@@ -1228,7 +1145,6 @@ pointer-events:           none;
 	align-items:			flex-start;
 	gap:					var(--espacement-court);
 	width:					100%;
-	box-sizing:				border-box;
 	background-color:		var(--gris-trmdvsr-tres-clair);
 	border: 				2px dotted red;
 }
@@ -1241,30 +1157,13 @@ pointer-events:           none;
 	scroll-snap-align:		center;											/* Définit le point d'accroche pour scroll-snap */
 	background-color:		var(--blanc-trmdvsr); 
 	border-radius:			var(--bordure-radius);
-	box-sizing:				border-box;										/* Assure que l'élément ne déborde pas */
 	box-shadow: 			0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.2);
 	transition:				transform 0.3s ease-out;						/* les anims sont gérées en JS */
 }
-
 /* ----------------------------------------------------------------------------------- Note */
-/* <div class="composant-note conteneur-lame flex-into-row">
-	<div class="conteneur-lame flex-col col-first">
-		<img class="img-notede0"> <div class="trmdvsr-sstexte">
-	<div class="conteneur-lame flex-col col-middle">
-		<label class="module-note trmdvsr-texte">
-		<div class="module-note" data-action="rating-selection" data-action-group="rating-selection">
-			<input type="radio" id="q1-r5" value="5"/>
-			<label class="trmdvsr-radio-label"></label>
-		<div class="module-note trmdvsr-sstexte">
-			<label for="q1-r5">5</label>
-	<div class="conteneur-lame flex-col col-last">
-		<img class="img-notea5">
-		<div class="trmdvsr-sstexte">
-	*/
 .composant-note.conteneur-lame.flex-into-row {                                  /* classe fonctionnelle */
 	justify-content: 				center;
 	align-items: 					center;
-	box-sizing:						border-box;
 	overflow: 						hidden;
 	width:							100%;
 	height: 						auto;
@@ -1277,19 +1176,18 @@ pointer-events:           none;
 	align-items:					flex-end;
 	flex:							1 1 auto;											/* grow shrink basis */
 	width:							100%;
-	box-sizing: 					border-box;
 	height:							auto;
 	padding:						var(--espacement-large) var(--espacement-large) var(--espacement-tres-large);
 }
 .composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
 .composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: auto; padding-top: 0; padding-left: 1rem; }
-img.img-notede0 {
+.composant-note img.img-notede0 {
 	width: 							auto;
 	max-width:						var(--largeur-notede0);
 	aspect-ratio:					199 / 81;
 	height:							auto;
 }
-img.img-notea5 {
+.composant-note img.img-notea5 {
 	width: 							auto;
 	max-width:						var(--largeur-notea5);
 	aspect-ratio:					155 / 80;
@@ -1309,6 +1207,17 @@ img.img-notea5 {
 	background-size:				66%;
 	background-repeat:				no-repeat;
 }
+.composant-note .conteneur-lame.flex-col.col-middle .module-note {								/* Conteneur de bouton radio avec id='module-note[X]' */
+	display:						flex;
+	flex-direction:					row-reverse; 
+	justify-content:				center;														/* Aligne le groupe à gauche */
+	align-items:					center;
+	width:							100%;
+	margin:							0;
+	padding-top:					0;
+	padding-bottom:					calc(var(--espacement-court) * 0.33);
+	border:							1px solid purple;
+}
 .composant-note .conteneur-lame.flex-col.col-middle .module-note.trmdvsr-texte {				/* Texte dans le bloc avec balise <em> et <b> */
 	display:						block;
 	width:							auto;
@@ -1317,23 +1226,14 @@ img.img-notea5 {
 	padding-bottom:					var(--espacement-large);
 	text-align:						center;
 }
-
-.composant-note .conteneur-lame.flex-col.col-middle .module-note {								/* Conteneur de bouton radio avec id='module-note[X]' */
-	display:						flex;
-	flex-direction:					row-reverse; 
-	justify-content:				center;														/* Aligne le groupe à gauche */
-	align-items:					center;
-	box-sizing: 					border-box;
-	width:							100%;
-	margin:							0;
-	padding-top:					0;
-	padding-bottom:					calc(var(--espacement-court) * 0.33);
-	border:							1px solid purple;
+.composant-note .conteneur-lame.flex-col.col-middle input.module-note {
+	padding: var(--espacement-large) 0;
+	text-align: center;
+	background: initial;
 }
 .composant-note .conteneur-lame.flex-col.col-middle .module-note input[type="radio"] { display: none; } /* Cache l'élément radio natif */
 .composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-radio-label {                                         /* Spécificité de style */
 	display: 						block;
-	box-sizing: 					border-box;
 	width:							calc( var(--largeur-logo-bouton) + var(--espacement-button) );    
 	height:							var(--largeur-logo-bouton);
 	background-image:				var(--url-logo-inactif);
@@ -1347,10 +1247,8 @@ img.img-notea5 {
 .composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-radio-label:hover ~ label { background-image: var(--url-logo-actif); } /* Allume la note survolée et tous les labels qui la SUIVENT */
 .composant-note .conteneur-lame.flex-col.col-middle .module-note input:checked + label.trmdvsr-radio-label,
 .composant-note .conteneur-lame.flex-col.col-middle .module-note input:checked ~ label.trmdvsr-radio-label { background-image: var(--url-logo-actif); } /* Activation des notes cliquées et inférieures */
-
 .composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-sstexte {                                             /* texte sous les boutons customs */
 	display: 						block;
-	box-sizing: 					border-box;
 	width:							calc( var(--largeur-logo-bouton) + var(--espacement-button) );   
 	margin-top:						0px;
 	padding-right: 					var(--espacement-button);
@@ -1358,42 +1256,88 @@ img.img-notea5 {
 	text-align:						center;
 }
 .composant-note .conteneur-lame.flex-col.col-middle .module-note label.trmdvsr-sstexte:first-of-type { width: var(--largeur-logo-bouton); padding-right: 0; }
-.composant-note .conteneur-lame.flex-col.col-middle input.module-note {
-	padding: var(--espacement-large) 0;
-	text-align: center;
-	background: initial;
-}
-/*------------------------------------------------------------------------------ */
-/* SUBMIT => Gestion Humeur */
-
-.composant-eval .traum-shape.submit-button {
-padding:                    calc(var(--largeur-logo-bouton) / 2);
-width:                      auto;
-height:                     calc(var(--largeur-logo-bouton) * 1.1089);
-
-cursor:                     pointer;
-display:                    flex;
-align-items:                center;                                           /* Trans: ↕ */
-background-color:           var(--bleu-trmdvsr-moyen);
---logo-tronksize-larg:      10px;
-
-transition:                 background-color 0.2s;
-}
-
-.composant-eval .traum-shape.submit-button:hover {
-background-color:           var(--bleu-trmdvsr-clair); 
-}
-
-.composant-eval .traum-shape.submit-button:disabled {
-background-color:           var(--gris-trmdvsr-clair);
-}
 
 /*<!-- COMPOSANT AVIS                                   (Page Evaluation) --> */
 /*------------------------------------------------------------------------------ */
 /* .composant-avis classe fonctionnelle associée à 
 /* .conteneur-lame.flex-into-row { m:0; p:0; w:100%; h:100%; disp:flex; flex-dir:row; ali-item:flex-start; gap:0 } /.conteneur-lame >> Princi:↔|Transv:↕ */
 
-.composant-avis .avis-zone-edito {                                      /* Composant Avis /* asso avec .conteneur-lame.flex-col.col-first */
+.module-overlap .bloc-media {                                         /* Séparé de flot-centre => gérer position abs/rel */
+	position:                 relative;
+	width:                    100%;
+	height:                   100%;
+	border: 1px solid purple;
+}
+.eval-item .module-overlap .flot-centre .bloc-media .bullefonce {
+	display:					block;
+	position:					absolute;
+	top:                      	0;
+	left:                     	0;
+	z-index:                  	1;
+	width:                    	63%;
+	aspect-ratio: 				733 / 696;
+	background-image:         	var(--url-visuel-bulle1);
+	background-color: 			none;
+	background-size:          	cover;
+	background-repeat:        	no-repeat;
+	transition:               	all 0.5s ease-in-out;
+}
+.eval-item .module-overlap .flot-centre .bloc-media .bulleclaire {
+	display:					block;
+	position:                 	absolute;
+	bottom:                     0;
+	right:                     	0;
+	z-index:                  	2;
+	width:                    	63%;
+	aspect-ratio: 				733 / 696;
+	background-image:         	var(--url-visuel-bulle2);
+	background-color: 			none;
+	background-size:          	cover;
+	background-repeat:        	no-repeat;
+	transition:               	all 0.5s ease-in-out;
+}
+.eval-item .module-overlap .bloc-media .bloc-badge {
+	display:                  flex;
+	align-items:              center;
+	width:                    auto; /* 8rem; */
+	height:                   auto; /* 2rem; */
+	padding:                  0.75rem 1rem;
+	background-color:         black;
+	border-radius:            var(--bordure-radius);
+	background-color:         rgba(255, 255, 255, 0.1);               /* Fond semi-transparent */
+	backdrop-filter:          blur(5px);
+	border:                   1px solid rgba(255, 255, 255, 0.2);
+}
+.eval-item .module-overlap .bloc-media .bloc-badge.trmdvsr-label { 
+	color:                    #FFF;
+	transition:               all 0.5s ease-in-out;
+}
+.eval-item .module-overlap .bloc-media .bloc-badge .badge-icon {
+	width:                    1rem;
+	height:                   1rem;
+	margin-right:             0.25rem;
+	background-image:         var(--url-logo-blanc);
+	background-size:          cover;
+	background-repeat:        no-repeat;
+}
+.eval-item .module-overlap .bloc-media .bloc-badge.badge-ambition {
+	position:                 absolute;
+	bottom:                   20%;
+	left:                     50%;
+	z-index:                  2; 
+	transform: 					translateX(-50%);
+	transition:               all 0.5s ease-in-out;
+}
+.eval-item .module-overlap .bloc-media .bloc-badge.badge-vision {
+	position:                 absolute;
+	top:                      20%;
+	left:                     50%;
+	z-index:                  3; 
+	transform: 					translateX(-50%);
+	transition:               all 0.5s ease-in-out;
+}
+
+.composant-avis .conteneur-lame.flex-col.col-first.trmdvsr-texte {                                      /* Composant Avis /* asso avec .conteneur-lame.flex-col.col-first */
 margin-bottom:              var(--espacement-court);
 width:                      calc(var(--largeur-conteneur-max) * 0.33);
 flex:                       initial;                                  /* display:flex; flex-direction:column; flex:1 */
@@ -1401,7 +1345,6 @@ flex:                       initial;                                  /* display
 
 /* .conteneur-lame.flex-col.col-first: m:0; pt:espMoy; pb:espMoy, pl:espLarg; pr:espMoy/2; h:100%; disp:flex; flex-dir:col; flex:1; */
 } 
-
 .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last {           /* Conteneur du textArea / status_layer / conteneur-humeur */
 width:                      calc(var(--largeur-conteneur-max) * 0.67);
 height:                     auto;
@@ -1411,43 +1354,41 @@ display:                    initial;                                  /* Forcer 
 
 /* .conteneur-flex.flex-col.col-last: m:0; pt:espMoy; pb:espMoy, pl:espMoy/2; pr:espLarg; h:100%; disp:flex; flex-dir:col; flex:1; */
 }
-
 /*------------------------------------------------------------------------------ */
 /* Dans .avis-zone-creation.conteneur-flex.flex-col.col-last */
 
-.composant-avis .avis-zone-creation textarea.traum-shape {                    /* Bloc de texte éditable trmdvsr-texte */
-resize:                     none;
-width:                      calc(var(--largeur-tier-max) * 2);                /* Tiers de largeur conteneur - marge interieures sur les côtés */
-height:                     calc(var(--largeur-tier-max) * 1.5);
-padding:                    10px;
-/*display:                    block; */
-font-style:                 italic;
-color:                      var(--gris-trmdvsr-fonce);
-background-color:           #FFF;
-}
+.avis-zone-creation textarea {                    /* Bloc de texte éditable trmdvsr-texte */
+	display:                    block; 
+	
+	width:                      calc(var(--largeur-tier-max) * 2);                /* Tiers de largeur conteneur - marge interieures sur les côtés */
+	aspect-ratio: 				1 / 1;
+	padding:                    10px;
+	font-style:                 italic;
+	color:                      var(--gris-trmdvsr-fonce);
+	background-image: 			var(--url-logo-blanc);
+	backgrou
+	background-color:           #FFF;
 
-.composant-avis .avis-zone-creation .overlay-avis {                       /* Règle de SURCHARGE pour une instance spécifique avec .status-layer */
-width:                      calc(var(--largeur-tier-max) * 2);          /* Réf .composant-avis .avis-zone-creation textarea.trmdvsr-texte */
-height:                     calc(var(--largeur-tier-max) * 1.5);        /* Réf .composant-avis .avis-zone-creation textarea.trmdvsr-texte */
-position:                   absolute;
-top:                        var(--espacement-moyen);                    /* Réf .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last */
-left:                       calc(var(--espacement-moyen) / 2);          /* Réf .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last */
-background-color:           rgba(255, 255, 255, 0.5);
+}
+/**.composant-avis .avis-zone-creation .overlay-avis {                       /* Règle de SURCHARGE pour une instance spécifique avec .status-layer */
+/**width:                      calc(var(--largeur-tier-max) * 2);          /* Réf .composant-avis .avis-zone-creation textarea.trmdvsr-texte */
+/**height:                     calc(var(--largeur-tier-max) * 1.5);        /* Réf .composant-avis .avis-zone-creation textarea.trmdvsr-texte */
+/*position:                   absolute;
+/*top:                        var(--espacement-moyen);                    /* Réf .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last */
+/*left:                       calc(var(--espacement-moyen) / 2);          /* Réf .composant-avis .avis-zone-creation.conteneur-flex.flex-col.col-last */
+/*background-color:           rgba(255, 255, 255, 0.5);
 
 /* NOTE : Le parent de #status_layer_q[n] DOIT avoir position: relative; */
 /*.status-layer: pos:fixed; top:0; left:0; m:0; p:0; w:100vw; h:100vh; disp:flex; flex-dir:col; just-cont:center; ali-item:center; bg-c:bleu-pur; zInd:1000; */
-}
-
+/*}
 /*------------------------------------------------------------------------------/*
 /* conteneur-humeur     3e lame dans .avis-zone-creation.conteneur-flex.flex-col.col-last */
-
-.composant-avis .avis-zone-creation .conteneur-humeur {                         /* Composant humeur */
+.avis-zone-creation .conteneur-humeur {                         /* Composant humeur */
 margin:                     0;
 padding:                    0;
 width:                      100%;
 height:                     calc(  ( var(--largeur-logo-bouton) * 1.1089 ) + var(--espacement-court) + var(--espacement-moyen)  );
 }
-
 .conteneur-humeur .trmdvsr-sstexte-button { /* NOUVELL CLASSE TYPO */
 width:                      auto;
 font-size:                  var(--taille-sstexte);
@@ -1457,7 +1398,6 @@ text-wrap:                  nowrap;
 text-rendering:             optimizeLegibility;                               /* Espacement mots */
 color:                      var(--blanc-trmdvsr);
 }
-
 .conteneur-humeur .conteneur-lame.flex-into-row.button-multi {
 padding:                    var(--espacement-court) 0 var(--espacement-moyen);/* 3valeurs : ↑ | →/← | ↓ */
 justify-content:            flex-end;
@@ -1484,7 +1424,7 @@ font-weight:                calc(var(--graisse-chapo) * 0.66);                /*
 <div class="bonus-zone-bouton conteneur-flex.flex-col.col-last">
 <label class="toggle-switch" data-action-group="bonus-selection" aria-label="Accordez-vous un point bonus ?">
 <input type="checkbox" id="q5-bonus"> 
-<span class="slider"></span>
+<span class="sli@der"></span>
 </label>                
 </div>
 </div>
@@ -1518,18 +1458,15 @@ align-items:                center;                                           /*
 height:                     auto;                                             /* Assure de prendre l'espace nécessaire, surtout si le parent est flex */
 width:                      auto; 
 }
-
 .bonus-toggle-switch input {                                                    /* Masque l'input standard mais le garde fonctionnel */
 opacity:                    0; 
 width:                      0px;
 height:                     0px;
 }
-
 .bonus-toggle-switch .bonus-text {
 margin-top:                 calc(var(--espacement-court) * 0.33);
 text-align:                 center;
 }
-
 .bonus-toggle-switch .bonus-slider {                                                                 /* Style de la base du commutateur */
 display:                    inline-block;                                     /* 🚨 Correction essentielle 🚨 <span> est inline */
 position:                   relative; 
@@ -1544,23 +1481,19 @@ transition:                 .4s;
 transition:                 transform .4s, background-image .4s;
 /*border:                     1px solid;                                        /* Affiche la bordure du bouton OFF */
 }
-
 .bonus-toggle-switch input:checked + .bonus-slider {
 transform:                  translateX(25);                                   /* Modifie la position du bouton */
 background-image:           var(--url-logo-actif);                            /* Style quand l'état est ON */
 /*border-color:               green;  */
 }
-
 .bonus-toggle-switch .bonus-text-on {
 transform:                  translateX(25);                                   /* Modifie la position du bouton */
 display: none;
 }
-
 /* 🚨 Ciblage quand l'input est checked 🚨 */
 .bonus-toggle-switch input:checked ~ .bonus-text-off {                          /* Cache le texte "OFF" */
 display:                    none;
 }
-
 .bonus-toggle-switch input:checked ~ .bonus-text-on {                           /* Affiche le texte "ON" */
 display:                    initial;                                          /* ou block, ou inline-block, selon votre besoin */
 }
@@ -2014,9 +1947,6 @@ justify-content:          space-between;
 		justify-content:			center;                           /* Centrage des cartes sur grand écran */
 		scroll-snap-type:			none;
 	}
-	/* --------------------------------------------------------------------------------- Vision */
-	.module-bigpic .conteneur-lame.flex-col.col-first { flex: 1; }
-	.module-bigpic .conteneur-lame.flex-col.col-last  { flex: 2; }
 	/* -------------------------------------------------------------------------------- Overlap */
 	.module-overlap { 
 		flex-direction:				row-reverse;												/* => Place le premier bloc à droite */
@@ -2046,28 +1976,14 @@ justify-content:          space-between;
 		top:						1rem;
 		left:						5rem;
 	}
+
 	/* ----------------------------------------------------------------------------------- Note */
-	/* <div class="composant-note conteneur-lame flex-into-row">
-		<div class="conteneur-lame flex-col col-first">
-			<img class="img-notede0"> <div class="trmdvsr-sstexte">
-		<div class="conteneur-lame flex-col col-middle trmdvsr-sstexte">
-			<label class="module-note trmdvsr-texte">
-			<div class="module-note" data-action="rating-selection" data-action-group="rating-selection">
-				<input type="radio" id="q1-r5" value="5"/>
-				<label class="trmdvsr-radio-label"></label>
-			<div class="module-note trmdvsr-sstexte">
-				<label for="q1-r5">5</label>
-		<div class="conteneur-lame flex-col col-last">
-			<img class="img-notea5">
-			<div class="trmdvsr-sstexte">
-	*/
 	.composant-note.conteneur-lame.flex-into-row {                                  /* classe fonctionnelle */
 		justify-content: 				center;
 		align-items: 					center;
 		width:							100%;
 		min-height: 					var(--largeur-composant-note);
 		height: 						auto;
-		box-sizing:						border-box;
 		overflow: 						hidden;
 		background-color:				var(--blanc-trmdvsr);
 	}
@@ -2092,13 +2008,19 @@ justify-content:          space-between;
 		padding-left:				var(--espacement-moyen);
     }
 	.composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte,
-	.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 1rem; padding-left: 0;	}
-	.composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: var(--largeur-notede0); 		}
-	.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5);			}
-
+	.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { padding-top: 1rem; padding-left: 0;	};
+	.composant-note .conteneur-lame.flex-col.col-first .trmdvsr-sstexte { width: var(--largeur-notede0); 		};
+	.composant-note .conteneur-lame.flex-col.col-last .trmdvsr-sstexte  { width: var(--largeur-notea5);			};
 	.composant-note .conteneur-lame.flex-col.col-middle {
 		width:						calc(var(--largeur-composant-note) / 3);
 	}
+	.eval-item .module-overlap { 
+		flex-direction:				row;													/* => Place le premier bloc à droite */
+		align-items:				start;													/* => aligne vers le bas */
+		gap:						25%;													/* => Lié aux tailles des colonnes */
+	}
+	.eval-item .module-overlap .flot-centre .bloc-media .bullefonce { width: 100% ;};
+	.eval-item .module-overlap .flot-centre .bloc-media .bulleclaire { width: 150%; top: 0; };
 }
 /* ANIMATIONS CSS ==================================================================== (GLOBAL) */
 @keyframes spin {
