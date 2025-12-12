@@ -217,7 +217,7 @@ const MAX_FILES =                   10;                                         
 const EXPORT_SIZE =                 1080;                                                       // => 1080x1080px
 let humourLevel =                   4;                                                          // Générateur Avis (min:0; max:6)                               <= ?()
 const DATE =                        new Date();                                                 //                                                              <= Logger
-const APPS_SCRIPT_URL =             'https://script.google.com/macros/s/AKfycbyR99Aku6J8xXGWU_c5UHusdYP_--ZT0ndaLSf8PO0P_6b8cZvm1bh5vNUClcoDizdJTQ/exec';
+const APPS_SCRIPT_URL =             'https://script.google.com/macros/s/AKfycbwgqCtw5qBxlanNQCr3ZCLuNWJyYgHixrdA6cs73ecXvs41ISBJ6_u1T4RqCEh0VauiSQ/exec';
 
 /** =========================================================================================== //
  * @description 'Fin du fichier. with care.'
